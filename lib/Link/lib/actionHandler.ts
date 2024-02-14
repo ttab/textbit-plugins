@@ -9,7 +9,7 @@ import {
 import { TextbitElement } from '@ttab/textbit'
 
 
-export const actionHandler = (editor: Editor, typeName: string) => {
+export const actionHandler = (editor: Editor, typeName: string): void => {
   if (!editor.selection) {
     return
   }
@@ -25,7 +25,7 @@ export const actionHandler = (editor: Editor, typeName: string) => {
 
   if (nodeEntries.length) {
     const node = nodeEntries[0][0]
-    if (Element.isElement(node) && node?.id) {
+    if (Element.isElement(node) && typeof node?.id === 'string') {
       document.getElementById(node.id)?.focus()
     }
 
@@ -43,13 +43,12 @@ export const actionHandler = (editor: Editor, typeName: string) => {
       title: '',
       target: ''
     },
-    children: isCollapsed ? [{ text: '' }] : [],
+    children: isCollapsed ? [{ text: '' }] : []
   }
 
   if (isCollapsed) {
     Transforms.insertNodes(editor, link)
-  }
-  else {
+  } else {
     Transforms.wrapNodes(editor, link, { split: true })
     Transforms.collapse(editor, { edge: 'end' })
   }

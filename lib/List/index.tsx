@@ -1,17 +1,21 @@
 
 import { ListIcon, ListOrderedIcon } from 'lucide-react'
 
-import { Plugin } from '@ttab/textbit'
+import type {
+  Plugin,
+  TBEditor,
+  TBElement,
+  TBText
+} from '@ttab/textbit'
 
 import { List, ListItem } from './components'
 import { actionHandler } from './lib/actionHandler'
 import { normalizeNode } from './lib/normalizeNode'
-import { Editor, NodeEntry } from 'slate'
+import type { Editor, NodeEntry } from 'slate'
 
 /**
  * Define Slate CustomTypes to be Textbit types
  */
-import type { TBEditor, TBElement, TBText } from '@ttab/textbit'
 declare module 'slate' {
   interface CustomTypes {
     Editor: TBEditor

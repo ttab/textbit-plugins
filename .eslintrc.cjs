@@ -4,7 +4,9 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
     'plugin:react-hooks/recommended',
+    'standard-with-typescript'
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
@@ -33,11 +35,5 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': ['error'],
     'react/jsx-indent': ['error', 2],
     'react/jsx-indent-props': ['error', 2]
-  },
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
   }
 }

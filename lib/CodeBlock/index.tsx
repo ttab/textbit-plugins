@@ -1,4 +1,10 @@
-import { Plugin } from '@ttab/textbit'
+import type {
+  Plugin,
+  TBEditor,
+  TBElement,
+  TBText
+} from '@ttab/textbit'
+
 import { CodeSquareIcon } from 'lucide-react'
 
 import {
@@ -11,7 +17,6 @@ import { actionHandler } from './lib/actionHandler'
 /**
  * Define Slate CustomTypes to be Textbit types
  */
-import type { TBEditor, TBElement, TBText } from '@ttab/textbit'
 declare module 'slate' {
   interface CustomTypes {
     Editor: TBEditor

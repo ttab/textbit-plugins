@@ -1,7 +1,10 @@
 import * as uuid from 'uuid'
-import { Transforms } from 'slate'
+import {
+  type Editor,
+  type Element,
+  Transforms
+} from 'slate'
 
-import { Editor, Element } from 'slate'
 import { TextbitEditor, TextbitElement } from '@ttab/textbit'
 
 export const actionHandler = (editor: Editor, type: string) => {

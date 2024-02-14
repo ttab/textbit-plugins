@@ -1,4 +1,4 @@
-import { Plugin } from '@ttab/textbit'
+import { type Plugin } from '@ttab/textbit'
 
 export const List: Plugin.Component = ({ element, children }) => {
   // const { properties = {} } = TextbitElement.isElement(element) ? element : {}

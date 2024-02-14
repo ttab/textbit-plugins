@@ -1,26 +1,30 @@
-import { Editor, Transforms } from 'slate'
+import {
+  Editor,
+  type Element,
+  Transforms
+} from 'slate'
+
 import {
   TextbitEditor,
-  TextbitElement,
-  TBElement,
-  TBEditor
+  TextbitElement
 } from '@ttab/textbit'
+
 import * as uuid from 'uuid'
 
 const PLUGIN_NAME = 'dotvoid/codeblock'
 
-export const actionHandler = (editor: TBEditor, typeName: string) => {
+export const actionHandler = (editor: Editor, typeName: string): void => {
   const isActive = TextbitEditor.includes(editor, typeName)
 
   Transforms.unwrapNodes(editor, {
     match: (n) =>
-      !Editor.isEditor(n)
-      && TextbitElement.isElement(n)
-      && n.type === PLUGIN_NAME,
+      !Editor.isEditor(n) &&
+      TextbitElement.isElement(n) &&
+      n.type === PLUGIN_NAME,
     split: true
   })
 
-  const newProperties: Partial<TBElement> = {
+  const newProperties: Partial<Element> = {
     type: isActive ? 'core/text' : `${typeName}/body`,
     properties: {}
   }
