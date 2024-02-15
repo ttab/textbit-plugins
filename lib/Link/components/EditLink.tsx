@@ -1,10 +1,14 @@
 import { useState, useRef } from 'react'
 import { Editor, Element, Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
-import { Plugin, TextbitElement, isValidLink } from '@ttab/textbit'
+import {
+  type Plugin,
+  TextbitElement,
+  isValidLink
+} from '@ttab/textbit'
 import { Link2OffIcon } from 'lucide-react'
 
-export const EditLink: Plugin.ToolComponent = ({ editor, entry }) => {
+export const EditLink = ({ editor, entry }: Plugin.ToolComponentProps): JSX.Element => {
   const [node, path] = entry || []
 
   const [url, seturl] = useState<string>(TextbitElement.isElement(node) && typeof node?.properties?.url === 'string' ? node.properties.url : '')
@@ -57,7 +61,7 @@ export const EditLink: Plugin.ToolComponent = ({ editor, entry }) => {
             {
               properties: {
                 ...node.properties,
-                url: url
+                url
               }
             },
             { at: path }
@@ -79,8 +83,8 @@ export const EditLink: Plugin.ToolComponent = ({ editor, entry }) => {
 }
 
 
-const deleteLink = (editor: Editor) => {
+const deleteLink = (editor: Editor): void => {
   Transforms.unwrapNodes(editor, {
-    match: n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'core/link',
+    match: n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'core/link'
   })
 }

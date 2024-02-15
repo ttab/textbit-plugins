@@ -7,15 +7,15 @@ import {
 
 import { TextbitEditor, TextbitElement } from '@ttab/textbit'
 
-export const actionHandler = (editor: Editor, type: string) => {
+export const actionHandler = (editor: Editor, type: string): void => {
   const listType = ['core/bullet-list', 'core/number-list'].includes(type) ? type : 'core/bullet-list'
   const isActive = TextbitEditor.includes(editor, listType)
 
   Transforms.unwrapNodes(editor, {
     match: (n) =>
-      !TextbitEditor.isEditor(n)
-      && TextbitElement.isElement(n)
-      && ['core/bullet-list', 'core/number-list'].includes(n.type),
+      !TextbitEditor.isEditor(n) &&
+      TextbitElement.isElement(n) &&
+      ['core/bullet-list', 'core/number-list'].includes(n.type),
     split: true
   })
 
@@ -40,5 +40,4 @@ export const actionHandler = (editor: Editor, type: string) => {
       children: []
     })
   }
-
 }

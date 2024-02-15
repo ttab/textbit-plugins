@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react'
-import { Plugin, isValidLink } from '@ttab/textbit'
+import { type Plugin, isValidLink } from '@ttab/textbit'
 
-export const Link: Plugin.Component = ({ attributes, children, element }) => {
+export const Link = ({ attributes, children, element }: Plugin.ComponentProps): JSX.Element => {
   const url: string = element.properties?.url as string || ''
   const [isPressed, setIsPressed] = useState<boolean>(false)
   const [isHovering, setIsHovering] = useState<boolean>(false)
 
   useEffect(() => {
-    const keyDownListener = (event: KeyboardEvent) => {
+    const keyDownListener = (event: KeyboardEvent): void => {
       if (isPressed !== (event.metaKey || event.ctrlKey)) {
         setIsPressed(true)
       }
     }
     window.document.addEventListener('keydown', keyDownListener)
 
-    const keyUpListener = (event: KeyboardEvent) => {
+    const keyUpListener = (event: KeyboardEvent): void => {
       if (isPressed !== (event.metaKey || event.ctrlKey)) {
         setIsPressed(false)
       }
@@ -32,7 +32,7 @@ export const Link: Plugin.Component = ({ attributes, children, element }) => {
       {...attributes}
       href={url}
       onClick={(event) => {
-        if (event.ctrlKey === true || event.metaKey === true) {
+        if (event.ctrlKey || event.metaKey) {
           window.open(url, '_blank')
         }
       }}

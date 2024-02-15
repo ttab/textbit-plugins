@@ -1,4 +1,4 @@
-import { Plugin } from '@ttab/textbit'
+import type { Plugin } from '@ttab/textbit'
 
 import {
   BoldIcon,
