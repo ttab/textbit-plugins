@@ -12,7 +12,7 @@ const Bold: Plugin.Definition = {
   class: 'leaf',
   name: 'core/bold',
   actions: [{
-    tool: () => <BoldIcon style={{ width: '1em', height: '1em' }} />,
+    tool: () => <BoldIcon style={{ width: '0.8em', height: '0.8em' }} />,
     hotkey: 'mod+b',
     handler: () => true
   }]
@@ -22,7 +22,7 @@ const Italic: Plugin.Definition = {
   class: 'leaf',
   name: 'core/italic',
   actions: [{
-    tool: () => <ItalicIcon style={{ width: '1em', height: '1em' }} />,
+    tool: () => <ItalicIcon style={{ width: '0.8em', height: '0.8em' }} />,
     hotkey: 'mod+i',
     handler: () => true
   }]
@@ -33,7 +33,7 @@ const Underline: Plugin.Definition = {
   name: 'core/underline',
   actions: [{
     hotkey: 'mod+u',
-    tool: () => <UnderlineIcon style={{ width: '1em', height: '1em' }} />,
+    tool: () => <UnderlineIcon style={{ width: '0.8em', height: '0.8em' }} />,
     handler: () => true
   }]
 }
