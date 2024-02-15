@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { type Plugin, isValidLink } from '@ttab/textbit'
+import { type Plugin } from '@ttab/textbit'
+import { isValidLink } from '../../shared/isValidLink'
 
 export const Link = ({ attributes, children, element }: Plugin.ComponentProps): JSX.Element => {
   const url: string = element.properties?.url as string || ''

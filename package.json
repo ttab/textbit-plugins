@@ -21,6 +21,7 @@
   ],
   "scripts": {
     "dev": "vite",
+    "test": "jest -c ./jest.config.ts",
     "build": "tsc --p ./tsconfig.build.json && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
@@ -41,7 +42,9 @@
     "slate-react": "^0.102.0"
   },
   "devDependencies": {
+    "@testing-library/react": "^14.2.1",
     "@ttab/textbit": "^0.7.0",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.11.17",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
@@ -55,11 +58,15 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "glob": "^10.3.10",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "lucide-react": "^0.330.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "slate": "^0.102.0",
     "slate-react": "^0.102.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "vite": "^5.1.0",
     "vite-plugin-dts": "^3.7.2",

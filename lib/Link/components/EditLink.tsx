@@ -3,10 +3,11 @@ import { Editor, Element, Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 import {
   type Plugin,
-  TextbitElement,
-  isValidLink
+  TextbitElement
 } from '@ttab/textbit'
 import { Link2OffIcon } from 'lucide-react'
+import { isValidLink } from '../../shared/isValidLink'
+
 
 export const EditLink = ({ editor, entry }: Plugin.ToolComponentProps): JSX.Element => {
   const [node, path] = entry || []
