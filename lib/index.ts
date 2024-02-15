@@ -1,4 +1,5 @@
-export { CodeBlock } from './CodeBlock'
+export { Bold, Italic, Underline } from './Leafs'
 export { Link } from './Link'
 export { BulletList, NumberList } from './List'
-export { Bold, Italic, Underline } from './Leafs'
+export { CodeBlock } from './CodeBlock'
+export { Blockquote } from './Blockquote'

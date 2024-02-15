@@ -2,11 +2,13 @@ import {
   type Editor,
   type NodeEntry,
   Transforms,
-  Node,
-  type Descendant
+  Node
 } from 'slate'
 
-import { TextbitElement } from '@ttab/textbit'
+import {
+  TextbitEditor,
+  TextbitElement
+} from '@ttab/textbit'
 
 export const normalizeNode = (editor: Editor, nodeEntry: NodeEntry, listType: string): boolean | undefined => {
   const [, path] = nodeEntry
@@ -38,7 +40,7 @@ export const normalizeNode = (editor: Editor, nodeEntry: NodeEntry, listType: st
     // the remaining last node to normal text. This gives the appearance that
     // <enter> on a last empty list item converts it to a text node.
     if (n === children.length && children.length > 1 && TextbitElement.isOfType(child, `${listType}/list-item`)) {
-      if (!hasText([children[n - 2], children[n - 1]])) {
+      if (!TextbitEditor.hasText([children[n - 2], children[n - 1]])) {
         const removePath = [childPath[0], n - 2]
         const liftPath = [childPath[0], n - 1]
 
@@ -63,16 +65,4 @@ export const normalizeNode = (editor: Editor, nodeEntry: NodeEntry, listType: st
 
     n++
   }
-}
-
-export function hasText(nodes: Array<NodeEntry<Descendant>>): boolean {
-  for (const [node] of nodes) {
-    for (const textNode of Node.texts(node)) {
-      if (textNode[0].text.trim() !== '') {
-        return true
-      }
-    }
-  }
-
-  return false
 }

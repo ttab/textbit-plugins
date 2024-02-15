@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Descendant } from 'slate'
+import { type Descendant } from 'slate'
 import { Textbit, TextbitEditable, TextbitFooter, useTextbit } from '@ttab/textbit'
 import { ThemeSwitcher } from './themeSwitcher'
 import { TextbitDocument } from './TextbitDocument'
@@ -10,15 +10,16 @@ import {
   Link,
   CodeBlock,
   BulletList,
-  NumberList
+  NumberList,
+  Blockquote
 } from '../../lib'
 /**
  * Define Slate CustomTypes to be Textbit types
  */
 import {
-  TBElement,
-  TBEditor,
-  TBText
+  type TBElement,
+  type TBEditor,
+  type TBText
 } from '@ttab/textbit'
 
 declare module 'slate' {
@@ -30,7 +31,7 @@ declare module 'slate' {
 }
 
 
-export function App() {
+export function App(): JSX.Element {
   return (
     <div style={{
       margin: '0 auto',
@@ -46,7 +47,7 @@ export function App() {
   )
 }
 
-function Editor({ initialValue }: { initialValue: Descendant[] }) {
+function Editor({ initialValue }: { initialValue: Descendant[] }): JSX.Element {
   const [, setValue] = useState<Descendant[]>(initialValue)
   const { characters } = useTextbit()
 
@@ -69,7 +70,8 @@ function Editor({ initialValue }: { initialValue: Descendant[] }) {
             CodeBlock,
             Link,
             BulletList,
-            NumberList
+            NumberList,
+            Blockquote
           ]}
           onChange={value => {
             console.log(value, null, 2)
