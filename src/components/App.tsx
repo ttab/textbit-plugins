@@ -11,7 +11,8 @@ import {
   CodeBlock,
   BulletList,
   NumberList,
-  Blockquote
+  Blockquote,
+  LocalizedQuotationMarks
 } from '../../lib'
 /**
  * Define Slate CustomTypes to be Textbit types
@@ -71,7 +72,8 @@ function Editor({ initialValue }: { initialValue: Descendant[] }): JSX.Element {
             Link,
             BulletList,
             NumberList,
-            Blockquote
+            Blockquote,
+            LocalizedQuotationMarks
           ]}
           onChange={value => {
             console.log(value, null, 2)
