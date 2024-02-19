@@ -14,7 +14,8 @@ import {
   NumberList,
   Blockquote,
   LocalizedQuotationMarks,
-  Image
+  Image,
+  OEmbed
 } from '../../lib'
 /**
  * Define Slate CustomTypes to be Textbit types
@@ -77,7 +78,8 @@ function Editor({ initialValue }: { initialValue: Descendant[] }): JSX.Element {
             NumberList,
             Blockquote,
             LocalizedQuotationMarks,
-            Image
+            Image,
+            OEmbed
           ]}
           onChange={value => {
             console.log(value, null, 2)
