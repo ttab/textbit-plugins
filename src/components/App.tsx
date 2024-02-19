@@ -4,6 +4,7 @@ import { Textbit, TextbitEditable, TextbitFooter, useTextbit } from '@ttab/textb
 import { ThemeSwitcher } from './themeSwitcher'
 import { TextbitDocument } from './TextbitDocument'
 import {
+  Text,
   Bold,
   Italic,
   Underline,
@@ -12,7 +13,8 @@ import {
   BulletList,
   NumberList,
   Blockquote,
-  LocalizedQuotationMarks
+  LocalizedQuotationMarks,
+  Image
 } from '../../lib'
 /**
  * Define Slate CustomTypes to be Textbit types
@@ -65,6 +67,7 @@ function Editor({ initialValue }: { initialValue: Descendant[] }): JSX.Element {
         <TextbitEditable
           value={initialValue}
           plugins={[
+            Text,
             Bold,
             Italic,
             Underline,
@@ -73,7 +76,8 @@ function Editor({ initialValue }: { initialValue: Descendant[] }): JSX.Element {
             BulletList,
             NumberList,
             Blockquote,
-            LocalizedQuotationMarks
+            LocalizedQuotationMarks,
+            Image
           ]}
           onChange={value => {
             console.log(value, null, 2)
