@@ -44,7 +44,21 @@ export function App(): JSX.Element {
       display: 'flex',
       flexDirection: 'column'
     }}>
-      <Textbit>
+      <Textbit verbose={true} plugins={[
+        Text,
+        Bold,
+        Italic,
+        Underline,
+        CodeBlock,
+        Link,
+        BulletList,
+        NumberList,
+        Blockquote,
+        LocalizedQuotationMarks,
+        Image,
+        OEmbed
+      ]}
+      >
         <Editor initialValue={TextbitDocument} />
       </Textbit >
     </div >
@@ -67,25 +81,10 @@ function Editor({ initialValue }: { initialValue: Descendant[] }): JSX.Element {
       <div style={{ flex: '1', display: 'flex', flexDirection: 'column' }}>
         <TextbitEditable
           value={initialValue}
-          plugins={[
-            Text,
-            Bold,
-            Italic,
-            Underline,
-            CodeBlock,
-            Link,
-            BulletList,
-            NumberList,
-            Blockquote,
-            LocalizedQuotationMarks,
-            Image,
-            OEmbed
-          ]}
           onChange={value => {
             console.log(value, null, 2)
             setValue(value)
           }}
-          verbose={true}
         />
         <TextbitFooter />
       </div>
