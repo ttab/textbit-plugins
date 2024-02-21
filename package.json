@@ -42,7 +42,9 @@
     "slate-react": "^0.102.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
+    "@testing-library/user-event": "^14.5.2",
     "@ttab/textbit": "^0.7.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.17",

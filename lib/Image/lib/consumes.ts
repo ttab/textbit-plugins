@@ -8,13 +8,13 @@ export const consumes: Plugin.ConsumesFunction = ({ input }) => {
   const { size, type } = input.data
 
   if (!['image/png', 'image/jpg', 'image/jpeg', 'image/gif'].includes(type)) {
-    console.warn(`Image mime type ${input.type} not supported`)
+    // console.info(`Image mime type ${input.type} not supported`)
     return [false]
   }
 
   // Hardcoded limit on 50 MB
   if (size / 1024 / 1024 > CONFIG.maxSizeInMb) {
-    console.warn(`Image is too large, ${size / 1024 / 1024}, max ${CONFIG.maxSizeInMb} Mb allowed`)
+    // console.info(`Image is too large, ${size / 1024 / 1024}, max ${CONFIG.maxSizeInMb} Mb allowed`)
     return [false]
   }
 

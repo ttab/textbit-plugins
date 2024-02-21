@@ -31,7 +31,9 @@
   "include": [
     "src",
     "lib",
-    "./vite.config.ts"
+    "vite.config.ts",
+    "jest.config.ts",
+    "tests"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
