@@ -7,6 +7,9 @@ import { fileURLToPath } from 'node:url'
 import { glob } from 'glob'
 
 export default defineConfig({
+  server: {
+    port: 6173
+  },
   plugins: [
     react(),
     libInjectCss(),
