@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --font-family-serif: Georgia, serif;
   --font-family-sans-serif: Helvetica, sans-serif;

@@ -1,3 +1,4 @@
+import './index.css'
 export { Bold, Italic, Underline } from './Leafs'
 export { Link } from './Link'
 export { BulletList, NumberList } from './List'
