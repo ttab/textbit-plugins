@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import { type Descendant } from 'slate'
-import { Textbit, Menu, usePluginRegistry, useTextbit } from '@ttab/textbit'
+import {
+  Textbit,
+  Menu,
+  Toolbar,
+  usePluginRegistry,
+  useTextbit,
+  DropMarker
+} from '@ttab/textbit'
 import { ThemeSwitcher } from './themeSwitcher'
 import { TextbitDocument } from './TextbitDocument'
 import {
@@ -17,6 +24,7 @@ import {
   Image,
   OEmbed
 } from '../../lib'
+
 /**
  * Define Slate CustomTypes to be Textbit types
  */
@@ -59,10 +67,9 @@ export function App(): JSX.Element {
       display: 'flex',
       flexDirection: 'column'
     }}>
-      <Textbit.Editor verbose={true} plugins={plugins}>
+      <Textbit.Root verbose={true} plugins={plugins}>
         <Editor initialValue={TextbitDocument} />
-        <Textbit.Footer />
-      </Textbit.Editor>
+      </Textbit.Root>
     </div >
   )
 }
@@ -91,10 +98,45 @@ function Editor({ initialValue }: {
             setValue(value)
           }}
         >
-          <EditorContentMenu />
+          <DropMarker />
+
+          <EditorToolbar />
+
+          <Textbit.Gutter>
+            <EditorContentMenu />
+          </Textbit.Gutter>
         </Textbit.Editable>
       </div>
     </>
+  )
+}
+
+function EditorToolbar(): JSX.Element {
+  const { actions } = usePluginRegistry()
+
+  const leafActions = actions.filter(action => ['leaf'].includes(action.plugin.class))
+  const inlineActions = actions.filter(action => ['inline'].includes(action.plugin.class))
+
+  return (
+    <Toolbar.Root className=''>
+      <Toolbar.Group key="leafs" className="">
+        {leafActions.map(action => {
+          return <Toolbar.Item
+            className=""
+            action={action} key={`${action.plugin.class}-${action.plugin.name}-${action.title}`}
+          />
+        })}
+      </Toolbar.Group>
+
+      <Toolbar.Group key="inlines" className="">
+        {inlineActions.map(action => {
+          return <Toolbar.Item
+            className=""
+            action={action} key={`${action.plugin.class}-${action.plugin.name}-${action.title}`}
+          />
+        })}
+      </Toolbar.Group>
+    </Toolbar.Root>
   )
 }
 
@@ -106,7 +148,7 @@ function EditorContentMenu(): JSX.Element {
   const blockActions = actions.filter(action => action.plugin.class === 'block')
 
   return (
-    <Menu.Wrapper>
+    <Menu.Root>
       {textActions.length > 0 &&
         <>
           <Menu.Group>
@@ -134,6 +176,6 @@ function EditorContentMenu(): JSX.Element {
           </Menu.Group>
         </>
       }
-    </Menu.Wrapper >
+    </Menu.Root >
   )
 }
