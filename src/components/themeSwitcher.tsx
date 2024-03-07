@@ -13,13 +13,13 @@ export function ThemeSwitcher(): JSX.Element {
         onClick={() => {
           setTheme(theme === 'dark' ? 'light' : 'dark')
         }}
-        className={`theme-switch`}
+        className="theme-switch"
         htmlFor="checkbox2"
       >
         <input
           type="checkbox2"
           onChange={() => { }}
-          checked={theme === 'dark' ? true : false}
+          checked={theme === 'dark'}
         />
         <div className={`slider round ${theme === 'dark' ? 'checked' : ''}`}></div>
       </label>
@@ -28,7 +28,7 @@ export function ThemeSwitcher(): JSX.Element {
 }
 
 
-function toggleTheme(theme: string) {
+function toggleTheme(theme: string): void {
   if (theme === 'dark') {
     document.body.classList.add('dark')
   }
