@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { type PropsWithChildren, useState } from 'react'
 import { type Descendant } from 'slate'
 import {
   Textbit,
@@ -120,9 +120,9 @@ function ToolbarMenu(): JSX.Element {
 
   return (
     <Toolbar.Root
-      className="flex select-none rounded divide-x p-1 cursor-default shadow-xl border bg-white border-gray-100 bg-gradient-to-b from-white to-gray-100"
+      className="flex select-none divide-x p-1 border rounded-lg cursor-default shadow-xl border bg-white border-gray-100 "
     >
-      <Toolbar.Group key="leafs" className="flex place-items-center pr-1">
+      <Toolbar.Group key="leafs" className="flex place-items-center pr-1 gap-1">
         {leafActions.map(action => {
           return <ToolbarItem action={action} key={`${action.plugin.name}`} />
         })}
@@ -144,7 +144,7 @@ function ToolbarMenu(): JSX.Element {
 function ToolbarItem({ action }: { action: PluginRegistryAction }): JSX.Element {
   return <Toolbar.Item
     action={action}
-    className="p-2 w-8 h-8 flex place-items-center rounded hover:bg-gray-200 pointer"
+    className="p-2 w-8 h-8 flex place-items-center rounded border border-white hover:bg-gray-100 hover:border-gray-200 pointer data-[state='active']:bg-gray-100 data-[state='active']:border-gray-200"
   />
 }
 
@@ -156,39 +156,48 @@ function ContentMenu(): JSX.Element {
   const blockActions = actions.filter(action => action.plugin.class === 'block')
 
   return (
-    <Menu.Root>
-      <Menu.Trigger className="flex justify-center place-items-center center border w-8 h-8 rounded-full cursor-default hover:border-gray-300">⋮</Menu.Trigger>
-      <Menu.Content className="flex flex-col p-1 border bg-white rounded-lg shadow-xl bg-white border-gray-100">
+    <Menu.Root className="group">
+      <Menu.Trigger className="flex justify-center place-items-center center font-bold border w-8 h-8 ml-2 rounded-full cursor-default group-data-[state='open']:border-gray-400 hover:border-gray-400">⋮</Menu.Trigger>
+      <Menu.Content className="flex flex-col -mt-4 ml-8 border rounded-lg divide-y shadow-xl bg-white bg-white border-gray-100">
         {textActions.length > 0 &&
-          <>
-            <Menu.Group className="flex flex-col">
-              {textActions.map(action => (
-                < Menu.Item key={`${action.key}-${action.title}`} action={action} className="grid-cols-3">
-                  <Menu.Icon />
-                  <Menu.Label>{action.title}</Menu.Label>
-                  <Menu.Hotkey />
-                </Menu.Item>
-              ))}
-            </Menu.Group>
+          <ContentMenuGroup>
+            {textActions.map(action => <ContentMenuItem action={action} key={`${action.key}-${action.title}`} />)}
+          </ContentMenuGroup>
+        }
 
-            <Menu.Group>
-              {textblockActions.map(action => (
-                <Menu.Item key={`${action.key}-${action.title}`} action={action}>
-                  <Menu.Label>{action.title}</Menu.Label>
-                </Menu.Item>
-              ))}
-            </Menu.Group>
+        {textblockActions.length > 0 &&
+          <ContentMenuGroup>
+            {textblockActions.map(action => <ContentMenuItem action={action} key={`${action.key}-${action.title}`} />)}
+          </ContentMenuGroup>
+        }
 
-            <Menu.Group>
-              {blockActions.map(action => (
-                <Menu.Item key={`${action.key}-${action.title}`} action={action}>
-                  <Menu.Label>{action.title}</Menu.Label>
-                </Menu.Item>
-              ))}
-            </Menu.Group>
-          </>
+        {blockActions.length > 0 &&
+          <ContentMenuGroup>
+            {blockActions.map(action => <ContentMenuItem action={action} key={`${action.key}-${action.title}`} />)}
+          </ContentMenuGroup>
         }
       </Menu.Content>
     </Menu.Root >
+  )
+}
+
+function ContentMenuGroup({ children }: PropsWithChildren): JSX.Element {
+  return (
+    <Menu.Group className="flex flex-col p-1 text-md">
+      {children}
+    </Menu.Group>
+  )
+}
+
+function ContentMenuItem({ action }: { action: PluginRegistryAction }): JSX.Element {
+  return (
+    <Menu.Item
+      action={action}
+      className="grid gap-x-5 py-1 border group grid-cols-[1.5rem_minmax(max-content,_220px)_minmax(max-content,_90px)] rounded cursor-default border-white hover:border-gray-200 hover:bg-gray-100"
+    >
+      <Menu.Icon className="flex justify-self-end self-center group-data-[state='active']:font-semibold" />
+      <Menu.Label className="self-center text-sm group-data-[state='active']:font-semibold" />
+      <Menu.Hotkey className="justify-self-end self-center pl-6 pr-3 text-sm opacity-70" />
+    </Menu.Item>
   )
 }
