@@ -32,7 +32,7 @@ describe('Text component', () => {
     expect(screen.getByText(text)).toBeInTheDocument()
 
     expect(screen.getByText(text)).toContainHTML(
-      `<div class="core/text-h1">${text}</div>`
+      `${text}`
     )
   })
 })

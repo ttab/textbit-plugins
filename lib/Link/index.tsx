@@ -10,7 +10,6 @@ import { Link2Icon } from 'lucide-react'
 import { Link as LinkComponent } from './components/Link'
 import { EditLink as EditLinkComponent } from './components/EditLink'
 
-import './style.css'
 import { actionHandler } from './lib/actionHandler'
 
 /**
@@ -43,7 +42,7 @@ const Link: Plugin.Definition = {
   },
   actions: [{
     tool: [
-      () => <Link2Icon style={{ width: '1em', height: '1em' }} />,
+      () => <Link2Icon />,
       EditLinkComponent
     ],
     hotkey: 'mod+k',

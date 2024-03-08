@@ -43,7 +43,6 @@ declare module 'slate' {
   }
 }
 
-
 export function App(): JSX.Element {
   const plugins = [
     Text,
@@ -61,7 +60,7 @@ export function App(): JSX.Element {
   ]
 
   return (
-    <div className="flex flex-col h-[100vh] mx-auto my-0 max-w-screen-md">
+    <div className="flex flex-col h-[100vh] mx-auto my-0 max-w-screen-md text-left">
       <Textbit.Root verbose={true} plugins={plugins}>
         <Editor initialValue={TextbitDocument} />
       </Textbit.Root>
@@ -86,6 +85,7 @@ function Editor({ initialValue }: {
         </div>
       </div>
       <Textbit.Editable
+        className="outline-none dark:text-slate-100"
         value={value}
         onChange={value => {
           console.log(value, null, 2)
@@ -96,7 +96,7 @@ function Editor({ initialValue }: {
 
         <ToolbarMenu />
 
-        <Textbit.Gutter className="w-12">
+        <Textbit.Gutter className="w-14">
           <ContentMenu />
         </Textbit.Gutter>
       </Textbit.Editable>
@@ -112,7 +112,7 @@ function ToolbarMenu(): JSX.Element {
 
   return (
     <Toolbar.Root
-      className="flex select-none divide-x p-1 border rounded-lg cursor-default shadow-xl border bg-white border-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:divide-gray-700 dark:shadow-none"
+      className="flex select-none divide-x p-1 border rounded-lg cursor-default shadow-xl border bg-white border-gray-100 dark:text-white dark:bg-slate-900 dark:border-slate-800 dark:divide-slate-800 dark:shadow-none"
     >
       <Toolbar.Group key="leafs" className="flex place-items-center pr-1 gap-1">
         {leafActions.map(action => {
@@ -135,7 +135,7 @@ function ToolbarMenu(): JSX.Element {
 function ToolbarItem({ action }: { action: PluginRegistryAction }): JSX.Element {
   return <Toolbar.Item
     action={action}
-    className="p-2 w-8 h-8 flex place-items-center rounded border border-white hover:bg-gray-100 hover:border-gray-200 pointer data-[state='active']:bg-gray-100 data-[state='active']:border-gray-200 dark:border-gray-800 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:data-[state='active']:bg-gray-700 dark:data-[state='active']:border-gray-700 dark:hover:data-[state='active']:border-gray-600"
+    className="p-2 w-8 h-8 flex place-items-center rounded border border-white hover:bg-gray-100 hover:border-gray-200 pointer data-[state='active']:bg-gray-100 data-[state='active']:border-gray-200 dark:border-gray-900 dark:hover:bg-slate-800 dark:hover:border-slate-700 dark:data-[state='active']:bg-gray-800 dark:data-[state='active']:border-slate-800 dark:hover:data-[state='active']:border-slate-700"
   />
 }
 
@@ -148,8 +148,8 @@ function ContentMenu(): JSX.Element {
 
   return (
     <Menu.Root className="group">
-      <Menu.Trigger className="flex justify-center place-items-center center font-bold border w-8 h-8 ml-2 rounded-full cursor-default group-data-[state='open']:border-gray-400 hover:border-gray-400 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:group-data-[state='open']:border-gray-800 dark:hover:border-gray-500">⋮</Menu.Trigger>
-      <Menu.Content className="flex flex-col -mt-[0.75rem] ml-[2.25rem] border rounded-lg divide-y shadow-xl bg-white border-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:divide-gray-700 dark:shadow-none">
+      <Menu.Trigger className="flex justify-center place-items-center center font-bold border w-8 h-8 ml-3 rounded-full cursor-default group-data-[state='open']:border-gray-200 hover:border-gray-400 dark:text-slate-200 dark:bg-slate-950 dark:border-slate-600 dark:group-data-[state='open']:border-slate-700 dark:hover:border-slate-500">⋮</Menu.Trigger>
+      <Menu.Content className="flex flex-col -mt-[0.75rem] ml-[2.25rem] border rounded-lg divide-y shadow-xl bg-white border-gray-100 dark:text-white dark:bg-slate-900 dark:border-slate-800 dark:divide-slate-800 dark:shadow-none">
         {textActions.length > 0 &&
           <ContentMenuGroup>
             {textActions.map(action => <ContentMenuItem action={action} key={`${action.key}-${action.title}`} />)}
@@ -184,7 +184,7 @@ function ContentMenuItem({ action }: { action: PluginRegistryAction }): JSX.Elem
   return (
     <Menu.Item
       action={action}
-      className="grid gap-x-5 py-1 border group grid-cols-[1.5rem_minmax(max-content,_220px)_minmax(max-content,_90px)] rounded cursor-default border-white hover:border-gray-200 hover:bg-gray-100 dark:border-gray-800 dark:hover:border-gray-600 dark:hover:bg-gray-700"
+      className="grid gap-x-5 py-[0.4rem] border group grid-cols-[1.5rem_minmax(max-content,_220px)_minmax(max-content,_90px)] rounded cursor-default border-white hover:border-gray-200 hover:bg-gray-100 dark:border-slate-900 dark:hover:border-slate-700 dark:hover:bg-slate-800"
     >
       <Menu.Icon className="flex justify-self-end self-center group-data-[state='active']:font-semibold" />
       <Menu.Label className="self-center text-sm group-data-[state='active']:font-semibold" />

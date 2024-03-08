@@ -5,7 +5,7 @@ import {
   type Plugin,
   TextbitElement
 } from '@ttab/textbit'
-import { Link2OffIcon } from 'lucide-react'
+import { Link2OffIcon, LinkIcon, UnlinkIcon } from 'lucide-react'
 import { isValidLink } from '../../shared/isValidLink'
 
 
@@ -20,67 +20,69 @@ export const EditLink = ({ editor, entry }: Plugin.ToolComponentProps): JSX.Elem
   }
 
 
-  return <>
-    <span
-      className="textbit-tool"
+  return <div className="flex -ml-1 select-none content-center gap-x-1">
+    <div
+      className="p-2 w-8 h-8 select-none flex place-items-center rounded border border-white hover:bg-gray-100 hover:border-gray-200 pointer data-[state='active']:bg-gray-100 data-[state='active']:border-gray-200 dark:border-gray-900 dark:hover:bg-slate-800 dark:hover:border-slate-700 dark:data-[state='active']:bg-gray-800 dark:data-[state='active']:border-slate-800 dark:hover:data-[state='active']:border-slate-700"
       onMouseDown={(e) => {
         e.preventDefault()
         deleteLink(editor)
       }}
     >
       <Link2OffIcon />
-    </span>
+    </div>
 
-    <span className="textbit-tool core/link-input">
-      <input
-        id={node.id}
-        ref={inputRef}
-        type="text"
-        value={url}
-        onClick={(e) => { e.currentTarget.focus() }}
-        onChange={(e) => {
-          seturl(e.target.value)
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Escape' || e.key === 'Enter') {
-            e.preventDefault()
+    <input
+      className="pl-2 pr-8 text-sm border justify-center select-none rounded bg-slate-50 dark:bg-slate-800 dark:border-slate-700"
+      id={node.id}
+      ref={inputRef}
+      type="text"
+      value={url}
+      onMouseDownCapture={(e) => {
+        e.stopPropagation()
+        e.preventDefault()
+        e.currentTarget.focus()
+      }}
+      // onClick={(e) => { e.currentTarget.focus() }}
+      onChange={(e) => {
+        seturl(e.target.value)
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape' || e.key === 'Enter') {
+          e.preventDefault()
 
-            if (url === '') {
-              deleteLink(editor)
-            }
-            ReactEditor.focus(editor)
-          }
-        }}
-        onBlur={() => {
-          if (!isValidLink(url || '')) {
+          if (url === '') {
             deleteLink(editor)
-            return
           }
+          ReactEditor.focus(editor)
+        }
+      }}
+      onBlur={() => {
+        Transforms.setNodes(
+          editor,
+          {
+            properties: {
+              ...node.properties,
+              url
+            }
+          },
+          { at: path }
+        )
+      }}
+    />
 
-          Transforms.setNodes(
-            editor,
-            {
-              properties: {
-                ...node.properties,
-                url
-              }
-            },
-            { at: path }
-          )
-        }}
-      />
-    </span>
-
-    {/* <span
-            className='editor-tool r-less bg-base-hover'
-        // FIXME: Handle edit more properties...
-        //
-        // onMouseDown={(e) => {
-        //     e.preventDefault()
-        //     action.handler(editor, 2)
-        // }}
-        ><MdEdit /></span> */}
-  </>
+    <div
+      className="p-2 w-8 h-8 -ml-9 select-none flex place-items-center"
+      onMouseDown={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      }}
+    >
+      {isValidLink(url)
+        ? <LinkIcon className="text-green-600" />
+        : <UnlinkIcon className="text-red-600" />
+      }
+    </div>
+  </div >
 }
 
 
