@@ -16,7 +16,7 @@ export const FigureImage = ({ children, attributes, rootNode }: Plugin.Component
 
   return (
     <div contentEditable={false} {...attributes} draggable={false}>
-      <div ref={imgContainerRef} className='core/image-container appear-transitions appear-dimmed'>
+      <div ref={imgContainerRef} className='rounded rounded-xs overflow-hidden'>
         <img width='100%' src={src} />
       </div>
       {children}

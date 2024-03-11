@@ -11,7 +11,6 @@ import { consume } from './lib/consume'
 import { consumes } from './lib/consumes'
 import { normalizeImage } from './lib/normalizeImage'
 import { actionHandler } from './lib/actionHandler'
-import './style.css'
 
 export const Image: Plugin.Definition = {
   class: 'block',
