@@ -92,7 +92,7 @@ function Editor({ initialValue }: {
           setValue(value)
         }}
       >
-        <DropMarker />
+        <DropMarker className="h-[3px] rounded bg-blue-400/75 dark:bg-blue-500/75" />
 
         <ToolbarMenu />
 
