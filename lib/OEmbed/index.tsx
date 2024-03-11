@@ -9,8 +9,6 @@ import {
   OembedTitle
 } from './components'
 
-import './index.css'
-
 
 export const OEmbed: Plugin.Definition = {
   class: 'block',
