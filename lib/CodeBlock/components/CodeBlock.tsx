@@ -1,13 +1,9 @@
-import { type Plugin } from '@ttab/textbit'
+import { Element, type Plugin } from '@ttab/textbit'
 
 export const CodeBlock = ({ children }: Plugin.ComponentProps): JSX.Element => {
-  const style = {
-    padding: '1rem',
-    border: '1px solid gray',
-    fontFamily: 'monospace'
-  }
-
-  return <div style={style}>
-    {children}
-  </div>
+  return <Element className="py-2">
+    <div className="p-4 font-monospace text-sm border">
+      {children}
+    </div>
+  </Element>
 }

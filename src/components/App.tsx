@@ -77,7 +77,7 @@ function Editor({ initialValue }: {
 
   return (
     <div className="mr-12">
-      <div className="flex items-center justify-between text-sm gap-4 ml-14 py-4 mb-2 border-b">
+      <div className="flex items-center justify-between font-sans text-sm gap-4 ml-14 py-4 mb-2 border-b">
         <ThemeSwitcher />
         <div className="flex items-end gap-4">
           <div> Words: {words}</div>

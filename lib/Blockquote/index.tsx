@@ -8,8 +8,6 @@ import { actionHandler } from './lib/actionHandler'
 import { normalizeBlockquote } from './lib/normalizeBlockquote'
 import { MessageSquareQuoteIcon } from 'lucide-react'
 
-import './style.css'
-
 
 export const Blockquote: Plugin.Definition = {
   class: 'textblock',
@@ -20,11 +18,11 @@ export const Blockquote: Plugin.Definition = {
       tool: () => <MessageSquareQuoteIcon style={{ width: '1em', height: '1em' }} />,
       hotkey: 'mod+shift+2',
       handler: actionHandler,
-      visibility: () => {
+      visibility: (element) => {
         return [
           true, // Always visible
           true, // Always enabled
-          false // Never active
+          (element.type === 'core/blockquote') // Active when isBlockquote
         ]
       }
     }
