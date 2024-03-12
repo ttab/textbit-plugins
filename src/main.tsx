@@ -2,8 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './components/App.tsx'
 
-import './editor-variables.css'
-import '@ttab/textbit/dist/esm/index.css'
+import './main.css'
 
 const root = document.getElementById('root')
 if (root) {

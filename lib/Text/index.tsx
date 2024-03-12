@@ -3,8 +3,6 @@ import { Text as TextComponent } from './components'
 
 import { textStyles } from './textStyles'
 
-import './style.css'
-
 
 export const Text: Plugin.Definition = {
   class: 'text',

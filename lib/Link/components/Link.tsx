@@ -30,6 +30,7 @@ export const Link = ({ attributes, children, element }: Plugin.ComponentProps): 
 
   return (
     <a
+      className={`underline decoration-2 underline-offset-4 ${isValidLink(url) ? 'decoration-blue-300' : 'decoration-wavy decoration-red-400'}`}
       {...attributes}
       href={url}
       onClick={(event) => {
