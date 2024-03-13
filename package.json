@@ -36,7 +36,7 @@
   "scripts": {
     "dev": "vite",
     "test": "jest -c ./jest.config.ts",
-    "build": "tsc --p ./tsconfig.build.json && vite build",
+    "build": "tsc --project ./tsconfig.build.json && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prepublishOnly": "npm run build",
