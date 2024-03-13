@@ -4,7 +4,8 @@
   },
   "extends": "./tsconfig.json",
   "include": [
-    "lib"
+    "lib",
+    "vite.config.ts"
   ],
   "exclude": [
     "tests/**"
