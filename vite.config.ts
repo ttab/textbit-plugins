@@ -1,28 +1,30 @@
-import { defineConfig } from 'vite'
-import { extname, relative, resolve } from 'path'
-import react from '@vitejs/plugin-react-swc'
-import dts from 'vite-plugin-dts'
-import { libInjectCss } from 'vite-plugin-lib-inject-css'
+/// <reference types="vitest" />
+import { join, resolve, relative, extname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
 import { glob } from 'glob'
+import { libInjectCss } from 'vite-plugin-lib-inject-css'
+
+import { peerDependencies } from './package.json'
 
 export default defineConfig({
-  server: {
-    port: 6173
-  },
   plugins: [
     react(),
     libInjectCss(),
-    dts({ include: ['lib'] })
+    dts({ rollupTypes: true })
   ],
   build: {
-    copyPublicDir: false,
+    target: 'esnext',
+    minify: false,
     lib: {
-      entry: resolve(__dirname, 'lib/index.ts'),
-      formats: ['es']
+      entry: resolve(__dirname, join('lib', 'index.ts')),
+      formats: ['es', 'cjs']
     },
     rollupOptions: {
-      external: ['react', 'react/jsx-runtime'],
+      // Exclude peer dependencies from the bundle to reduce bundle size
+      external: ['react/jsx-runtime', ...Object.keys(peerDependencies)],
       input: Object.fromEntries(
         glob.sync('lib/**/*.{ts,tsx}').map(file => [
           // The name of the entry point
@@ -37,6 +39,7 @@ export default defineConfig({
         ])
       ),
       output: {
+        chunkFileNames: 'chunks/[name].[hash].js',
         assetFileNames: 'assets/[name][extname]',
         entryFileNames: '[name].js'
       }
