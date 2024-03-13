@@ -24,7 +24,10 @@ export default defineConfig({
     },
     rollupOptions: {
       // Exclude peer dependencies from the bundle to reduce bundle size
-      external: ['react/jsx-runtime', ...Object.keys(peerDependencies)],
+      external: [
+        'react/jsx-runtime',
+        ...Object.keys(peerDependencies)
+      ],
       input: Object.fromEntries(
         glob.sync('lib/**/*.{ts,tsx}').map(file => [
           // The name of the entry point
