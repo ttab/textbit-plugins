@@ -21,9 +21,11 @@ jobs:
 
       - name: Install npm modules and build
         run: |-
-          npm i
+          npm ci
           npm run build
           npm prune --production
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Publish package
         run: |
