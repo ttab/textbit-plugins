@@ -53,6 +53,11 @@
     // Ensure the public class field initialization is transpiled correctly to match the future JS standard.
     "useDefineForClassFields": true,
 
+    // Specify types foldes
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+
     // Type-checking options
     "strict": true,
     "noUnusedLocals": true,
