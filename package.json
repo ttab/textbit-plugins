@@ -6,14 +6,17 @@
   "author": {
     "name": "Danne Lundqvist"
   },
-  "bugs": {
-    "url": "https://github.com/ttab/textbit-plugins/issues"
-  },
-  "homepage": "https://github.com/ttab/textbit-plugins#readme",
   "type": "module",
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/ttab"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ttab/textbit-plugins.git"
+  },
   "sideEffects": [
     "**/*.css"
   ],
