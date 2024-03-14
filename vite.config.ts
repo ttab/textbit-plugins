@@ -5,19 +5,17 @@ import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import { glob } from 'glob'
-import { libInjectCss } from 'vite-plugin-lib-inject-css'
 
 import { peerDependencies } from './package.json'
 
 export default defineConfig({
   plugins: [
     react(),
-    libInjectCss(),
     dts({ rollupTypes: true })
   ],
   build: {
     target: 'esnext',
-    minify: false,
+    minify: true,
     lib: {
       entry: resolve(__dirname, join('lib', 'index.ts')),
       formats: ['es', 'cjs']
@@ -42,8 +40,8 @@ export default defineConfig({
         ])
       ),
       output: {
+        preserveModules: false,
         chunkFileNames: 'chunks/[name].[hash].js',
-        assetFileNames: 'assets/[name][extname]',
         entryFileNames: '[name].[format].js'
       }
     }
