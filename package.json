@@ -59,7 +59,7 @@
     "@ttab/textbit": "^0.12.1",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.17",
-    "@types/react": "^18.2.55",
+    "@types/react": "^18.2.77",
     "@types/react-dom": "^18.2.19",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
