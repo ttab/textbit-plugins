@@ -6,42 +6,50 @@ import {
   UnderlineIcon
 } from 'lucide-react'
 
-const Bold: Plugin.LeafDefinition = {
-  class: 'leaf',
-  name: 'core/bold',
-  actions: [{
-    tool: () => <BoldIcon style={{ width: '0.8em', height: '0.8em' }} />,
-    hotkey: 'mod+b',
-    handler: () => true
-  }],
-  getStyle: () => {
-    return 'font-bold'
+const Bold: Plugin.InitFunction = () => {
+  return {
+    class: 'leaf',
+    name: 'core/bold',
+    actions: [{
+      name: 'toggle-bold',
+      tool: () => <BoldIcon style={{ width: '0.8em', height: '0.8em' }} />,
+      hotkey: 'mod+b',
+      handler: () => true
+    }],
+    getStyle: () => {
+      return 'font-bold'
+    }
+  }
+}
+const Italic: Plugin.InitFunction = () => {
+  return {
+    class: 'leaf',
+    name: 'core/italic',
+    actions: [{
+      name: 'toggle-italic',
+      tool: () => <ItalicIcon style={{ width: '0.8em', height: '0.8em' }} />,
+      hotkey: 'mod+i',
+      handler: () => true
+    }],
+    getStyle: () => {
+      return 'italic'
+    }
   }
 }
 
-const Italic: Plugin.LeafDefinition = {
-  class: 'leaf',
-  name: 'core/italic',
-  actions: [{
-    tool: () => <ItalicIcon style={{ width: '0.8em', height: '0.8em' }} />,
-    hotkey: 'mod+i',
-    handler: () => true
-  }],
-  getStyle: () => {
-    return 'italic'
-  }
-}
-
-const Underline: Plugin.LeafDefinition = {
-  class: 'leaf',
-  name: 'core/underline',
-  actions: [{
-    hotkey: 'mod+u',
-    tool: () => <UnderlineIcon style={{ width: '0.8em', height: '0.8em' }} />,
-    handler: () => true
-  }],
-  getStyle: () => {
-    return 'underline'
+const Underline: Plugin.InitFunction = () => {
+  return {
+    class: 'leaf',
+    name: 'core/underline',
+    actions: [{
+      name: 'toggle-underline',
+      hotkey: 'mod+u',
+      tool: () => <UnderlineIcon style={{ width: '0.8em', height: '0.8em' }} />,
+      handler: () => true
+    }],
+    getStyle: () => {
+      return 'underline'
+    }
   }
 }
 

@@ -10,30 +10,32 @@ import {
 } from './components'
 
 
-export const OEmbed: Plugin.Definition = {
-  class: 'block',
-  name: 'core/oembed',
-  consumer: {
-    consumes,
-    consume
-  },
-  componentEntry: {
-    component: OembedWrapper,
+export const OEmbed: Plugin.InitFunction = () => {
+  return {
     class: 'block',
-    constraints: {
-      normalizeNode: normalizeOembed
+    name: 'core/oembed',
+    consumer: {
+      consumes,
+      consume
     },
-    children: [
-      {
-        type: 'embed',
-        class: 'void',
-        component: OembedVideo
+    componentEntry: {
+      component: OembedWrapper,
+      class: 'block',
+      constraints: {
+        normalizeNode: normalizeOembed
       },
-      {
-        type: 'title',
-        class: 'text',
-        component: OembedTitle
-      }
-    ]
+      children: [
+        {
+          type: 'embed',
+          class: 'void',
+          component: OembedVideo
+        },
+        {
+          type: 'title',
+          class: 'text',
+          component: OembedTitle
+        }
+      ]
+    }
   }
 }

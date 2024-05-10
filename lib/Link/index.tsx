@@ -33,23 +33,26 @@ declare module 'slate' {
  * 5.   Add InlineChromiumBugfix as is in https://github.com/ianstormtaylor/slate/blob/main/site/examples/inlines.tsx
  */
 
-const Link: Plugin.Definition = {
-  class: 'inline',
-  name: 'core/link',
-  componentEntry: {
+const Link: Plugin.InitFunction = () => {
+  return {
     class: 'inline',
-    component: LinkComponent
-  },
-  actions: [{
-    tool: [
-      () => <Link2Icon />,
-      EditLinkComponent
-    ],
-    hotkey: 'mod+k',
-    handler: ({ editor }) => {
-      actionHandler(editor, 'core/link')
-    }
-  }]
+    name: 'core/link',
+    componentEntry: {
+      class: 'inline',
+      component: LinkComponent
+    },
+    actions: [{
+      name: 'link',
+      tool: [
+        () => <Link2Icon />,
+        EditLinkComponent
+      ],
+      hotkey: 'mod+k',
+      handler: ({ editor }) => {
+        actionHandler(editor, 'core/link')
+      }
+    }]
+  }
 }
 
 export { Link }

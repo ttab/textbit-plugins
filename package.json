@@ -45,7 +45,7 @@
     "uuid": "^9.0.1"
   },
   "peerDependencies": {
-    "@ttab/textbit": "^0.12.9",
+    "@ttab/textbit": "^0.13.0",
     "lucide-react": "^0.330.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -56,7 +56,7 @@
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.5.2",
-    "@ttab/textbit": "^0.12.1",
+    "@ttab/textbit": "^0.13.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.17",
     "@types/react": "^18.2.55",
