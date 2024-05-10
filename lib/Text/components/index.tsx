@@ -1,9 +1,9 @@
 import { Element, type Plugin } from '@ttab/textbit'
-import { textStyles } from '../textStyles'
+import { getTextStyles } from '../textStyles'
 
 export const Text = (props: Plugin.ComponentProps): JSX.Element => {
   const { children, element } = props
-  const style = textStyles.find(t => t.type === element?.properties?.type)
+  const style = getTextStyles({}).find(t => t.type === element?.properties?.type)
 
   if (style && !style.type) {
     // Regular body text

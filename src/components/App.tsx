@@ -45,18 +45,18 @@ declare module 'slate' {
 
 export function App(): JSX.Element {
   const plugins = [
-    Text,
-    Bold,
-    Italic,
-    Underline,
-    CodeBlock,
-    Link,
-    BulletList,
-    NumberList,
-    Blockquote,
-    LocalizedQuotationMarks,
-    Image,
-    OEmbed
+    Text(),
+    Bold(),
+    Italic(),
+    Underline(),
+    CodeBlock(),
+    Link(),
+    BulletList(),
+    NumberList(),
+    Blockquote(),
+    LocalizedQuotationMarks(),
+    Image(),
+    OEmbed()
   ]
 
   return (
@@ -87,7 +87,7 @@ function Editor({ initialValue }: {
       <Textbit.Editable
         className="outline-none dark:text-slate-100"
         value={value}
-        onChange={value => {
+        onChange={(value: Descendant[]) => {
           console.log(value, null, 2)
           setValue(value)
         }}
@@ -152,19 +152,19 @@ function ContentMenu(): JSX.Element {
       <Menu.Content className="flex flex-col -mt-[0.75rem] ml-[2.25rem] border rounded-lg divide-y shadow-xl bg-white border-gray-100 dark:text-white dark:bg-slate-900 dark:border-slate-800 dark:divide-slate-800 dark:shadow-none">
         {textActions.length > 0 &&
           <ContentMenuGroup>
-            {textActions.map(action => <ContentMenuItem action={action} key={`${action.key}-${action.title}`} />)}
+            {textActions.map(action => <ContentMenuItem action={action} key={action.name} />)}
           </ContentMenuGroup>
         }
 
         {textblockActions.length > 0 &&
           <ContentMenuGroup>
-            {textblockActions.map(action => <ContentMenuItem action={action} key={`${action.key}-${action.title}`} />)}
+            {textblockActions.map(action => <ContentMenuItem action={action} key={action.name} />)}
           </ContentMenuGroup>
         }
 
         {blockActions.length > 0 &&
           <ContentMenuGroup>
-            {blockActions.map(action => <ContentMenuItem action={action} key={`${action.key}-${action.title}`} />)}
+            {blockActions.map(action => <ContentMenuItem action={action} key={action.name} />)}
           </ContentMenuGroup>
         }
       </Menu.Content>
@@ -183,11 +183,11 @@ function ContentMenuGroup({ children }: PropsWithChildren): JSX.Element {
 function ContentMenuItem({ action }: { action: PluginRegistryAction }): JSX.Element {
   return (
     <Menu.Item
-      action={action}
+      action={action.name}
       className="grid gap-x-5 py-[0.4rem] border group grid-cols-[1.5rem_minmax(max-content,_220px)_minmax(max-content,_90px)] rounded cursor-default border-white hover:border-gray-200 hover:bg-gray-100 dark:border-slate-900 dark:hover:border-slate-700 dark:hover:bg-slate-800"
     >
       <Menu.Icon className="flex justify-self-end self-center group-data-[state='active']:font-semibold" />
-      <Menu.Label className="self-center text-sm group-data-[state='active']:font-semibold" />
+      <Menu.Label className="LABEL self-center text-sm group-data-[state='active']:font-semibold" />
       <Menu.Hotkey className="justify-self-end self-center pl-6 pr-3 text-sm opacity-70" />
     </Menu.Item>
   )
