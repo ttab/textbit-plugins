@@ -8,6 +8,7 @@ export const Text: Plugin.InitFunction = (options) => {
   return {
     class: 'text',
     name: 'core/text',
+    options,
     componentEntry: {
       class: 'text',
       component: TextComponent,

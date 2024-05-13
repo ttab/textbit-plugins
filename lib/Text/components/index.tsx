@@ -1,12 +1,15 @@
 import { Element, type Plugin } from '@ttab/textbit'
 import { getTextStyles } from '../textStyles'
 
-export const Text = (props: Plugin.ComponentProps): JSX.Element => {
-  const { children, element } = props
+export const Text = ({ children, element, options }: Plugin.ComponentProps): JSX.Element => {
   const style = getTextStyles({}).find(t => t.type === element?.properties?.type)
 
   if (style && !style.type) {
     // Regular body text
+    if (options?.inputStyle) {
+      return <Element className="font-sans dark:tracking-wide">{children}</Element>
+    }
+
     return <Element className="py-2 font-serif dark:tracking-wide">{children}</Element>
   }
 
