@@ -12,7 +12,7 @@ export const normalizeTTVisual = (editor: Editor, nodeEntry: NodeEntry): boolean
   const [, path] = nodeEntry
   const children = Array.from(Node.children(editor, path))
 
-  if (children.length < 5) {
+  if (children.length < 4) {
     let hasImage = false
     let hasText = false
     let hasByline = false
@@ -98,7 +98,7 @@ export const normalizeTTVisual = (editor: Editor, nodeEntry: NodeEntry): boolean
       )
       return true
     }
-    if (n > 5) {
+    if (n > 3) {
       // Excessive nodes are lifted and transformed to text
       Transforms.setNodes(
         editor,
