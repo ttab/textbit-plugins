@@ -18,7 +18,7 @@ export const TTVisualWrapper = ({ children }: Plugin.ComponentProps): JSX.Elemen
   const altTextNode: React.ReactNode[] = []
   const imageNode: React.ReactNode[] = []
 
-  children.forEach((child: React.ReactNode[]) => {
+  children.forEach((child: React.ReactElement) => {
     const type: string = getType(child)
     if (type.includes('text')) {
       textNode.push(child)
