@@ -22,7 +22,8 @@ import {
   Blockquote,
   LocalizedQuotationMarks,
   Image,
-  OEmbed
+  OEmbed,
+  TTVisual
 } from '../../lib'
 
 /**
@@ -56,7 +57,8 @@ export function App(): JSX.Element {
     Blockquote(),
     LocalizedQuotationMarks(),
     Image(),
-    OEmbed()
+    OEmbed(),
+    TTVisual()
   ]
 
   return (
