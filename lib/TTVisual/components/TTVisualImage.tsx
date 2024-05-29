@@ -7,8 +7,8 @@ export const TTVisualImage = ({ children, attributes, rootNode }: Plugin.Compone
 
   return (
     <div contentEditable={false} {...attributes} draggable={false}>
-      <div className='overflow-hidden'>
-        <img width='100%' src={href} />
+      <div className='overflow-hidden bg-gray-100'>
+        <img width='100%' src={href} className='max-h-96 object-contain' />
       </div>
       {children}
     </div>
