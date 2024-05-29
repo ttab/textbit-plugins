@@ -36,17 +36,26 @@ export const TTVisual: Plugin.InitFunction = (options) => {
         {
           type: 'text',
           class: 'text',
-          component: TTVisualText
+          component: TTVisualText,
+          constraints: {
+            allowBreak: false
+          }
         },
         {
           type: 'byline',
           class: 'text',
-          component: TTVisualByline
+          component: TTVisualByline,
+          constraints: {
+            allowBreak: false
+          }
         },
         {
           type: 'altText',
           class: 'text',
-          component: TTVisualAltText
+          component: TTVisualAltText,
+          constraints: {
+            allowBreak: false
+          }
         }
       ]
     }
