@@ -1,4 +1,3 @@
-import * as uuid from 'uuid'
 import { type Plugin } from '@ttab/textbit'
 import { type TTVisualInterface, type VisualPropertiesInterface } from '../types'
 
@@ -30,7 +29,7 @@ export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<TTVisu
 
 const createTTVisualNode = (props: VisualPropertiesInterface): TTVisualInterface => {
   return {
-    id: uuid.v4(),
+    id: crypto.randomUUID(),
     class: 'block',
     type: 'tt/visual',
     properties: {
