@@ -31,8 +31,7 @@ export function ThemeSwitcher(): JSX.Element {
 function toggleTheme(theme: string): void {
   if (theme === 'dark') {
     document.body.classList.add('dark')
-  }
-  else if (document.body.classList.contains('dark')) {
+  } else if (document.body.classList.contains('dark')) {
     document.body.classList.remove('dark')
   }
 

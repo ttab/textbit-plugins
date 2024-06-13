@@ -1,4 +1,4 @@
-import { Descendant } from 'slate'
+import { type Descendant } from 'slate'
 
 export const TextbitDocument: Descendant[] = [
   {
@@ -51,8 +51,8 @@ export const TextbitDocument: Descendant[] = [
         text: 'emphasized',
         'core/italic': true
       },
-      { text: ' compared to the normal styled text found elsewhere in the document.' },
-    ],
+      { text: ' compared to the normal styled text found elsewhere in the document.' }
+    ]
   },
   {
     type: 'core/blockquote',
@@ -80,8 +80,8 @@ export const TextbitDocument: Descendant[] = [
     class: 'text',
     id: '538345e5-bacc-48f9-8ef1-1215892b61ed',
     children: [
-      { text: 'This, here now is just a regular paragraph that contains some nonsensical writing written by me.' },
-    ],
+      { text: 'This, here now is just a regular paragraph that contains some nonsensical writing written by me.' }
+    ]
   },
   {
     type: 'core/text',
@@ -99,7 +99,7 @@ export const TextbitDocument: Descendant[] = [
         text: 'emphasized',
         'core/italic': true
       },
-      { text: ' compared to the normal styled text found elsewhere in the document.' },
-    ],
+      { text: ' compared to the normal styled text found elsewhere in the document.' }
+    ]
   }
 ]
