@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { join, resolve, relative, extname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react-swc'
