@@ -85,7 +85,7 @@ export const normalizeTTVisual = (editor: Editor, nodeEntry: NodeEntry): boolean
       return true
     }
 
-    if (n > 3) {
+    if (n > 2) {
       // Excessive nodes are lifted and transformed to text
       Transforms.setNodes(
         editor,
