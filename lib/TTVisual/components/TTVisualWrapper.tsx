@@ -15,7 +15,6 @@ export const TTVisualWrapper = ({ children }: Plugin.ComponentProps): JSX.Elemen
 
   const textNode: React.ReactNode[] = []
   const bylineNode: React.ReactNode[] = []
-  const altTextNode: React.ReactNode[] = []
   const imageNode: React.ReactNode[] = []
 
   children.forEach((child: React.ReactElement) => {
@@ -24,8 +23,6 @@ export const TTVisualWrapper = ({ children }: Plugin.ComponentProps): JSX.Elemen
       textNode.push(child)
     } else if (type.includes('byline')) {
       bylineNode.push(child)
-    } else if (type.includes('altText')) {
-      altTextNode.push(child)
     } else {
       imageNode.push(child)
     }
@@ -49,9 +46,6 @@ export const TTVisualWrapper = ({ children }: Plugin.ComponentProps): JSX.Elemen
               {child}
             </div>
           ))}
-        </div>
-        <div>
-          {altTextNode}
         </div>
       </figure>
     </Element>

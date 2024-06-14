@@ -2,7 +2,6 @@ export interface VisualPropertiesInterface {
   byline: string
   text: string
   href: string
-  altText: string
 }
 
 export interface TTVisualInterface {
@@ -23,11 +22,6 @@ export interface TTVisualInterface {
     },
     {
       type: 'tt/visual/byline'
-      class: 'text'
-      children: [{ text: string }]
-    },
-    {
-      type: 'tt/visual/altText'
       class: 'text'
       children: [{ text: string }]
     }
