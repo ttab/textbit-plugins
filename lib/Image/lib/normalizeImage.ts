@@ -73,7 +73,7 @@ export const normalizeImage = (editor: Editor, nodeEntry: NodeEntry): boolean | 
       return true
     }
 
-    if (n > 2) {
+    if (n > 1) {
       // Excessive nodes are lifted and transformed to text
       Transforms.setNodes(
         editor,
