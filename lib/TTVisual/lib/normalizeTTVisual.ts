@@ -16,7 +16,6 @@ export const normalizeTTVisual = (editor: Editor, nodeEntry: NodeEntry): boolean
     let hasImage = false
     let hasText = false
     let hasByline = false
-    let hasAltText = false
 
     for (const [child] of children) {
       if (!Element.isElement(child)) {
@@ -34,19 +33,15 @@ export const normalizeTTVisual = (editor: Editor, nodeEntry: NodeEntry): boolean
       if (child.type === 'tt/visual/byline') {
         hasByline = true
       }
-
-      if (child.type === 'tt/visual/altText') {
-        hasAltText = true
-      }
     }
 
     if (!hasImage) {
       // If image is gone, delete the whole block
       Transforms.removeNodes(editor, { at: path })
       return true
-    } else if (!hasText || !hasByline || !hasAltText) {
+    } else if (!hasText || !hasByline) {
       // If either text is missing, add empty text node in the right position
-      const [addType, atPos] = (!hasByline) ? ['tt/visual/byline', 2] : !hasAltText ? ['tt/visual/altText', 3] : ['tt/visual/text', 1]
+      const [addType, atPos] = (!hasByline) ? ['tt/visual/byline', 2] : ['tt/visual/text', 1]
       Transforms.insertNodes(
         editor,
         {
@@ -90,15 +85,7 @@ export const normalizeTTVisual = (editor: Editor, nodeEntry: NodeEntry): boolean
       return true
     }
 
-    if (n === 3 && !TextbitElement.isOfType(child, 'tt/visual/altText')) {
-      Transforms.setNodes(
-        editor,
-        { type: 'tt/visual/altText' },
-        { at: childPath }
-      )
-      return true
-    }
-    if (n > 3) {
+    if (n > 2) {
       // Excessive nodes are lifted and transformed to text
       Transforms.setNodes(
         editor,

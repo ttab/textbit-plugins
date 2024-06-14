@@ -19,8 +19,7 @@ export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<TTVisu
     ? {
         href: `http://tt.se/media/image/${href}_WatermarkPreview.jpg`,
         byline: '',
-        text: '',
-        altText: ''
+        text: ''
       }
     : JSON.parse(input.data)
 
@@ -35,8 +34,7 @@ const createTTVisualNode = (props: VisualPropertiesInterface): TTVisualInterface
     properties: {
       href: props.href,
       text: props.text,
-      byline: props.byline,
-      altText: props.altText
+      byline: props.byline
     },
     children: [
       {
@@ -53,11 +51,6 @@ const createTTVisualNode = (props: VisualPropertiesInterface): TTVisualInterface
         type: 'tt/visual/byline',
         class: 'text',
         children: [{ text: props.byline }]
-      },
-      {
-        type: 'tt/visual/altText',
-        class: 'text',
-        children: [{ text: props.altText }]
       }
     ]
   }

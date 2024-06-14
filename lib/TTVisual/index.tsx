@@ -6,8 +6,7 @@ import {
   TTVisualWrapper,
   TTVisualImage,
   TTVisualByline,
-  TTVisualText,
-  TTVisualAltText
+  TTVisualText
 } from './components'
 import { normalizeTTVisual } from './lib/normalizeTTVisual'
 
@@ -45,14 +44,6 @@ export const TTVisual: Plugin.InitFunction = (options) => {
           type: 'byline',
           class: 'text',
           component: TTVisualByline,
-          constraints: {
-            allowBreak: false
-          }
-        },
-        {
-          type: 'altText',
-          class: 'text',
-          component: TTVisualAltText,
           constraints: {
             allowBreak: false
           }

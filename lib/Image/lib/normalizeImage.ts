@@ -14,7 +14,6 @@ export const normalizeImage = (editor: Editor, nodeEntry: NodeEntry): boolean | 
   const children = Array.from(Node.children(editor, path))
 
   if (children.length < 3) {
-    let hasAltText = false
     let hasText = false
     let hasImage = false
 
@@ -27,10 +26,6 @@ export const normalizeImage = (editor: Editor, nodeEntry: NodeEntry): boolean | 
         hasImage = true
       }
 
-      if (child.type === 'core/image/altText') {
-        hasAltText = true
-      }
-
       if (child.type === 'core/image/text') {
         hasText = true
       }
@@ -40,9 +35,9 @@ export const normalizeImage = (editor: Editor, nodeEntry: NodeEntry): boolean | 
       // If image is gone, delete the whole block
       Transforms.removeNodes(editor, { at: path })
       return true
-    } else if (!hasText || !hasAltText) {
+    } else if (!hasText) {
       // If either text is missing, add empty text node in the right position
-      const [addType, atPos] = (!hasAltText) ? ['core/image/altText', 2] : ['core/image/text', 1]
+      const [addType, atPos] = ['core/image/text', 1]
       Transforms.insertNodes(
         editor,
         {
@@ -78,16 +73,7 @@ export const normalizeImage = (editor: Editor, nodeEntry: NodeEntry): boolean | 
       return true
     }
 
-    if (n === 2 && !TextbitElement.isOfType(child, 'core/image/altText')) {
-      Transforms.setNodes(
-        editor,
-        { type: 'core/image/altText' },
-        { at: childPath }
-      )
-      return true
-    }
-
-    if (n > 2) {
+    if (n > 1) {
       // Excessive nodes are lifted and transformed to text
       Transforms.setNodes(
         editor,

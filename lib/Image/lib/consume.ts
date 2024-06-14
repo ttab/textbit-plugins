@@ -51,11 +51,6 @@ export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<TTVisu
                 type: 'core/image/text',
                 class: 'text',
                 children: [{ text: '' }]
-              },
-              {
-                type: 'core/image/altText',
-                class: 'text',
-                children: [{ text: name }]
               }
             ]
           })
