@@ -3,6 +3,7 @@ import { type Plugin } from '@ttab/textbit'
 export const consumes: Plugin.ConsumesFunction = ({ input }) => {
   const { type, data, source } = input
 
+  console.log('ASKING tt/visual: ', type, data, source)
   if (typeof data !== 'string') {
     return [false]
   }

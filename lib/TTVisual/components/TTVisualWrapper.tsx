@@ -35,14 +35,14 @@ export const TTVisualWrapper = ({ children }: Plugin.ComponentProps): JSX.Elemen
         className="flex gap-1 flex-col min-h-10 group-data-[state='active']:ring-1 ring-offset-4"
       >
         {imageNode}
-        <div className="flex flex-row gap-1 w-full">
+        <div className="flex flex-col gap-1">
           {textNode.map((child, index) => (
-            <div key={index} className="grow-0 w-3/5">
+            <div key={index}>
               {child}
             </div>
           ))}
           {bylineNode.map((child, index) => (
-            <div key={index} className="grow-0 w-2/5">
+            <div key={index}>
               {child}
             </div>
           ))}

@@ -25,7 +25,6 @@ export const TTVisual: Plugin.InitFunction = (options) => {
         normalizeNode: normalizeTTVisual
       },
       class: 'block',
-      droppable: true,
       children: [
         {
           type: 'image',
