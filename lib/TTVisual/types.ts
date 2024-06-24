@@ -2,6 +2,11 @@ export interface VisualPropertiesInterface {
   byline: string
   text: string
   href: string
+  uri: string
+  rel?: string
+  height: number
+  width: number
+  type: 'tt/picture'
 }
 
 export interface TTVisualInterface {
