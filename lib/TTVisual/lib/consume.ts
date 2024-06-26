@@ -1,5 +1,6 @@
 import { type Plugin } from '@ttab/textbit'
 import { type TTVisualInterface, type VisualPropertiesInterface } from '../types'
+import parseImageId, { parseJSON } from './parseImageId'
 
 export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<TTVisualInterface> => {
   if (Array.isArray(input)) {
@@ -26,7 +27,7 @@ const createTTVisualNode = (props: VisualPropertiesInterface): TTVisualInterface
     type: 'tt/visual',
     properties: {
       href: props.href,
-      uri: `http://tt.se/media/image/${getSDLID(props.href)}`,
+      uri: `http://tt.se/media/image/${parseImageId(props.href)}`,
       rel: props.rel || 'self',
       text: props.text,
       byline: props.byline,
@@ -76,15 +77,6 @@ const getImageResolution = async (url: string): Promise<{ width: number, height:
   })
 }
 
-/*
-* Get SDL ID from URL
-* @param {string} url
-* @returns {string}
-*/
-function getSDLID(url: string): string {
-  return url.slice(url.indexOf('sdl'))
-}
-
 /**
 * Create visual properties depending on input
 * @param {Plugin.Resource} input
@@ -96,28 +88,30 @@ const createVisualProperties = async (input: Plugin.Resource): Promise<VisualPro
     throw new Error('VisualEx plugin expected string for consumation')
   }
 
-  if (input.data.startsWith('https://tt.se/bild/o/')) {
-    const href = getSDLID(input.data)
+  const json = parseJSON(input.data)
 
-    const res = await getImageResolution(`http://tt.se/media/image/${href}_WatermarkPreview.jpg`)
-
-    if (!res) {
-      throw new Error('Failed to get image resolution')
-    }
-
-    const { width, height } = res
-
-    return {
-      type: 'tt/picture',
-      href: `http://tt.se/media/image/${href}_WatermarkPreview.jpg`,
-      uri: `http://tt.se/media/image/${href}`,
-      byline: '',
-      text: '',
-      width,
-      height
-    }
+  if (json) {
+    return json
   }
 
-  return JSON.parse(input.data)
+  const id = parseImageId(input.data)
+
+  const res = await getImageResolution(`https://tt.se/media/image/${id}_WatermarkPreview.jpg`)
+
+  if (!res) {
+    throw new Error('Failed to get image resolution')
+  }
+
+  const { width, height } = res
+
+  return {
+    type: 'tt/picture',
+    href: `http://tt.se/media/image/${id}_WatermarkPreview.jpg`,
+    uri: `http://tt.se/media/image/${id}`,
+    byline: '',
+    text: '',
+    width,
+    height
+  }
 }
 
