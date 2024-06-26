@@ -22,21 +22,14 @@ function parseImageId(data: string): string | undefined {
 
 function idMatcher(value: string): string | undefined {
   // Regex to match SDL ID
-  const matcher = /\/media\/image\/(sdl[a-zA-Z0-9-_]+(?=_(Normal|Watermarked)Preview))/i
+  const matchers = [
+    /\/media\/image\/(sdl[A-Za-z0-9%_-]+(?=_(Normal|Watermark)Preview))/i,
+    /https:\/\/tt\.se\/bild\/o\/[A-Za-z0-9-%_]*(sdl[A-Za-z0-9%_-]+)$/i
+  ]
 
-  const match = value.match(matcher)
-
-  if (match) {
-    return match[1]
-  }
-
-  // Match if ends with SDL ID
-  if (value.includes('sdl')) {
-    const id = value.slice(value.indexOf('sdl'))
-    if (value.endsWith(id)) {
-      return id
-    }
-  }
+  return matchers.reduce((prev: undefined | string, curr: RegExp): string | undefined => {
+    return prev || value.match(curr)?.[1]
+  }, undefined)
 }
 
 export function parseJSON(value: string): VisualPropertiesInterface | false {
