@@ -27,7 +27,7 @@ export const normalizeNode = (editor: Editor, nodeEntry: NodeEntry, listType: st
     }
 
     if (n < children.length && TextbitElement.isText(child) && !TextbitElement.isOfType(child, `${listType}/list-item`)) {
-      // Turn unknown text elements to core/number-list/list-item or core/bullet-list/list-item
+      // Turn unknown text elements to core/ordered-list/list-item or core/unordered-list/list-item
       Transforms.setNodes(
         editor,
         { type: `${listType}/list-item` },

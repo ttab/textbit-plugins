@@ -15,5 +15,5 @@ declare module 'slate' {
   }
 }
 
-export { BulletList } from './BulletList'
-export { NumberList } from './NumberList'
+export { UnorderedList } from './UnorderedList'
+export { OrderedList } from './OrderedList'
