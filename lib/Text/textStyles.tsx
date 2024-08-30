@@ -15,31 +15,31 @@ import {
   TextIcon
 } from 'lucide-react'
 
-type TextStyleAction = Plugin.Action & { type?: string }
+type TextStyleAction = Plugin.Action & { role?: string }
 
 export const getTextStyles = (options: Plugin.Options): TextStyleAction[] => {
   const textStyles: TextStyleAction[] = [
     {
-      name: 'set-h1',
-      type: 'h1',
+      name: 'set-heading-1',
+      role: 'heading-1',
       title: 'Title',
       hotkey: 'mod+1',
       tool: () => <Heading1Icon style={{ width: '1em', height: '1em' }} />,
-      handler: ({ editor }) => { convertTextType(editor, 'h1') },
-      visibility: (element: Element) => toolVisibility(element, 'h1')
+      handler: ({ editor }) => { convertTextType(editor, 'heading-1') },
+      visibility: (element: Element) => toolVisibility(element, 'heading-1')
     },
     {
-      name: 'set-h2',
-      type: 'h2',
+      name: 'set-heading-2',
+      role: 'heading-2',
       title: 'Subtitle',
       hotkey: 'mod+2',
       tool: () => <Heading2Icon style={{ width: '1em', height: '1em' }} />,
-      handler: ({ editor }) => convertTextType(editor, 'h2'),
-      visibility: (element: Element) => toolVisibility(element, 'h2')
+      handler: ({ editor }) => convertTextType(editor, 'heading-2'),
+      visibility: (element: Element) => toolVisibility(element, 'heading-2')
     },
     {
       name: 'set-preamble',
-      type: 'preamble',
+      role: 'preamble',
       title: 'Preamble',
       hotkey: 'mod+3',
       tool: () => <ListStartIcon style={{ width: '1em', height: '1em' }} />,
@@ -56,12 +56,12 @@ export const getTextStyles = (options: Plugin.Options): TextStyleAction[] => {
     },
     {
       name: 'set-dateline',
-      type: 'dateline',
-      title: 'Dateline',
+      role: 'vignette',
+      title: 'Vignette',
       hotkey: undefined,
       tool: () => <MapIcon style={{ width: '1em', height: '1em' }} />,
-      handler: ({ editor }) => convertTextType(editor, 'dateline'),
-      visibility: (element: Element) => toolVisibility(element, 'dateline')
+      handler: ({ editor }) => convertTextType(editor, 'vignette'),
+      visibility: (element: Element) => toolVisibility(element, 'vignette')
     }
   ]
 
@@ -72,11 +72,11 @@ export const getTextStyles = (options: Plugin.Options): TextStyleAction[] => {
   return textStyles
 }
 
-function toolVisibility(element: Element, subType?: string): [boolean, boolean, boolean] {
+function toolVisibility(element: Element, role?: string): [boolean, boolean, boolean] {
   return [
     element.type === 'core/text',
     true,
-    element.type === 'core/text' && element?.properties?.type === subType
+    element.type === 'core/text' && element?.properties?.role === role
   ]
 }
 

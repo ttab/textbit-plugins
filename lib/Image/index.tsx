@@ -4,8 +4,7 @@ import { ImageIcon } from 'lucide-react'
 import {
   Figure,
   FigureImage,
-  FigureText,
-  FigureAltText
+  FigureText
 } from './components'
 import { consume } from './lib/consume'
 import { consumes } from './lib/consumes'
@@ -46,11 +45,6 @@ export const Image: Plugin.InitFunction = () => {
           type: 'image',
           class: 'void',
           component: FigureImage
-        },
-        {
-          type: 'altText',
-          class: 'text',
-          component: FigureAltText
         },
         {
           type: 'text',

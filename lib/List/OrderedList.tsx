@@ -1,29 +1,29 @@
 
-import { ListIcon } from 'lucide-react'
-import type { Plugin } from '@ttab/textbit'
+import { ListOrderedIcon } from 'lucide-react'
 import { List, ListItem } from './components'
 import { actionHandler } from './lib/actionHandler'
 import { normalizeNode } from './lib/normalizeNode'
 import type { Editor, NodeEntry } from 'slate'
+import type { Plugin } from '@ttab/textbit'
 
-export const BulletList: Plugin.InitFunction = () => {
+export const OrderedList: Plugin.InitFunction = () => {
   return {
     class: 'text',
-    name: 'core/bullet-list',
+    name: 'core/ordered-list',
     actions: [
       {
-        name: 'add-bullet-list',
-        title: 'Bullet list',
-        tool: () => <ListIcon style={{ width: '1em', height: '1em' }} />,
-        hotkey: 'mod+shift+8',
+        name: 'add-ordered-list',
+        title: 'Number list',
+        tool: () => <ListOrderedIcon style={{ width: '1em', height: '1em' }} />,
+        hotkey: 'mod+shift+7',
         handler: ({ editor }) => {
-          actionHandler(editor, 'core/bullet-list')
+          actionHandler(editor, 'core/ordered-list')
         },
         visibility: (element) => {
           return [
-            element.type === 'core/bullet-list',
+            element.type === 'core/ordered-list',
             true,
-            element.type === 'core/bullet-list'
+            element.type === 'core/ordered-list'
           ]
         }
       }
@@ -33,7 +33,7 @@ export const BulletList: Plugin.InitFunction = () => {
       component: List,
       constraints: {
         normalizeNode: (editor: Editor, nodeEntry: NodeEntry) => {
-          return normalizeNode(editor, nodeEntry, 'core/bullet-list')
+          return normalizeNode(editor, nodeEntry, 'core/ordered-list')
         }
       },
       children: [

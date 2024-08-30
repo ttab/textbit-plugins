@@ -20,11 +20,6 @@ export interface TTVisualInterface {
       type: 'core/image/text'
       class: 'text'
       children: [{ text: string }]
-    },
-    {
-      type: 'core/image/altText'
-      class: 'text'
-      children: [{ text: string }]
     }
   ]
 }

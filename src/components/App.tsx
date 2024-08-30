@@ -17,12 +17,13 @@ import {
   Underline,
   Link,
   CodeBlock,
-  BulletList,
-  NumberList,
+  UnorderedList,
+  OrderedList,
   Blockquote,
   LocalizedQuotationMarks,
   Image,
-  OEmbed
+  OEmbed,
+  TTVisual
 } from '../../lib'
 
 /**
@@ -51,12 +52,13 @@ export function App(): JSX.Element {
     Underline(),
     CodeBlock(),
     Link(),
-    BulletList(),
-    NumberList(),
+    UnorderedList(),
+    OrderedList(),
     Blockquote(),
     LocalizedQuotationMarks(),
     Image(),
-    OEmbed()
+    OEmbed(),
+    TTVisual()
   ]
 
   return (

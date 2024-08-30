@@ -14,6 +14,42 @@ describe('Image plugin consumer', () => {
     expect(consumes(resource)).toEqual([true, 'core/image', false])
   })
 
+  it('should consume tt/visual', async () => {
+    const resource = {
+      input: {
+        source: 'drop',
+        type: 'tt/visual',
+        data: '{"byline":"Name Name","text":"Description","href":"https://tt.se/media/image/sdl0BUs0sNDpXw_WatermarkPreview.jpg","width":3320,"height":2213}'
+      }
+    }
+
+    expect(consumes(resource)).toEqual([false])
+  })
+
+  it('should consume text/uri-list', async () => {
+    const resource = {
+      input: {
+        source: 'drop',
+        type: 'text/uri-list',
+        data: 'https://tt.se/bild/_next/image?url=https%3A%2F%2Fbeta.tt.se%2Fmedia%2Fimage%2Fsdlv_113kUboR0_NormalPreview.jpg%3w=1080&q=75'
+      }
+    }
+
+    expect(consumes(resource)).toEqual([false])
+  })
+
+  it('should consume text/plain', async () => {
+    const resource = {
+      input: {
+        source: 'text',
+        type: 'text/plain',
+        data: 'https://tt.se/bild/o/wimbledon-businesses-embrace-tennis-tournament-spirit-with-decorative-displays--jun-2024--sdlv_113kUboR0'
+      }
+    }
+
+    expect(consumes(resource)).toEqual([false])
+  })
+
   it('should not consume text/text', async () => {
     const resource = {
       input: {
