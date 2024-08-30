@@ -1,7 +1,7 @@
 import './index.css'
 export { Bold, Italic, Underline } from './Leafs'
 export { Link } from './Link'
-export { BulletList, NumberList } from './List'
+export { UnorderedList, OrderedList } from './List'
 export { CodeBlock } from './CodeBlock'
 export { Blockquote } from './Blockquote'
 export { LocalizedQuotationMarks } from './LocalizedQuotationMarks'

@@ -1,29 +1,28 @@
-
-import { ListOrderedIcon } from 'lucide-react'
+import { ListIcon } from 'lucide-react'
+import type { Plugin } from '@ttab/textbit'
 import { List, ListItem } from './components'
 import { actionHandler } from './lib/actionHandler'
 import { normalizeNode } from './lib/normalizeNode'
 import type { Editor, NodeEntry } from 'slate'
-import type { Plugin } from '@ttab/textbit'
 
-export const NumberList: Plugin.InitFunction = () => {
+export const UnorderedList: Plugin.InitFunction = () => {
   return {
     class: 'text',
-    name: 'core/number-list',
+    name: 'core/unordered-list',
     actions: [
       {
-        name: 'add-number-list',
-        title: 'Number list',
-        tool: () => <ListOrderedIcon style={{ width: '1em', height: '1em' }} />,
-        hotkey: 'mod+shift+7',
+        name: 'add-unordered-list',
+        title: 'Bullet list',
+        tool: () => <ListIcon style={{ width: '1em', height: '1em' }} />,
+        hotkey: 'mod+shift+8',
         handler: ({ editor }) => {
-          actionHandler(editor, 'core/number-list')
+          actionHandler(editor, 'core/unordered-list')
         },
         visibility: (element) => {
           return [
-            element.type === 'core/number-list',
+            element.type === 'core/unordered-list',
             true,
-            element.type === 'core/number-list'
+            element.type === 'core/unordered-list'
           ]
         }
       }
@@ -33,7 +32,7 @@ export const NumberList: Plugin.InitFunction = () => {
       component: List,
       constraints: {
         normalizeNode: (editor: Editor, nodeEntry: NodeEntry) => {
-          return normalizeNode(editor, nodeEntry, 'core/number-list')
+          return normalizeNode(editor, nodeEntry, 'core/unordered-list')
         }
       },
       children: [
