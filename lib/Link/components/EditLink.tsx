@@ -53,7 +53,7 @@ export const EditLink = ({ editor, entry }: Plugin.ToolComponentProps): JSX.Elem
           if (url === '') {
             deleteLink(editor)
           }
-          ReactEditor.focus(editor)
+          ReactEditor.focus(editor as unknown as ReactEditor)
         }
       }}
       onBlur={() => {
