@@ -58,6 +58,9 @@ export const TextbitDocument: Descendant[] = [
     type: 'core/factbox',
     class: 'block',
     id: '538345e5-bacc-48f9-8ef1-1214443a32da',
+    properties: {
+      editable: false
+    },
     children: [
       {
         type: 'core/factbox/title',

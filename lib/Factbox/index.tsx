@@ -1,13 +1,12 @@
+import { Editor, Element, Transforms } from 'slate'
 import { type Plugin } from '@ttab/textbit'
+import { BookOpenText } from 'lucide-react'
 import {
   Factbox as FactboxComponent,
   FactboxTitle
 } from './components'
 import { actionHandler } from './lib/actionHandler'
 import { normalizeFactbox } from './lib/normalizeFactbox'
-import { BookOpenText } from 'lucide-react'
-import { Transforms } from 'slate'
-
 
 export const Factbox: Plugin.InitFunction = () => {
   return {
@@ -17,17 +16,31 @@ export const Factbox: Plugin.InitFunction = () => {
       {
         name: 'edit-factbox',
         handler: ({ editor, args }): void => {
-          alert(args?.editable)
-          // FIXME: Make sure we can find the path/node
-          // Transforms.setNodes(
-          //   editor,
-          //   {
-          //     properties: {
-          //       editable: args?.editable as boolean || false
-          //     }
-          //   },
-          //   { at: path }
-          // )
+          const matches = Array.from(Editor.nodes(editor, {
+            at: [],
+            mode: 'highest',
+            match: n => {
+              if (Editor.isEditor(n) || !Element.isElement(n)) {
+                return false
+              }
+
+              return (n.id === args?.id)
+            }
+          }))
+
+          const [node, path] = (matches?.length === 1) ? matches[0] : [undefined, undefined]
+
+          console.log(node)
+
+          Transforms.setNodes(
+            editor,
+            {
+              properties: {
+                editable: args?.editable as boolean || false
+              }
+            },
+            { at: path }
+          )
         }
       },
       {
