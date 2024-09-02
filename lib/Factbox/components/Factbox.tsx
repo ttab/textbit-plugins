@@ -54,7 +54,10 @@ export const Factbox = ({ children, element }: Plugin.ComponentProps): JSX.Eleme
           </div>
         </div>
 
-        <div className='px-6 pt-1 pb-2' contentEditable={element?.properties?.editable ? undefined : false}>
+        <div
+          className='px-6 pt-1 pb-2'
+          contentEditable={editable ? undefined : false}
+        >
           {children}
         </div>
       </div>
