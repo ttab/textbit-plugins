@@ -55,24 +55,48 @@ export const TextbitDocument: Descendant[] = [
     ]
   },
   {
-    type: 'core/blockquote',
-    class: 'textblock',
+    type: 'core/factbox',
+    class: 'block',
     id: '538345e5-bacc-48f9-8ef1-1214443a32da',
+    properties: {
+      editable: false
+    },
     children: [
       {
-        type: 'core/blockquote/body',
+        type: 'core/factbox/title',
         class: 'text',
         children: [
-          { text: 'Just a regular paragraph that contains some nonsensical writing' }
+          { text: 'Facts about facts' }
         ]
       },
       {
-        type: 'core/blockquote/caption',
+        type: 'core/text',
+        id: '538343b5-badd-48f9-8ef0-1219891b61ea',
         class: 'text',
         children: [
-          { text: 'Mr Smith' }
+          { text: 'An example factuality with facts about the non factual ' },
+          {
+            text: 'fact',
+            'core/bold': true,
+            'core/italic': true
+          },
+          { text: ' text that describes the ' },
+          {
+            text: 'emphasized',
+            'core/italic': true
+          },
+          { text: ' facts behind the fact.' }
+        ]
+      },
+      {
+        type: 'core/text',
+        class: 'text',
+        id: '538345e5-bacc-48aa-9ef1-1215892b61f1',
+        children: [
+          { text: 'This, here now is just a regular paragraph included in the facts.' }
         ]
       }
+
     ]
   },
   {

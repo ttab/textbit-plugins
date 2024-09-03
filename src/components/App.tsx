@@ -23,7 +23,8 @@ import {
   LocalizedQuotationMarks,
   Image,
   OEmbed,
-  TTVisual
+  TTVisual,
+  Factbox
 } from '../../lib'
 
 /**
@@ -58,7 +59,8 @@ export function App(): JSX.Element {
     LocalizedQuotationMarks(),
     Image(),
     OEmbed(),
-    TTVisual()
+    TTVisual(),
+    Factbox()
   ]
 
   return (
