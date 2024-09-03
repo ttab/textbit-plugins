@@ -20,18 +20,11 @@ export const Factbox: Plugin.InitFunction = () => {
             at: [],
             mode: 'highest',
             match: n => {
-              if (Editor.isEditor(n) || !Element.isElement(n)) {
-                return false
-              }
-
-              return (n.id === args?.id)
+              return (!Editor.isEditor(n) && Element.isElement(n)) ? n.id === args?.id : false
             }
           }))
 
-          const [node, path] = (matches?.length === 1) ? matches[0] : [undefined, undefined]
-
-          console.log(node)
-
+          const [, path] = (matches?.length === 1) ? matches[0] : [undefined, undefined]
           Transforms.setNodes(
             editor,
             {
