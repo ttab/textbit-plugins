@@ -1,11 +1,9 @@
 import { Editor, Element, Transforms } from 'slate'
 import { type Plugin } from '@ttab/textbit'
-import { BookOpenText } from 'lucide-react'
 import {
   Factbox as FactboxComponent,
   FactboxTitle
 } from './components'
-import { actionHandler } from './lib/actionHandler'
 import { normalizeFactbox } from './lib/normalizeFactbox'
 
 export const Factbox: Plugin.InitFunction = () => {
@@ -34,20 +32,6 @@ export const Factbox: Plugin.InitFunction = () => {
             },
             { at: path }
           )
-        }
-      },
-      {
-        name: 'create-factbox',
-        title: 'Factbox',
-        tool: () => <BookOpenText style={{ width: '1em', height: '1em' }} />,
-        hotkey: 'mod+shift+2',
-        handler: actionHandler,
-        visibility: (element) => {
-          return [
-            true, // Always visible
-            true, // Always enabled
-            (element.type === 'core/factbox') // Active when isFactbox
-          ]
         }
       }
     ],

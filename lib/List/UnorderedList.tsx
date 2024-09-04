@@ -20,7 +20,7 @@ export const UnorderedList: Plugin.InitFunction = () => {
         },
         visibility: (element) => {
           return [
-            element.type === 'core/unordered-list',
+            ['core/ordered-list', 'core/unordered-list', 'core/text'].includes(element.type),
             true,
             element.type === 'core/unordered-list'
           ]
