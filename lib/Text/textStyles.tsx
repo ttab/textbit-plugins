@@ -74,7 +74,7 @@ export const getTextStyles = (options: Plugin.Options): TextStyleAction[] => {
 
 function toolVisibility(element: Element, role?: string): [boolean, boolean, boolean] {
   return [
-    element.type === 'core/text',
+    ['core/ordered-list', 'core/unordered-list', 'core/text'].includes(element.type),
     true,
     element.type === 'core/text' && element?.properties?.role === role
   ]

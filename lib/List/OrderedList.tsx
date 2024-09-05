@@ -21,7 +21,7 @@ export const OrderedList: Plugin.InitFunction = () => {
         },
         visibility: (element) => {
           return [
-            element.type === 'core/ordered-list',
+            ['core/ordered-list', 'core/unordered-list', 'core/text'].includes(element.type),
             true,
             element.type === 'core/ordered-list'
           ]
