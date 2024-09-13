@@ -1,19 +1,17 @@
 import { Element, useAction, type Plugin } from '@ttab/textbit'
 import { Edit2, FileInput, MessageSquareWarning } from 'lucide-react'
+import { FactboxModified } from './FactboxModified'
 
 export const Factbox = ({ children, element }: Plugin.ComponentProps): JSX.Element => {
   const setEditable = useAction('core/factbox', 'edit-factbox')
   const editable = !!element?.properties?.editable
+  const modified = element?.properties?.modified ?? ''
 
   return (
     <Element className="py-4 group">
       <div className={`border-2 rounded border-slate-200 bg-slate-50 group-data-[state='active']:rounded group-data-[state='active']:ring-1 ring-offset-4 ${editable ? '' : 'shadow-lg'}`}>
-
         <div contentEditable={false} className='flex justify-between items-center bg-slate-200 pb-0.5'>
-          <div className='py-2 ps-2 opacity-70 font-semibold text-xs'>
-            Ändrades för 2 år och 2 månader sedan
-          </div>
-
+          {modified ? <FactboxModified modified={element?.properties?.modified} /> : null}
           <div className='flex justify-between items-center gap-2'>
             {!editable &&
               <a
