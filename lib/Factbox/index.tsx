@@ -5,11 +5,17 @@ import {
   FactboxTitle
 } from './components'
 import { normalizeFactbox } from './lib/normalizeFactbox'
+import { consumes } from './lib/consumes'
+import { consume } from './lib/consume'
 
 export const Factbox: Plugin.InitFunction = () => {
   return {
     class: 'block',
     name: 'core/factbox',
+    consumer: {
+      consumes,
+      consume
+    },
     actions: [
       {
         name: 'edit-factbox',
