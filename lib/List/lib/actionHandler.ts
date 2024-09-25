@@ -1,4 +1,3 @@
-import * as uuid from 'uuid'
 import {
   type Editor,
   type Element,
@@ -34,7 +33,7 @@ export const actionHandler = (editor: Editor, type: string): void => {
 
   if (!isActive) {
     Transforms.wrapNodes(editor, {
-      id: uuid.v4(),
+      id: crypto.randomUUID(),
       class: 'text',
       type: listType,
       children: []

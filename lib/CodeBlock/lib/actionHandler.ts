@@ -9,8 +9,6 @@ import {
   TextbitElement
 } from '@ttab/textbit'
 
-import * as uuid from 'uuid'
-
 const PLUGIN_NAME = 'dotvoid/codeblock'
 
 export const actionHandler = (editor: Editor, typeName: string): void => {
@@ -39,7 +37,7 @@ export const actionHandler = (editor: Editor, typeName: string): void => {
 
   if (!isActive) {
     Transforms.wrapNodes(editor, {
-      id: uuid.v4(),
+      id: crypto.randomUUID(),
       class: 'text',
       type: PLUGIN_NAME,
       children: []

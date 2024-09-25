@@ -5,7 +5,6 @@ import {
   type NodeEntry
 } from 'slate'
 import { TextbitElement } from '@ttab/textbit'
-import * as uuid from 'uuid'
 
 
 export const normalizeFactbox = (editor: Editor, nodeEntry: NodeEntry): boolean | undefined => {
@@ -21,7 +20,7 @@ export const normalizeFactbox = (editor: Editor, nodeEntry: NodeEntry): boolean 
     Transforms.insertNodes(
       editor,
       {
-        id: uuid.v4(),
+        id: crypto.randomUUID(),
         class: 'text',
         type: 'core/factbox/title',
         children: [{ text: '' }]
