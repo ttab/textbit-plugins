@@ -14,11 +14,6 @@ export interface FactboxInterface {
       type: 'core/factbox/title'
       class: 'text'
       children: [{ text: string }]
-    },
-    {
-      type: 'core/factbox/text'
-      class: 'text'
-      children: [{ text: string }]
     }
   ]
 }

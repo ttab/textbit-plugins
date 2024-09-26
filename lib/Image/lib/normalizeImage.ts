@@ -6,8 +6,6 @@ import {
   Transforms
 } from 'slate'
 import { TextbitElement } from '@ttab/textbit'
-import * as uuid from 'uuid'
-
 
 export const normalizeImage = (editor: Editor, nodeEntry: NodeEntry): boolean | undefined => {
   const [, path] = nodeEntry
@@ -41,7 +39,7 @@ export const normalizeImage = (editor: Editor, nodeEntry: NodeEntry): boolean | 
       Transforms.insertNodes(
         editor,
         {
-          id: uuid.v4(),
+          id: crypto.randomUUID(),
           class: 'text',
           type: addType,
           children: [{ text: '' }]

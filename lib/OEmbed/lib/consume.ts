@@ -1,6 +1,5 @@
 import { type Element } from 'slate'
 import { type Plugin } from '@ttab/textbit'
-import * as uuid from 'uuid'
 
 import { getOembedUrl } from './getOembedUrl'
 
@@ -23,7 +22,7 @@ export const consume: Plugin.ConsumeFunction = async ({ input }) => {
 
 const createOembedNode = (props: Record<string, string>): Element => {
   return {
-    id: uuid.v4(),
+    id: crypto.randomUUID(),
     class: 'block',
     type: 'core/oembed',
     properties: {

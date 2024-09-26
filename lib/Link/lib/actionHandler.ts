@@ -1,4 +1,3 @@
-import * as uuid from 'uuid'
 import {
   Editor,
   Transforms,
@@ -32,7 +31,7 @@ export const actionHandler = (editor: Editor, typeName: string): void => {
     return
   }
 
-  const id = uuid.v4()
+  const id = crypto.randomUUID()
 
   const link = {
     class: 'inline',

@@ -15,7 +15,7 @@ export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<Factbo
 
 /**
 * Create a Factbox node
-* @param {FactboxInterface} props
+* @param {FactboxInterface} input
 * @returns {FactboxInterface}
 */
 const createFactboxNode = (input: { data: string }): FactboxInterface => {
@@ -35,11 +35,6 @@ const createFactboxNode = (input: { data: string }): FactboxInterface => {
         type: 'core/factbox/title',
         class: 'text',
         children: [{ text: title }]
-      },
-      {
-        type: 'core/factbox/text',
-        class: 'text',
-        children: [{ text }]
       }
     ]
   }

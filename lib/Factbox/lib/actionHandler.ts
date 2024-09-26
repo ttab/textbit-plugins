@@ -2,7 +2,6 @@ import {
   type Editor,
   Transforms
 } from 'slate'
-import * as uuid from 'uuid'
 import { TextbitEditor } from '@ttab/textbit'
 
 
@@ -10,7 +9,7 @@ export const actionHandler = ({ editor }: { editor: Editor }): void => {
   const text = TextbitEditor.getSelectedText(editor)
 
   const node = [{
-    id: uuid.v4(),
+    id: crypto.randomUUID(),
     class: 'textblock',
     type: 'core/blockquote',
     children: [

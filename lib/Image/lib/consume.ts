@@ -1,5 +1,4 @@
 import { type Plugin } from '@ttab/textbit'
-import * as uuid from 'uuid'
 import { type TTVisualInterface } from '../types'
 
 /**
@@ -30,7 +29,7 @@ export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<TTVisu
       tmpImage.onload = () => {
         window.setTimeout(() => {
           resolve({
-            id: uuid.v4(),
+            id: crypto.randomUUID(),
             class: 'block',
             type: 'core/image',
             properties: {
