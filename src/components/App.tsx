@@ -116,7 +116,7 @@ function ToolbarMenu(): JSX.Element {
 
   return (
     <Toolbar.Root
-      className="flex select-none divide-x p-1 border rounded-lg cursor-default shadow-xl border bg-white border-gray-100 dark:text-white dark:bg-slate-900 dark:border-slate-800 dark:divide-slate-800 dark:shadow-none"
+      className="flex select-none divide-x p-1 border rounded-lg cursor-default shadow-xl bg-white border-gray-100 dark:text-white dark:bg-slate-900 dark:border-slate-800 dark:divide-slate-800 dark:shadow-none"
     >
       <Toolbar.Group key="leafs" className="flex place-items-center pr-1 gap-1">
         {leafActions.map(action => {
