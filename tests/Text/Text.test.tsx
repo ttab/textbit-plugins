@@ -1,10 +1,9 @@
-import { render, screen } from '@testing-library/react'
-import { Text } from '../../lib/Text/components'
-import { type RenderElementProps } from 'slate-react'
 import '@testing-library/jest-dom'
+import { render, screen } from '@testing-library/react'
+import { type RenderElementProps } from 'slate-react'
+import { Text } from '../../lib/Text/components'
 
-
-describe('Text component', () => {
+describe('Minimal test', () => {
   const text = 'A heading'
 
   const renderElementProps: RenderElementProps = {
