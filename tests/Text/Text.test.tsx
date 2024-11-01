@@ -3,6 +3,12 @@ import { render, screen } from '@testing-library/react'
 import { type RenderElementProps } from 'slate-react'
 import { Text } from '../../lib/Text/components'
 
+jest.mock('slate-react', () => ({
+  // Used internally in TextbitEditableElement
+  useSelected: jest.fn()
+}))
+
+
 describe('Minimal test', () => {
   const text = 'A heading'
 
