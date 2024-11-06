@@ -8,7 +8,8 @@ import {
 import { Link2OffIcon, LinkIcon, UnlinkIcon } from 'lucide-react'
 import { isValidLink } from '../../shared/isValidLink'
 
-
+// FIXME: excessively deep type instantiation
+// @ts-ignore
 export const EditLink = ({ editor, entry }: Plugin.ToolComponentProps): JSX.Element => {
   const [node, path] = entry || []
 
