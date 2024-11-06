@@ -1,6 +1,8 @@
 import { Element, TextbitElement, type Plugin } from '@ttab/textbit'
 import { getTextStyles } from '../textStyles'
 
+// FIXME: excessively deep type instantiation
+// @ts-ignore
 export const Text = ({ children, element, options, rootNode }: Plugin.ComponentProps): JSX.Element => {
   const style = getTextStyles({}).find(t => t.role === element?.properties?.role)
   const editable = (TextbitElement.isElement(rootNode) && rootNode?.properties?.editable === false) ? false : undefined
