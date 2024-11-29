@@ -19,7 +19,7 @@ export const Factbox = ({ children, element, options }: Plugin.ComponentProps): 
             {!editable &&
               <div
                 className='p-1.5 me-0.5 rounded hover:bg-slate-300'
-                title='Anpassa faktarutan i denna artikel'
+                title='Redigera faktarutan enbart i denna artikel. Originalets innehåll kommer inte att ändras.'
                 onMouseDown={(e) => {
                   e.preventDefault()
                   if (setEditable) {
