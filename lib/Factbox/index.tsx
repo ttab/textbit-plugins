@@ -8,10 +8,12 @@ import { normalizeFactbox } from './lib/normalizeFactbox'
 import { consumes } from './lib/consumes'
 import { consume } from './lib/consume'
 
-export const Factbox: Plugin.InitFunction = () => {
+export const Factbox: Plugin.InitFunction = (options) => {
+
   return {
     class: 'block',
     name: 'core/factbox',
+    options,
     consumer: {
       consumes,
       consume
