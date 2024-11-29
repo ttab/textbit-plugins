@@ -6,6 +6,10 @@ export const Factbox = ({ children, element }: Plugin.ComponentProps): JSX.Eleme
   const setEditable = useAction('core/factbox', 'edit-factbox')
   const editable = !!element?.properties?.editable
   const modified = element?.properties?.modified ?? ''
+  const locally_changed = element?.properties?.locally_changed ?? ''
+  const original_updated = element?.properties?.original_updated ?? ''
+  const original_version = element?.properties?.original_version ?? ''
+  const original_id = element?.properties?.original_id
 
   return (
     <Element className="py-4 group">
