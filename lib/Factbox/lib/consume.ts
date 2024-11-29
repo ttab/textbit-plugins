@@ -20,7 +20,7 @@ export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<Factbo
 */
 const createFactboxNode = (input: { data: string }): FactboxInterface => {
   const { data } = input
-  const { text, title, modified } = JSON.parse(data)
+  const { text, title, modified, id, original_version, original_updated, locally_changed } = JSON.parse(data)
   return {
     id: crypto.randomUUID(),
     class: 'block',
@@ -28,14 +28,26 @@ const createFactboxNode = (input: { data: string }): FactboxInterface => {
     properties: {
       title,
       text,
-      modified
+      modified,
+      id,
+      original_id: id,
+      original_updated,
+      original_version,
+      locally_changed,
+      rel: 'factbox',
+      type: 'core/factbox'
     },
     children: [
       {
         type: 'core/factbox/title',
         class: 'text',
         children: [{ text: title }]
-      }
+      },
+      {
+        type: 'core/factbox/text',
+        class: 'text',
+        children: [{ text: text }]
+      },
     ]
   }
 }
