@@ -29,13 +29,17 @@ export const Factbox: Plugin.InitFunction = (options) => {
               return (!Editor.isEditor(n) && Element.isElement(n)) ? n.id === args?.id : false
             }
           }))
-
           const [, path] = (matches?.length === 1) ? matches[0] : [undefined, undefined]
           Transforms.setNodes(
             editor,
             {
               properties: {
-                editable: args?.editable as boolean || false
+                editable: args?.editable as boolean || false,
+                id: args?.id as string,
+                original_updated: args?.original_updated as string,
+                original_version: args?.original_version as string,
+                locally_changed: args?.locally_changed as string,
+                original_id: args?.original_id as string
               }
             },
             { at: path }

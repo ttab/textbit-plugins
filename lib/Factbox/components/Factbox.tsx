@@ -18,22 +18,24 @@ export const Factbox = ({ children, element, options }: Plugin.ComponentProps): 
           {modified ? <FactboxModified modified={element?.properties?.modified} /> : null}
           <div className='flex justify-between items-center gap-2'>
             {!editable &&
-              <a
-                href='#'
+              <div
                 className='p-1.5 me-0.5 rounded hover:bg-slate-300'
                 title='Anpassa faktarutan i denna artikel'
                 onMouseDown={(e) => {
                   e.preventDefault()
-
                   if (setEditable) {
                     setEditable({
                       id: element.id,
-                      editable: !editable
+                      editable: !editable,
+                      original_id,
+                      original_updated,
+                      original_version,
+                      locally_changed: new Date().toISOString()
                     })
                   }
                 }}>
                 <Edit2 size={16} />
-              </a>
+              </div>
             }
 
             {editable &&
