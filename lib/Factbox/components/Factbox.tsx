@@ -45,11 +45,11 @@ export const Factbox = ({ children, element, options }: Plugin.ComponentProps): 
               </span>
             }
 
-            {options?.onEditOriginal && typeof options.onEditOriginal === 'function'
+            {options?.onEditOriginal && typeof options.onEditOriginal === 'function' && original_id
               ?
                 <div
                   className='p-1.5 me-0.5 rounded hover:bg-slate-300'
-                  title='Redigera faktarutans original'
+                  title={'Redigera faktarutans original'}
                   onMouseDown={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
