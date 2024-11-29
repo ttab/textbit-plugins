@@ -35,7 +35,12 @@ const createFactboxNode = (input: { data: string }): FactboxInterface => {
         type: 'core/factbox/title',
         class: 'text',
         children: [{ text: title }]
-      }
+      },
+      {
+        type: 'core/factbox/text',
+        class: 'text',
+        children: [{ text: text }]
+      },
     ]
   }
 }
