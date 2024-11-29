@@ -2,7 +2,7 @@ import { Element, useAction, type Plugin } from '@ttab/textbit'
 import { Edit2, FileInput, MessageSquareWarning } from 'lucide-react'
 import { FactboxModified } from './FactboxModified'
 
-export const Factbox = ({ children, element }: Plugin.ComponentProps): JSX.Element => {
+export const Factbox = ({ children, element, options }: Plugin.ComponentProps): JSX.Element => {
   const setEditable = useAction('core/factbox', 'edit-factbox')
   const editable = !!element?.properties?.editable
   const modified = element?.properties?.modified ?? ''
@@ -44,15 +44,21 @@ export const Factbox = ({ children, element }: Plugin.ComponentProps): JSX.Eleme
               </span>
             }
 
-            <a
-              href='#'
-              className='p-1.5 me-0.5 rounded hover:bg-slate-300'
-              title='Öppna faktarutans original för redigering'
-              onMouseDown={(e) => {
-                e.preventDefault()
-                console.log('Open external factbox not implemented')
-              }}
-            ><FileInput size={16} /></a>
+            {options?.onEditOriginal && typeof options.onEditOriginal === 'function'
+              ?
+                <div
+                  className='p-1.5 me-0.5 rounded hover:bg-slate-300'
+                  title='Redigera faktarutans original'
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    (options.onEditOriginal as (id: string) => void)(original_id as string)
+                  }}
+                  >
+                  <FileInput size={16} />
+                </div>
+              : null}
+
           </div>
         </div>
 
