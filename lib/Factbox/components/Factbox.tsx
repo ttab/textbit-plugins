@@ -15,7 +15,6 @@ export const Factbox = ({ children, element, options }: Plugin.ComponentProps): 
     <Element className="py-4 group">
       <div className={`border-2 rounded border-slate-200 bg-slate-50 group-data-[state='active']:rounded group-data-[state='active']:ring-1 ring-offset-4 ${editable ? '' : 'shadow-lg'}`}>
         <div contentEditable={false} className='flex justify-between items-center bg-slate-200 pb-0.5'>
-          {modified ? <FactboxModified modified={element?.properties?.modified} /> : null}
           <div className='flex justify-between items-center gap-2'>
             {!editable &&
               <div
@@ -62,6 +61,8 @@ export const Factbox = ({ children, element, options }: Plugin.ComponentProps): 
               : null}
 
           </div>
+          <FactboxModified modified={locally_changed || modified || original_updated} />
+
         </div>
 
         <div className='px-6 pt-1 pb-2'>
