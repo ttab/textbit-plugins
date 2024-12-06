@@ -1,10 +1,9 @@
 import { type Plugin } from '@ttab/textbit'
-import { type TTVisualInterface } from '../types'
 
 /**
  * Consume a FileList and produce an array of core/image objects
  */
-export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<TTVisualInterface> => {
+export const consume: Plugin.ConsumeFunction = async ({ input }) => {
   if (Array.isArray(input)) {
     throw new Error('Image plugin expected File for consumation, not a list/array')
   }
@@ -15,7 +14,7 @@ export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<TTVisu
 
   const { name, type, size } = input.data
 
-  const readerPromise = new Promise<TTVisualInterface>((resolve, reject) => {
+  const readerPromise = new Promise<Plugin.Resource>((resolve, reject) => {
     const reader = new FileReader()
 
     reader.addEventListener('load', () => {
@@ -29,29 +28,32 @@ export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<TTVisu
       tmpImage.onload = () => {
         window.setTimeout(() => {
           resolve({
-            id: crypto.randomUUID(),
-            class: 'block',
-            type: 'core/image',
-            properties: {
-              type,
-              src: tmpImage.src,
-              title: name,
-              size,
-              width: tmpImage.width,
-              height: tmpImage.height
-            },
-            children: [
-              {
-                type: 'core/image/image',
-                class: 'text',
-                children: [{ text: '' }]
+            ...input,
+            data: {
+              id: crypto.randomUUID(),
+              class: 'block',
+              type: 'core/image',
+              properties: {
+                type,
+                src: tmpImage.src,
+                title: name,
+                size,
+                width: tmpImage.width,
+                height: tmpImage.height
               },
-              {
-                type: 'core/image/text',
-                class: 'text',
-                children: [{ text: '' }]
-              }
-            ]
+              children: [
+                {
+                  type: 'core/image/image',
+                  class: 'text',
+                  children: [{ text: '' }]
+                },
+                {
+                  type: 'core/image/text',
+                  class: 'text',
+                  children: [{ text: '' }]
+                }
+              ]
+            }
           })
         }, 1000)
       }

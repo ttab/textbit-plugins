@@ -1,6 +1,4 @@
-import { type Element } from 'slate'
-import { type Plugin } from '@ttab/textbit'
-
+import type { Plugin } from '@ttab/textbit'
 import { getOembedUrl } from './getOembedUrl'
 
 
@@ -15,42 +13,50 @@ export const consume: Plugin.ConsumeFunction = async ({ input }) => {
     return
   }
 
-  const oEmbed = await fetchOembed(input.data)
-  return oEmbed ? createOembedNode(oEmbed) : undefined
+  return createOembedNode(input)
+  // return oEmbed ? createOembedNode(oEmbed) : undefined
 }
 
 
-const createOembedNode = (props: Record<string, string>): Element => {
+const createOembedNode = async (input: Plugin.Resource): Promise<Plugin.Resource | undefined> => {
+  const props = await fetchOembed(input.data as string)
+  if (!props) {
+    return
+  }
+
   return {
-    id: crypto.randomUUID(),
-    class: 'block',
-    type: 'core/oembed',
-    properties: {
-      type: props.type,
-      provider_name: props.provider_name,
-      original_url: props.original_url,
-      url: '',
-      src: props.src,
-      title: props.title,
-      html: props.html,
-      width: props.width,
-      height: props.height,
-      thumbnail_url: props.thumbnail_url || '',
-      thumbnail_width: props.thumbnail_width || 0,
-      thumbnail_height: props.thumbnail_height || 0
-    },
-    children: [
-      {
-        type: 'core/oembed/embed',
-        class: 'text',
-        children: [{ text: '' }]
+    ...input,
+    data: {
+      id: crypto.randomUUID(),
+      class: 'block',
+      type: 'core/oembed',
+      properties: {
+        type: props.type,
+        provider_name: props.provider_name,
+        original_url: props.original_url,
+        url: '',
+        src: props.src,
+        title: props.title,
+        html: props.html,
+        width: props.width,
+        height: props.height,
+        thumbnail_url: props.thumbnail_url || '',
+        thumbnail_width: props.thumbnail_width || 0,
+        thumbnail_height: props.thumbnail_height || 0
       },
-      {
-        type: 'core/oembed/title',
-        class: 'text',
-        children: [{ text: props.title }]
-      }
-    ]
+      children: [
+        {
+          type: 'core/oembed/embed',
+          class: 'text',
+          children: [{ text: '' }]
+        },
+        {
+          type: 'core/oembed/title',
+          class: 'text',
+          children: [{ text: props.title }]
+        }
+      ]
+    }
   }
 }
 
