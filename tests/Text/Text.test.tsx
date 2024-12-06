@@ -5,7 +5,8 @@ import { Text } from '../../lib/Text/components'
 
 jest.mock('slate-react', () => ({
   // Used internally in TextbitEditableElement
-  useSelected: jest.fn()
+  useSelected: jest.fn(),
+  useContext: jest.fn()
 }))
 
 
