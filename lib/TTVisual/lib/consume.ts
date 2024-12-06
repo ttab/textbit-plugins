@@ -1,8 +1,8 @@
-import { type Plugin } from '@ttab/textbit'
-import { type TTVisualInterface, type VisualPropertiesInterface } from '../types'
+import type { Plugin } from '@ttab/textbit'
+import type { VisualPropertiesInterface } from '../types'
 import parseImageId, { parseJSON } from './parseImageId'
 
-export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<TTVisualInterface> => {
+export const consume: Plugin.ConsumeFunction = async ({ input }) => {
   if (Array.isArray(input)) {
     throw new Error('VisualEx plugin expected string for consumation, not a list/array')
   }
@@ -12,7 +12,7 @@ export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<TTVisu
   }
 
 
-  return createTTVisualNode(await createVisualProperties(input))
+  return createTTVisualNode(input)
 }
 
 /**
@@ -20,38 +20,43 @@ export const consume: Plugin.ConsumeFunction = async ({ input }): Promise<TTVisu
 * @param {VisualPropertiesInterface} props
 * @returns {TTVisualInterface}
 */
-const createTTVisualNode = (props: VisualPropertiesInterface): TTVisualInterface => {
+const createTTVisualNode = async (input: Plugin.Resource): Promise<Plugin.Resource> => {
+  const props = await createVisualProperties(input)
+
   return {
-    id: crypto.randomUUID(),
-    class: 'block',
-    type: 'tt/visual',
-    properties: {
-      href: props.href,
-      uri: `http://tt.se/media/image/${parseImageId(props.href)}`,
-      rel: props.rel || 'self',
-      text: props.text,
-      byline: props.byline,
-      width: props.width,
-      height: props.height,
-      type: 'tt/picture'
-    },
-    children: [
-      {
-        type: 'tt/visual/image',
-        class: 'text',
-        children: [{ text: props.href }]
+    ...input,
+    data: {
+      id: crypto.randomUUID(),
+      class: 'block',
+      type: 'tt/visual',
+      properties: {
+        href: props.href,
+        uri: `http://tt.se/media/image/${parseImageId(props.href)}`,
+        rel: props.rel || 'self',
+        text: props.text,
+        byline: props.byline,
+        width: props.width,
+        height: props.height,
+        type: 'tt/picture'
       },
-      {
-        type: 'tt/visual/text',
-        class: 'text',
-        children: [{ text: props.text }]
-      },
-      {
-        type: 'tt/visual/byline',
-        class: 'text',
-        children: [{ text: props.byline }]
-      }
-    ]
+      children: [
+        {
+          type: 'tt/visual/image',
+          class: 'text',
+          children: [{ text: props.href }]
+        },
+        {
+          type: 'tt/visual/text',
+          class: 'text',
+          children: [{ text: props.text }]
+        },
+        {
+          type: 'tt/visual/byline',
+          class: 'text',
+          children: [{ text: props.byline }]
+        }
+      ]
+    }
   }
 }
 
@@ -114,4 +119,3 @@ const createVisualProperties = async (input: Plugin.Resource): Promise<VisualPro
     height
   }
 }
-

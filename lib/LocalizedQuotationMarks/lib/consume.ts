@@ -52,10 +52,7 @@ const KEY_CODES = [
   63 // ?
 ]
 
-export const consume: Plugin.ConsumeFunction = async ({ editor, input }: {
-  editor: Editor
-  input: Plugin.Resource | Plugin.Resource[]
-}) => {
+export const consume: Plugin.ConsumeFunction = async ({ editor, input }) => {
   const { selection } = editor
 
   if (Array.isArray(input) || typeof input.data !== 'string') {
@@ -88,8 +85,8 @@ export const consume: Plugin.ConsumeFunction = async ({ editor, input }: {
         const char = node.text[offset]
         if (!isNaN(parseInt(char)) && (KEY_CODES.includes(prevChar.charCodeAt(0)))) {
           // We have established that a quote is preceded by a number and followed by a whitespace/punctuation
-          // This lools like it is actually used as inch or foot mark. We're done.
-          return data
+          // This looks like it is actually used as inch or foot mark. We're done.
+          return input
         }
 
         // We have found a matching inch/foot and want to convert them to a citation
@@ -109,7 +106,7 @@ export const consume: Plugin.ConsumeFunction = async ({ editor, input }: {
   }
 
   if (!point) {
-    return data
+    return input
   }
 
   // FIXME: This should obviously come from the document locale...
@@ -123,7 +120,7 @@ export const consume: Plugin.ConsumeFunction = async ({ editor, input }: {
   } else if (data === '"') {
     quotes = [q[2], q[3]]
   } else {
-    return data // This should never happen if the matcher is alrighty
+    return input // This should never happen if the matcher is alrighty
   }
 
   // Transform the previous found inch/foot mark to beginning typographic quotation mark
@@ -136,5 +133,8 @@ export const consume: Plugin.ConsumeFunction = async ({ editor, input }: {
   })
 
   // Return the ending typographic quotation mark to be handled in normal flow
-  return quotes[1]
+  return {
+    ...input,
+    data: quotes[1]
+  }
 }
