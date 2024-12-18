@@ -1,14 +1,14 @@
-import { Element, TextbitElement, type Plugin } from '@ttab/textbit'
+import { TextbitElement, type Plugin } from '@ttab/textbit'
 
 export const List = ({ element, children, rootNode }: Plugin.ComponentProps): JSX.Element => {
   const editable = (TextbitElement.isElement(rootNode) && rootNode?.properties?.editable === false) ? false : undefined
 
   return (
-    <Element draggable={false} contentEditable={editable} className="py-2 font-serif">
+    <>
       {element.type === 'core/ordered-list'
-        ? <ol role="list" className="pl-10 m-0 list-decimal">{children}</ol>
-        : <ul role="list" className="pl-10 m-0 list-disc">{children}</ul>
+        ? <ol role="list" contentEditable={editable} className="pl-10 m-0 py-2 font-serif list-decimal">{children}</ol>
+        : <ul role="list" contentEditable={editable} className="pl-10 m-0 py-2 font-serif list-disc">{children}</ul>
       }
-    </Element>
+    </>
   )
 }

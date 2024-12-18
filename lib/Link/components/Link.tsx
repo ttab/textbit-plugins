@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { type Plugin } from '@ttab/textbit'
 import { isValidLink } from '../../shared/isValidLink'
 
-export const Link = ({ attributes, children, element }: Plugin.ComponentProps): JSX.Element => {
+export const Link = ({ children, element }: Plugin.ComponentProps): JSX.Element => {
   const url: string = element.properties?.url as string || ''
   const [isPressed, setIsPressed] = useState<boolean>(false)
   const [isHovering, setIsHovering] = useState<boolean>(false)
@@ -31,7 +31,6 @@ export const Link = ({ attributes, children, element }: Plugin.ComponentProps): 
   return (
     <a
       className={`underline decoration-2 underline-offset-4 ${isValidLink(url) ? 'decoration-blue-300' : 'decoration-wavy decoration-red-400'}`}
-      {...attributes}
       href={url}
       onClick={(event) => {
         if (event.ctrlKey || event.metaKey) {

@@ -2,7 +2,7 @@ import { type Plugin } from '@ttab/textbit'
 import { useEffect, useState } from 'react'
 import { Element } from 'slate'
 
-export const OembedVideo = ({ children, attributes, rootNode }: Plugin.ComponentProps): JSX.Element => {
+export const OembedVideo = ({ children, rootNode }: Plugin.ComponentProps): JSX.Element => {
   const { properties = {} } = Element.isElement(rootNode) ? rootNode : {}
   const src = properties?.src || ''
   const html = properties?.html || ''
@@ -15,7 +15,7 @@ export const OembedVideo = ({ children, attributes, rootNode }: Plugin.Component
   }, [h, w])
 
   return (
-    <div contentEditable={false} {...attributes}>
+    <div contentEditable={false}>
       <div className="transtion-all ease-out duration-150" style={{ position: 'relative' }}>
         {!src && html &&
           <div dangerouslySetInnerHTML={{ __html: html as string }} />
