@@ -1,10 +1,10 @@
-import { type Plugin } from '@ttab/textbit'
+import type { Plugin } from '@ttab/textbit'
 
-export const Table = ({ children }: Plugin.ComponentProps): JSX.Element => {
+export const Table = (props: Plugin.ComponentProps): JSX.Element => {
   return (
-    <table className='w-full border-2 table-fixed overflow-x-scroll'>
-      <tbody className='divide-y'>
-        {children}
+    <table className='w-full border table-fixed border-separate rounded border-spacing-0 m-0 p-0'>
+      <tbody>
+        {props.children}
       </tbody>
     </table>
   )

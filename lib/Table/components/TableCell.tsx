@@ -1,7 +1,7 @@
-import { type PropsWithChildren } from "react"
+import { forwardRef, type PropsWithChildren } from 'react'
 
-export const TableCell = ({ children }: PropsWithChildren): JSX.Element => {
-  return (
-    <td className='p-2'>{children}</td>
-  )
-}
+export const TableCell = forwardRef<HTMLTableCellElement, PropsWithChildren>(({ children }, ref) => (
+  <td ref={ref} className='py-2 px-2 border'>{children}</td>
+))
+
+TableCell.displayName = 'TableCell'
