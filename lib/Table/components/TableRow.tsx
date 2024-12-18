@@ -1,5 +1,7 @@
-import { type PropsWithChildren } from 'react'
+import { forwardRef, type PropsWithChildren } from 'react'
 
-export const TableRow = ({ children }: PropsWithChildren) => (
-  <tr className='grid grid-flow-col'>{children}</tr>
-)
+export const TableRow = forwardRef<HTMLTableRowElement, PropsWithChildren>(({ children }, ref) => (
+  <tr ref={ref}>{children}</tr>
+))
+
+TableRow.displayName = 'TableRow'
