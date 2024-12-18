@@ -24,7 +24,8 @@ import {
   Image,
   OEmbed,
   TTVisual,
-  Factbox
+  Factbox,
+  Table
 } from '../../lib'
 
 /**
@@ -60,7 +61,8 @@ export function App(): JSX.Element {
     Image(),
     OEmbed(),
     TTVisual(),
-    Factbox()
+    Factbox(),
+    Table()
   ]
 
   return (

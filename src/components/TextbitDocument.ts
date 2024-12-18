@@ -54,6 +54,65 @@ export const TextbitDocument: Descendant[] = [
       { text: ' compared to the normal styled text found elsewhere in the document.' }
     ]
   },
+    {
+      type: 'core/table',
+      id: 'f0600160-08ca-4732-8512-52c002e5cb93',
+      class: 'block',
+      properties: {
+        rel: 'table',
+        type: 'core/table'
+      },
+      children: [
+        {
+          type: 'core/table/row',
+          class: 'block',
+          children: [
+            {
+              type: 'core/table/row/cell',
+              class: 'text',
+              children: [{ text: `Name` }]
+            },
+            {
+              type: 'core/table/row/cell',
+              class: 'text',
+              children: [{ text: `City` }]
+            }
+          ]
+        },
+        {
+          type: 'core/table/row',
+          class: 'block',
+          children: [
+            {
+              type: 'core/table/row/cell',
+              class: 'text',
+              children: [{ text: `Batman` }]
+            },
+            {
+              type: 'core/table/row/cell',
+              class: 'text',
+              children: [{ text: `Gotham` }]
+            }
+          ]
+        },
+        {
+          type: 'core/table/row',
+          class: 'block',
+          children: [
+            {
+              type: 'core/table/row/cell',
+              class: 'text',
+              children: [{ text: `Spider-Man` }]
+            },
+            {
+              type: 'core/table/row/cell',
+              class: 'text',
+              children: [{ text: `New York` }]
+            }
+          ]
+        }
+      ]
+    },
   {
     type: 'core/factbox',
     class: 'block',
