@@ -28,6 +28,9 @@ export const Table: Plugin.InitFunction = () => {
             {
               type: 'cell',
               class: 'text',
+              constraints: {
+                allowBreak: false
+              },
               component: TableCell
             }
           ]
