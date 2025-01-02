@@ -1,5 +1,6 @@
 import { TextbitElement, type Plugin } from '@ttab/textbit'
 import { getTextStyles } from '../textStyles'
+import { Node } from 'slate'
 
 // FIXME: excessively deep type instantiation
 // @ts-ignore
@@ -10,11 +11,20 @@ export const Text = ({ children, element, options, rootNode }: Plugin.ComponentP
   if (style && !style.role) {
     // Regular body text
     if (options?.inputStyle) {
-      return <div draggable={false} contentEditable={editable} className="font-sans dark:tracking-wide">
-        {children}
-      </div>
+      return (
+        <>
+          <div draggable={false} contentEditable={editable} className="font-sans dark:tracking-wide">
+            {children}
+          </div>
+          {options?.countCharacters
+          ? (
+            <div className='text-xs text-gray-400 w-fit'>{`Antal tecken: ${Node.string(element).length}`}</div>
+          )
+          : null}
+        </>
+      )
     }
-
+  
     return <div draggable={false} contentEditable={editable} className="py-2 font-serif dark:tracking-wide">
       {children}
     </div>
@@ -22,9 +32,18 @@ export const Text = ({ children, element, options, rootNode }: Plugin.ComponentP
 
   switch (style?.role) {
     case 'heading-1':
-      return <div draggable={false} contentEditable={editable} className="font-sans font-bold text-4xl pt-2 pb-4">
-        {children}
-      </div>
+      return (
+        <>
+          <div draggable={false} contentEditable={editable} className="font-sans font-bold text-4xl pt-2 pb-4">
+            {children}
+          </div>
+          {options?.countCharacters
+            ? (
+              <div className='px-2 text-xs text-gray-400 w-fit'>{`Antal tecken: ${Node.string(element).length}`}</div>
+            )
+            : null}
+        </>
+      )
 
     case 'heading-2':
       return <div draggable={false} contentEditable={editable} className="font-sans font-bold text-xl py-2">
