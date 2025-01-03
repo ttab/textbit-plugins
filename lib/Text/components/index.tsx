@@ -29,12 +29,10 @@ export const Text = ({ children, element, options, rootNode }: Plugin.ComponentP
         <>
           <div draggable={false} contentEditable={editable} className="font-sans font-bold text-4xl pt-2 pb-4">
             {children}
+            {options?.countCharacters && (
+              <div contentEditable={false} className='select-none text-xs text-gray-500 w-fit font-normal'>{`Antal tecken: ${Node.string(element).length}`}</div>
+            )}
           </div>
-          {options?.countCharacters
-            ? (
-              <div contentEditable={false} className='px-2 text-xs text-gray-400 w-fit'>{`Antal tecken: ${Node.string(element).length}`}</div>
-            )
-            : null}
         </>
       )
 
