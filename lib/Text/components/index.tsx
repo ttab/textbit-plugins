@@ -18,7 +18,7 @@ export const Text = ({ children, element, options, rootNode }: Plugin.ComponentP
           </div>
           {options?.countCharacters
           ? (
-            <div className='text-xs text-gray-400 w-fit'>{`Antal tecken: ${Node.string(element).length}`}</div>
+            <div contentEditable={false} className='text-xs text-gray-400 w-fit'>{`Antal tecken: ${Node.string(element).length}`}</div>
           )
           : null}
         </>
@@ -39,7 +39,7 @@ export const Text = ({ children, element, options, rootNode }: Plugin.ComponentP
           </div>
           {options?.countCharacters
             ? (
-              <div className='px-2 text-xs text-gray-400 w-fit'>{`Antal tecken: ${Node.string(element).length}`}</div>
+              <div contentEditable={false} className='px-2 text-xs text-gray-400 w-fit'>{`Antal tecken: ${Node.string(element).length}`}</div>
             )
             : null}
         </>
