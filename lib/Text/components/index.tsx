@@ -12,16 +12,9 @@ export const Text = ({ children, element, options, rootNode }: Plugin.ComponentP
     // Regular body text
     if (options?.inputStyle) {
       return (
-        <>
-          <div draggable={false} contentEditable={editable} className="font-sans dark:tracking-wide">
-            {children}
-          </div>
-          {options?.countCharacters
-          ? (
-            <div contentEditable={false} className='text-xs text-gray-400 w-fit'>{`Antal tecken: ${Node.string(element).length}`}</div>
-          )
-          : null}
-        </>
+        <div draggable={false} contentEditable={editable} className="font-sans dark:tracking-wide">
+          {children}
+        </div>
       )
     }
   
