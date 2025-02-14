@@ -70,6 +70,20 @@ export const TextbitDocument: Descendant[] = [
             {
               type: 'core/table/row/cell',
               class: 'text',
+              children: [{ text: `Superman` }],
+              properties: {
+                colspan: '2'
+              }
+            }
+          ]
+        },
+        {
+          type: 'core/table/row',
+          class: 'block',
+          children: [
+            {
+              type: 'core/table/row/cell',
+              class: 'text',
               children: [{ text: `Name` }]
             },
             {
@@ -107,7 +121,21 @@ export const TextbitDocument: Descendant[] = [
             {
               type: 'core/table/row/cell',
               class: 'text',
-              children: [{ text: `New York` }]
+              children: [{ text: `New York` }],
+              properties: {
+                rowspan: 2
+              }
+            }
+          ]
+        },
+        {
+          type: 'core/table/row',
+          class: 'block',
+          children: [
+            {
+              type: 'core/table/row/cell',
+              class: 'text',
+              children: [{ text: `Fantastic 4` }]
             }
           ]
         }
