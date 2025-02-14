@@ -1,4 +1,5 @@
 module.exports = {
+  files: ["src/**/*.js", "src/**/*.jsx"],
   settings: {
     react: {
       version: 'detect'
@@ -16,7 +17,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'love'
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  ignorePatterns: ['dist'],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
