@@ -1,14 +1,12 @@
-import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
 import { Text } from '../../lib/Text/components'
 import { Plugin } from '@ttab/textbit'
 
-jest.mock('slate-react', () => ({
-  // Used internally in TextbitEditableElement
-  useSelected: jest.fn(),
-  useContext: jest.fn()
+vi.mock('slate-react', () => ({
+  useSelected: vi.fn(),
+  useContext: vi.fn()
 }))
-
 
 describe('Minimal test', () => {
   const text = 'A heading'
@@ -22,9 +20,7 @@ describe('Minimal test', () => {
       properties: {
         type: 'h1'
       },
-      children: [
-        { text }
-      ]
+      children: [{ text }]
     }
   }
 
@@ -32,9 +28,6 @@ describe('Minimal test', () => {
     render(<Text {...renderElementProps} />)
 
     expect(screen.getByText(text)).toBeInTheDocument()
-
-    expect(screen.getByText(text)).toContainHTML(
-      `${text}`
-    )
+    expect(screen.getByText(text)).toContainHTML(`${text}`)
   })
 })
