@@ -1,5 +1,5 @@
 import { type Plugin } from '@ttab/textbit'
-import { BaseRange, Editor, Node, Path, Text, Transforms } from 'slate'
+import { type BaseRange, Editor, Node, Path, Text, Transforms } from 'slate'
 
 const LOCALIZED_QUOTES: Record<string, string[]>  = {
   sv: [
