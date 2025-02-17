@@ -34,7 +34,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "test": "vitest",
+    "test": "vitest run",
     "build": "tsc --project ./tsconfig.build.json && vite build",
     "lint": "npm run tsc && eslint . --report-unused-disable-directives --max-warnings 0",
     "tsc": "tsc --noEmit",
