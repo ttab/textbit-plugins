@@ -1,7 +1,7 @@
 import { type Plugin } from '@ttab/textbit'
-import { Editor, Text, Transforms } from 'slate'
+import { type BaseRange, Editor, Node, Path, Text, Transforms } from 'slate'
 
-const LOCALIZED_QUOTES = {
+const LOCALIZED_QUOTES: Record<string, string[]>  = {
   sv: [
     '’', '’',
     '”', '”'],
@@ -32,6 +32,10 @@ const LOCALIZED_QUOTES = {
   ]
 }
 
+const LOCALIZED_DASH_PREFIX: Record<string, string> = {
+  sv: '–'
+}
+
 const KEY_CODES = [
   9, // tab
   32, // space
@@ -54,6 +58,7 @@ const KEY_CODES = [
 
 export const consume: Plugin.ConsumeFunction = async ({ editor, input }) => {
   const { selection } = editor
+  const lang = editor.lang.substring(0, 2).toLowerCase()
 
   if (Array.isArray(input) || typeof input.data !== 'string') {
     return
@@ -64,6 +69,18 @@ export const consume: Plugin.ConsumeFunction = async ({ editor, input }) => {
   }
 
   const { data } = input
+
+  // If input in the first position is a dash and we have replacement rule for dash in current lang
+  if (data[0] === '-' && LOCALIZED_DASH_PREFIX[lang]) {
+    if (isFirstCharacterOfFirstChild(editor, selection)) {
+      return {
+        ...input,
+        data: LOCALIZED_DASH_PREFIX[lang] + data.slice(1)
+      }
+    }
+  }
+  
+
   const basePos = selection.anchor.path[0] // Position of basenode in editor
   let firstOffset = selection.anchor.offset // Start text offset in first node
   let point // We will store the point of found quote, then traverse 2 more chars
@@ -96,7 +113,6 @@ export const consume: Plugin.ConsumeFunction = async ({ editor, input }) => {
 
       if (node.text[offset] === data) {
         point = { path, offset }
-        console.log('Found " at', point)
       } else {
         prevChar = node.text[offset]
       }
@@ -109,9 +125,11 @@ export const consume: Plugin.ConsumeFunction = async ({ editor, input }) => {
     return input
   }
 
-  // FIXME: This should obviously come from the document locale...
-  const locale = 'en'
-  const q = LOCALIZED_QUOTES[locale] || LOCALIZED_QUOTES.en
+  //
+  // Get quotation marks from editor, or rather, the document language
+  // TODO: Now we use the documents language, should it instead use the language from the current element?
+  //
+  const q = LOCALIZED_QUOTES[lang] || LOCALIZED_QUOTES.en
 
   // Which are the typographic quote we want for the char?
   let quotes: string[] = []
@@ -137,4 +155,30 @@ export const consume: Plugin.ConsumeFunction = async ({ editor, input }) => {
     ...input,
     data: quotes[1]
   }
+}
+
+
+function isFirstCharacterOfFirstChild(editor: Editor, selection: BaseRange): boolean {
+  const { anchor } = selection
+
+  // Ensure the selection is within the editor
+  if (anchor.path.length < 2) {
+    return false
+  }
+
+  // Get the first text node inside this block
+  const firstTextEntry = Node.first(editor, [selection.anchor.path[0], selection.anchor.path[1]])
+  if (!firstTextEntry) {
+    return false
+  }
+
+  const [firstTextNode, firstTextPath] = firstTextEntry
+
+  // Ensure it's a text node
+  if (!Text.isText(firstTextNode)) {
+    return false
+  }
+
+  // Check if selection starts at the first character of this text node
+  return Path.equals(anchor.path, firstTextPath) && anchor.offset === 0
 }
