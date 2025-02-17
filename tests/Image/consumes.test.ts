@@ -1,4 +1,4 @@
-import 'jest'
+import { describe, it, expect } from 'vitest'
 import { consumes } from '../../lib/Image/lib/consumes'
 
 describe('Image plugin consumer', () => {

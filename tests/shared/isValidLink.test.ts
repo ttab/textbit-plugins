@@ -1,4 +1,4 @@
-import 'jest'
+import { describe, test, expect } from 'vitest'
 import { isValidLink } from '../../lib/shared/isValidLink'
 
 describe('isValidLink', () => {
