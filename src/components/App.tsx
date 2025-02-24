@@ -50,8 +50,7 @@ export function App(): JSX.Element {
   const plugins = [
     Text({
       classNames: {
-        body: 'font-bold text-xl',
-        'heading-1': 'text-xs font-normal'
+        vignette: 'bg-slate-200'
       }
     }),
     Bold(),

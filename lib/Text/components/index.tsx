@@ -43,8 +43,12 @@ export const Text = ({ children, element, options, rootNode }: Plugin.ComponentP
       </div>
 
     case 'vignette':
-      return <div draggable={false} contentEditable={editable} className={cn('font-sans font-bold py-1 text-sm uppercase')}>
-        <span className='px-[0.4rem] py-[0.2rem] inline-block bg-slate-300 dark:text-slate-900'>{children}</span>
+      return <div draggable={false} contentEditable={editable}>
+        <span
+          className={cn('my-1 px-[0.4rem] py-[0.2rem] font-sans font-bold text-sm uppercase inline-block bg-slate-300 dark:text-slate-900', className)}
+        >
+          {children}
+        </span>
         <CharacterCount element={element} type='vignette' className='normal-case' countTypes={countCharacters} />
       </div>
 
