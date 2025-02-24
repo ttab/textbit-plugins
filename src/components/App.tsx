@@ -48,7 +48,11 @@ declare module 'slate' {
 
 export function App(): JSX.Element {
   const plugins = [
-    Text(),
+    Text({
+      classNames: {
+        vignette: 'bg-slate-200'
+      }
+    }),
     Bold(),
     Italic(),
     Underline(),
