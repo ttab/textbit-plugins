@@ -68,7 +68,7 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "glob": "^11.0.1",
-    "happy-dom": "^17.1.0",
+    "happy-dom": "^17.3.0",
     "lucide-react": "^0.475.0",
     "postcss": "^8.4.47",
     "react": "^18.3.1",
