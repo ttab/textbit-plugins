@@ -1,8 +1,10 @@
 import { useAction, type Plugin } from '@ttab/textbit'
-import { Edit2, FileInput, MessageSquareWarning } from 'lucide-react'
+import { Pencil, FilePen, MessageSquareWarning, X } from 'lucide-react'
 import { FactboxModified } from './FactboxModified'
+import { FactboxHeaderItem } from './FactboxHeaderItem'
+import { type Descendant, Transforms } from 'slate'
 
-export const Factbox = ({ children, element, options }: Plugin.ComponentProps): JSX.Element => {
+export const Factbox = ({ children, element, options, editor }: Plugin.ComponentProps): JSX.Element => {
   const setEditable = useAction('core/factbox', 'edit-factbox')
   const editable = !!element?.properties?.editable
   const modified = element?.properties?.modified ?? ''
@@ -13,55 +15,76 @@ export const Factbox = ({ children, element, options }: Plugin.ComponentProps): 
 
   return (
     <div className={`my-2 border-2 rounded border-slate-200 bg-slate-50 group-data-[state='active']:rounded group-data-[state='active']:ring-1 ring-offset-4 ${editable ? '' : 'shadow-lg'}`}>
-      <div contentEditable={false} className='flex justify-between items-center bg-slate-200 pb-0.5'>
-        <div className='flex justify-between items-center gap-2'>
-          {!editable &&
-            <div
-              className='p-1.5 me-0.5 rounded hover:bg-slate-300'
-              title='Redigera faktarutan enbart i denna artikel. Originalets innehåll kommer inte att ändras.'
-              onMouseDown={(e) => {
-                e.preventDefault()
-                if (setEditable) {
-                  setEditable({
-                    id: element.id,
-                    editable: !editable,
-                    original_id,
-                    original_updated,
-                    original_version,
-                    locally_changed: new Date().toISOString()
-                  })
-                }
-              }}>
-              <Edit2 size={16} />
-            </div>
-          }
+      <div
+        contentEditable={false}
+        className='flex justify-start items-center bg-slate-200 border-b-2 border-slate-200 ps-0.5 pb-[2px] pt-[1px]'
+      >
+        {!editable &&
+          <FactboxHeaderItem
+            title='Redigera faktarutan enbart i denna artikel. Originalets innehåll kommer inte att ändras.'
+            icon={{
+              icon: Pencil
+            }}
+            onMouseDown={(e) => {
+              e.preventDefault()
+              if (setEditable) {
+                setEditable({
+                  id: element.id,
+                  editable: !editable,
+                  original_id,
+                  original_updated,
+                  original_version,
+                  locally_changed: new Date().toISOString()
+                })
+              }
+            }}
+          />
+        }
 
-          {editable &&
-            <span
-              title='Faktarutans text har anpassats för denna artikel'
-              className='mt-0.5 p-1.5 me-0.5 rounded'>
-              <MessageSquareWarning size={17} className='text-red-800' />
-            </span>
-          }
+        {editable &&
+          <FactboxHeaderItem
+            title='Faktarutans text har anpassats för denna artikel'
+            icon={{
+              icon: MessageSquareWarning,
+              className: 'text-red-800'
+            }}
+          />
+        }
 
-          {options?.onEditOriginal && typeof options.onEditOriginal === 'function' && original_id
-            ?
-            <div
-              className='p-1.5 me-0.5 rounded hover:bg-slate-300'
-              title={'Redigera faktarutans original'}
-              onMouseDown={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                (options.onEditOriginal as (id: string) => void)(original_id as string)
-              }}
-            >
-              <FileInput size={16} />
-            </div>
-            : null}
+        {options?.onEditOriginal && typeof options.onEditOriginal === 'function' && original_id
+          ? <FactboxHeaderItem
+            title={'Redigera faktarutans original'}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              (options.onEditOriginal as (id: string) => void)(original_id as string)
+            }}
+            icon={{
+              icon: FilePen
+            }} />
+          : null
+        }
 
-        </div>
         <FactboxModified modified={locally_changed || modified || original_updated} />
 
+        <div className='grow'></div>
+
+        <div className="grow-0 items-center justify-end">
+          <FactboxHeaderItem
+            icon={{
+              icon: X
+            }}
+            onMouseDown={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
+
+              if (n > -1) {
+                Transforms.removeNodes(editor, { at: [n] })
+              }
+            }}
+          />
+        </div>
       </div>
 
       <div className='px-6 pt-1 pb-2'>
