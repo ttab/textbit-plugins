@@ -16,7 +16,7 @@ export const Factbox = ({ children, element, options, editor }: Plugin.Component
 
   return (
     <div className={cn(
-      'my-2 border-2 rounded border-slate-200 group-data-[state="active"]:rounded group-data-[state="active"]:ring-1 ring-offset-4',
+      'group my-2 border-2 rounded border-slate-200 group-data-[state="active"]:rounded group-data-[state="active"]:ring-1 ring-offset-4',
       editable ? '' : 'bg-slate-50'
     )}>
       <div
@@ -74,7 +74,7 @@ export const Factbox = ({ children, element, options, editor }: Plugin.Component
 
         <div className='grow'></div>
 
-        <div className='grow-0 items-center justify-end'>
+        <div className='hidden grow-0 items-center justify-end group-hover:block'>
           <FactboxHeaderItem
             className='opacity-60 hover:opacity-100'
             icon={{

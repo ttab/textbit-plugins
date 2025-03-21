@@ -218,7 +218,7 @@ export const TextbitDocument: Descendant[] = [
         type: 'tt/visual/byline',
         class: 'text',
         children: [
-          { text: 'Facts about facts' }
+          { text: 'Byline' }
         ]
       }
     ]
