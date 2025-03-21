@@ -3,6 +3,7 @@ import { Pencil, FilePen, MessageSquareWarning, X } from 'lucide-react'
 import { FactboxModified } from './FactboxModified'
 import { FactboxHeaderItem } from './FactboxHeaderItem'
 import { type Descendant, Transforms } from 'slate'
+import { cn } from '../../cn'
 
 export const Factbox = ({ children, element, options, editor }: Plugin.ComponentProps): JSX.Element => {
   const setEditable = useAction('core/factbox', 'edit-factbox')
@@ -14,10 +15,14 @@ export const Factbox = ({ children, element, options, editor }: Plugin.Component
   const original_id = element?.properties?.original_id
 
   return (
-    <div className={`my-2 border-2 rounded border-slate-200 bg-slate-50 group-data-[state='active']:rounded group-data-[state='active']:ring-1 ring-offset-4 ${editable ? '' : 'shadow-lg'}`}>
+    <div className={cn(
+      'my-2 border-2 rounded border-slate-200 group-data-[state="active"]:rounded group-data-[state="active"]:ring-1 ring-offset-4',
+      editable ? '' : 'bg-slate-50'
+    )}>
       <div
         contentEditable={false}
         className='flex justify-start items-center bg-slate-200 border-b-2 border-slate-200 ps-0.5 pb-[2px] pt-[1px]'
+        onMouseDown={(e) => { e.stopPropagation() }}
       >
         {!editable &&
           <FactboxHeaderItem
@@ -69,8 +74,9 @@ export const Factbox = ({ children, element, options, editor }: Plugin.Component
 
         <div className='grow'></div>
 
-        <div className="grow-0 items-center justify-end">
+        <div className='grow-0 items-center justify-end'>
           <FactboxHeaderItem
+            className='opacity-60 hover:opacity-100'
             icon={{
               icon: X
             }}
@@ -90,6 +96,12 @@ export const Factbox = ({ children, element, options, editor }: Plugin.Component
       <div className='px-6 pt-1 pb-2'>
         {children}
       </div>
+
+      {editable && (
+        <div contentEditable={false} className='flex items-center gap-2 text-xs text-red-800 m-1 p-2 bg-slate-100 rounded-sm px-2 py-1'>
+          Faktarutans text har anpassats för denna artikel och kan skilja sig från originalet.
+        </div>
+      )}
     </div>
   )
 }

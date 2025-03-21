@@ -187,6 +187,43 @@ export const TextbitDocument: Descendant[] = [
     ]
   },
   {
+    type: 'tt/visual',
+    class: 'block',
+    id: '',
+    properties: {
+      href: 'https://beta.tt.se/media/image/sdlKUHeEQoZXd8_WatermarkPreview.jpg',
+      uri: 'https://beta.tt.se/media/image/sdlKUHeEQoZXd8_WatermarkPreview.jpg',
+      rel: 'self',
+      text: 'An image',
+      byline: 'By photographer',
+      width: 1024,
+      height: 683,
+      type: 'tt/picture'
+    },
+    children: [
+      {
+        type: 'tt/visual/image',
+        class: 'void',
+        id: '',
+        children: [{ text:  ''}]
+      },
+      {
+        type: 'tt/visual/text',
+        class: 'text',
+        children: [
+          { text: 'Facts about facts' }
+        ]
+      },
+      {
+        type: 'tt/visual/byline',
+        class: 'text',
+        children: [
+          { text: 'Facts about facts' }
+        ]
+      }
+    ]
+  },
+  {
     type: 'core/text',
     class: 'text',
     id: '538345e5-bacc-48f9-8ef1-1215892b61ed',

@@ -1,8 +1,9 @@
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '../../cn'
 
-export const FactboxHeaderItem = ({ icon, title, onMouseDown, children }: React.PropsWithChildren & {
+export const FactboxHeaderItem = ({ icon, title, className, onMouseDown, children }: React.PropsWithChildren & {
   title?: string
+  className?: string
   icon?: {
     icon: LucideIcon,
     className?: string
@@ -12,7 +13,15 @@ export const FactboxHeaderItem = ({ icon, title, onMouseDown, children }: React.
   const hoverClasses = (onMouseDown) ? 'hover:bg-slate-300' : ''
 
   return (
-    <div className='h-7 w-7 rounded flex flex-row gap-2 items-center justify-center' onMouseDown={onMouseDown} title={title}>
+    <div
+      contentEditable={false}
+      className={cn(
+        'h-7 w-7 rounded flex flex-row gap-2 items-center justify-center',
+        className
+      )}
+      onMouseDown={onMouseDown}
+      title={title}
+    >
       {icon && (
         <div className={cn('p-1 rounded', hoverClasses)}>
           <icon.icon
