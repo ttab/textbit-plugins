@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import { Text } from '../../lib/Text/components'
 import { Plugin } from '@ttab/textbit'
+import { Editor } from 'slate'
 
 vi.mock('slate-react', () => ({
   useSelected: vi.fn(),
@@ -12,6 +13,7 @@ describe('Minimal test', () => {
   const text = 'A heading'
 
   const renderElementProps: Plugin.ComponentProps = {
+    editor: {} as Editor,
     children: [text],
     element: {
       type: 'core/text',
