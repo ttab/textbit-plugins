@@ -8,7 +8,9 @@ interface Child {
   props: { children: { props: { element: { type: string } } } }
 }
 
-export const TTVisualWrapper = ({ children, element, editor }: Plugin.ComponentProps): JSX.Element => {
+export const TTVisualWrapper = ({ children, element, editor, options }: Plugin.ComponentProps): JSX.Element => {
+  const nonRemovable = options?.nonRemovable as boolean
+
   const getType = (child: Child): string => {
     if (child?.props?.children?.props?.element?.type) {
       return child.props.children.props.element.type
@@ -36,23 +38,24 @@ export const TTVisualWrapper = ({ children, element, editor }: Plugin.ComponentP
       draggable={false}
       className='relative group flex gap-1 flex-col my-2 min-h-10 group-data-[state="active"]:ring-1 rounded-sm ring-offset-4'
     >
-      <div contentEditable={false} className='absolute hidden -right-1 top-2 size-8  text-slate-900 justify-between items-center group-hover:flex'>
-        <div
-          className={cn('p-1 rounded opacity-70 bg-slate-200 hover:opacity-100 hover:bg-slate-300')}
-          onMouseDown={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
+      {!nonRemovable && (
+        <div contentEditable={false} className='absolute hidden -right-1 top-2 size-8  text-slate-900 justify-between items-center group-hover:flex'>
+          <div
+            className={cn('p-1 rounded opacity-70 bg-slate-200 hover:opacity-100 hover:bg-slate-300')}
+            onMouseDown={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
 
-            if (n > -1) {
-              Transforms.removeNodes(editor, { at: [n] })
-            }
-          }}
-
-        >
-          <X size={15} />
+              if (n > -1) {
+                Transforms.removeNodes(editor, { at: [n] })
+              }
+            }}
+            >
+            <X size={15} />
+          </div>
         </div>
-      </div>
+      )}
 
       {imageNode}
 
