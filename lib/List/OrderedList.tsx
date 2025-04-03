@@ -6,17 +6,17 @@ import { normalizeNode } from './lib/normalizeNode'
 import type { Editor, NodeEntry } from 'slate'
 import type { Plugin } from '@ttab/textbit'
 
-export const OrderedList: Plugin.InitFunction = () => {
+export const OrderedList: Plugin.InitFunction = (options) => {
   return {
     class: 'text',
     name: 'core/ordered-list',
     actions: [
       {
         name: 'add-ordered-list',
-        title: 'Number list',
+        title: `${options?.title}` || 'Number list',
         tool: () => <ListOrderedIcon style={{ width: '1em', height: '1em' }} />,
         hotkey: 'mod+shift+7',
-        handler: ({ editor }) => {
+        handler: ({ editor }): void => {
           actionHandler(editor, 'core/ordered-list')
         },
         visibility: (element) => {
