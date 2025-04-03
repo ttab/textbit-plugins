@@ -45,7 +45,7 @@ export const Text = ({ children, element, options, rootNode }: Plugin.ComponentP
     case 'vignette':
       return <div draggable={false} contentEditable={editable}>
         <span
-          className={cn('my-1 px-[0.4rem] py-[0.2rem] font-sans font-bold text-sm uppercase inline-block bg-slate-300 dark:text-slate-900', className)}
+          className={cn('my-1 px-[0.4rem] py-[0.2rem] font-sans font-bold text-sm inline-block bg-slate-300 dark:text-slate-900', className)}
         >
           {children}
         </span>
