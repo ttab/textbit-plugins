@@ -22,7 +22,7 @@ export const getTextStyles = (options: Plugin.Options): TextStyleAction[] => {
     {
       name: 'set-heading-1',
       role: 'heading-1',
-      title: 'Title',
+      title: `${options?.titleLabel}` || 'Title',
       hotkey: 'mod+1',
       tool: () => <Heading1Icon style={{ width: '1em', height: '1em' }} />,
       handler: ({ editor }) => { convertTextType(editor, 'heading-1') },
@@ -31,7 +31,7 @@ export const getTextStyles = (options: Plugin.Options): TextStyleAction[] => {
     {
       name: 'set-heading-2',
       role: 'heading-2',
-      title: 'Subtitle',
+      title: `${options?.subTitleLabel}` || 'Subtitle',
       hotkey: 'mod+2',
       tool: () => <Heading2Icon style={{ width: '1em', height: '1em' }} />,
       handler: ({ editor }) => convertTextType(editor, 'heading-2'),
@@ -40,7 +40,7 @@ export const getTextStyles = (options: Plugin.Options): TextStyleAction[] => {
     {
       name: 'set-preamble',
       role: 'preamble',
-      title: 'Preamble',
+      title: `${options?.preambleLabel}` || 'Preamble',
       hotkey: 'mod+3',
       tool: () => <ListStartIcon style={{ width: '1em', height: '1em' }} />,
       handler: ({ editor }) => convertTextType(editor, 'preamble'),
@@ -48,7 +48,7 @@ export const getTextStyles = (options: Plugin.Options): TextStyleAction[] => {
     },
     {
       name: 'set-body',
-      title: 'Body text',
+      title: `${options?.bodyTextLabel}` || 'Body text',
       hotkey: 'mod+0',
       tool: () => <TextIcon style={{ width: '1em', height: '1em' }} />,
       handler: ({ editor }) => convertTextType(editor),
@@ -57,7 +57,7 @@ export const getTextStyles = (options: Plugin.Options): TextStyleAction[] => {
     {
       name: 'set-dateline',
       role: 'vignette',
-      title: 'Vignette',
+      title: `${options?.vignetteLabel}` || 'Vignette',
       hotkey: undefined,
       tool: () => <MapIcon style={{ width: '1em', height: '1em' }} />,
       handler: ({ editor }) => convertTextType(editor, 'vignette'),
