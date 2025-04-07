@@ -13,6 +13,7 @@ export const Factbox = ({ children, element, options, editor }: Plugin.Component
   const original_updated = element?.properties?.original_updated ?? ''
   const original_version = element?.properties?.original_version ?? ''
   const original_id = element?.properties?.original_id
+  const removable = options?.removable as boolean ?? true
 
   return (
     <div className={cn(
@@ -71,26 +72,29 @@ export const Factbox = ({ children, element, options, editor }: Plugin.Component
         }
 
         <FactboxModified modified={locally_changed || modified || original_updated} />
+        {removable && (
+        <>
+          <div className='grow'></div>
+          <div className='hidden grow-0 items-center justify-end group-hover:block'>
+            <FactboxHeaderItem
+              className='opacity-60 hover:opacity-100'
+              icon={{
+                icon: X
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
 
-        <div className='grow'></div>
+                if (n > -1) {
+                  Transforms.removeNodes(editor, { at: [n] })
+                }
+              }}
+            />
+          </div>
+        </>
+        )}
 
-        <div className='hidden grow-0 items-center justify-end group-hover:block'>
-          <FactboxHeaderItem
-            className='opacity-60 hover:opacity-100'
-            icon={{
-              icon: X
-            }}
-            onMouseDown={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
-
-              if (n > -1) {
-                Transforms.removeNodes(editor, { at: [n] })
-              }
-            }}
-          />
-        </div>
       </div>
 
       <div className='px-6 pt-1 pb-2'>
