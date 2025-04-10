@@ -57,7 +57,10 @@ export const Factbox: Plugin.InitFunction = (options) => {
         {
           type: 'title',
           class: 'text',
-          component: FactboxTitle
+          component: FactboxTitle,
+          constraints: {
+            allowBreak: false
+          }
         }
       ]
     }

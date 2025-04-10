@@ -24,6 +24,31 @@ export const TextbitDocument: Descendant[] = [
     ]
   },
   {
+    type: 'core/image',
+    id: '538345e5-bacc-48f9-9ee2-a219892b22ba',
+    class: 'block',
+    properties: {
+      type: 'image/png',
+      src: 'https://www.evenemang.se/_next/image?url=https%3A%2F%2Fs3.eu-central-1.amazonaws.com%2Fse.evse.image%2Fcdfe6276-ad76-5ca7-81a3-48617733463e-640-320.jpg&w=3840&q=75',
+      title: 'Bild',
+      size: 2000,
+      width: 800,
+      height: 600,
+    },
+    children: [
+      {
+        type: 'core/image/image',
+        class: 'text',
+        children: [{ text: '' }]
+      },
+      {
+        type: 'core/image/text',
+        class: 'text',
+        children: [{ text: '' }]
+      }
+    ]
+  },
+  {
     type: 'core/text',
     id: '538345e5-cadd-4558-9ed2-a219892b51dc',
     class: 'text',
@@ -54,93 +79,93 @@ export const TextbitDocument: Descendant[] = [
       { text: ' compared to the normal styled text found elsewhere in the document.' }
     ]
   },
-    {
-      type: 'core/table',
-      id: 'f0600160-08ca-4732-8512-52c002e5cb93',
-      class: 'block',
-      properties: {
-        rel: 'table',
-        type: 'core/table'
-      },
-      children: [
-        {
-          type: 'core/table/row',
-          class: 'block',
-          children: [
-            {
-              type: 'core/table/row/cell',
-              class: 'text',
-              children: [{ text: `Superman` }],
-              properties: {
-                colspan: '2'
-              }
-            }
-          ]
-        },
-        {
-          type: 'core/table/row',
-          class: 'block',
-          children: [
-            {
-              type: 'core/table/row/cell',
-              class: 'text',
-              children: [{ text: `Name` }]
-            },
-            {
-              type: 'core/table/row/cell',
-              class: 'text',
-              children: [{ text: `City` }]
-            }
-          ]
-        },
-        {
-          type: 'core/table/row',
-          class: 'block',
-          children: [
-            {
-              type: 'core/table/row/cell',
-              class: 'text',
-              children: [{ text: `Batman` }]
-            },
-            {
-              type: 'core/table/row/cell',
-              class: 'text',
-              children: [{ text: `Gotham` }]
-            }
-          ]
-        },
-        {
-          type: 'core/table/row',
-          class: 'block',
-          children: [
-            {
-              type: 'core/table/row/cell',
-              class: 'text',
-              children: [{ text: `Spider-Man` }]
-            },
-            {
-              type: 'core/table/row/cell',
-              class: 'text',
-              children: [{ text: `New York` }],
-              properties: {
-                rowspan: 2
-              }
-            }
-          ]
-        },
-        {
-          type: 'core/table/row',
-          class: 'block',
-          children: [
-            {
-              type: 'core/table/row/cell',
-              class: 'text',
-              children: [{ text: `Fantastic 4` }]
-            }
-          ]
-        }
-      ]
+  {
+    type: 'core/table',
+    id: 'f0600160-08ca-4732-8512-52c002e5cb93',
+    class: 'block',
+    properties: {
+      rel: 'table',
+      type: 'core/table'
     },
+    children: [
+      {
+        type: 'core/table/row',
+        class: 'block',
+        children: [
+          {
+            type: 'core/table/row/cell',
+            class: 'text',
+            children: [{ text: `Superman` }],
+            properties: {
+              colspan: '2'
+            }
+          }
+        ]
+      },
+      {
+        type: 'core/table/row',
+        class: 'block',
+        children: [
+          {
+            type: 'core/table/row/cell',
+            class: 'text',
+            children: [{ text: `Name` }]
+          },
+          {
+            type: 'core/table/row/cell',
+            class: 'text',
+            children: [{ text: `City` }]
+          }
+        ]
+      },
+      {
+        type: 'core/table/row',
+        class: 'block',
+        children: [
+          {
+            type: 'core/table/row/cell',
+            class: 'text',
+            children: [{ text: `Batman` }]
+          },
+          {
+            type: 'core/table/row/cell',
+            class: 'text',
+            children: [{ text: `Gotham` }]
+          }
+        ]
+      },
+      {
+        type: 'core/table/row',
+        class: 'block',
+        children: [
+          {
+            type: 'core/table/row/cell',
+            class: 'text',
+            children: [{ text: `Spider-Man` }]
+          },
+          {
+            type: 'core/table/row/cell',
+            class: 'text',
+            children: [{ text: `New York` }],
+            properties: {
+              rowspan: 2
+            }
+          }
+        ]
+      },
+      {
+        type: 'core/table/row',
+        class: 'block',
+        children: [
+          {
+            type: 'core/table/row/cell',
+            class: 'text',
+            children: [{ text: `Fantastic 4` }]
+          }
+        ]
+      }
+    ]
+  },
   {
     type: 'core/factbox',
     class: 'block',
