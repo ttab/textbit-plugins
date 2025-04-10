@@ -49,7 +49,10 @@ export const Image: Plugin.InitFunction = () => {
         {
           type: 'text',
           class: 'text',
-          component: FigureText
+          component: FigureText,
+          constraints: {
+            allowBreak: false
+          }
         }
       ]
     }
