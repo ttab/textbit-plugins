@@ -24,31 +24,6 @@ export const TextbitDocument: Descendant[] = [
     ]
   },
   {
-    type: 'core/image',
-    id: '538345e5-bacc-48f9-9ee2-a219892b22ba',
-    class: 'block',
-    properties: {
-      type: 'image/png',
-      src: 'https://www.evenemang.se/_next/image?url=https%3A%2F%2Fs3.eu-central-1.amazonaws.com%2Fse.evse.image%2Fcdfe6276-ad76-5ca7-81a3-48617733463e-640-320.jpg&w=3840&q=75',
-      title: 'Bild',
-      size: 2000,
-      width: 800,
-      height: 600,
-    },
-    children: [
-      {
-        type: 'core/image/image',
-        class: 'text',
-        children: [{ text: '' }]
-      },
-      {
-        type: 'core/image/text',
-        class: 'text',
-        children: [{ text: '' }]
-      }
-    ]
-  },
-  {
     type: 'core/text',
     id: '538345e5-cadd-4558-9ed2-a219892b51dc',
     class: 'text',
