@@ -11,7 +11,7 @@ import { MessageSquareQuoteIcon } from 'lucide-react'
 
 export const Blockquote: Plugin.InitFunction = () => {
   return {
-    class: 'textblock',
+    class: 'block',
     name: 'core/blockquote',
     actions: [
       {
@@ -30,7 +30,7 @@ export const Blockquote: Plugin.InitFunction = () => {
       }
     ],
     componentEntry: {
-      class: 'textblock',
+      class: 'block',
       component: BlockquoteComponent,
       constraints: {
         normalizeNode: normalizeBlockquote

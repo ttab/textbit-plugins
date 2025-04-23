@@ -44,7 +44,7 @@ export const normalizeBlockquote = (editor: Editor, nodeEntry: NodeEntry): boole
 
   let n = 1
   for (const [child, childPath] of children) {
-    if (TextbitElement.isBlock(child) || TextbitElement.isTextblock(child)) {
+    if (TextbitElement.isBlock(child)) {
       // Unwrap block node children (move text element children upwards in tree)
       Transforms.unwrapNodes(editor, {
         at: childPath,
