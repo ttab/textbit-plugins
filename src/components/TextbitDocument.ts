@@ -157,33 +157,38 @@ export const TextbitDocument: Descendant[] = [
         ]
       },
       {
-        type: 'core/text',
-        id: '538343b5-badd-48f9-8ef0-1219891b61ea',
-        class: 'text',
+        type: 'core/factbox/body',
+        class: 'block',
         children: [
-          { text: 'An example factuality with facts about the non factual ' },
           {
-            text: 'fact',
-            'core/bold': true,
-            'core/italic': true
+            type: 'core/text',
+            id: '538343b5-badd-48f9-8ef0-1219891b61ea',
+            class: 'text',
+            children: [
+              { text: 'An example factuality with facts about the non factual ' },
+              {
+                text: 'fact',
+                'core/bold': true,
+                'core/italic': true
+              },
+              { text: ' text that describes the ' },
+              {
+                text: 'emphasized',
+                'core/italic': true
+              },
+              { text: ' facts behind the fact.' }
+            ]
           },
-          { text: ' text that describes the ' },
           {
-            text: 'emphasized',
-            'core/italic': true
-          },
-          { text: ' facts behind the fact.' }
-        ]
-      },
-      {
-        type: 'core/text',
-        class: 'text',
-        id: '538345e5-bacc-48aa-9ef1-1215892b61f1',
-        children: [
-          { text: 'This, here now is just a regular paragraph included in the facts.' }
+            type: 'core/text',
+            class: 'text',
+            id: '538345e5-bacc-48aa-9ef1-1215892b61f1',
+            children: [
+              { text: 'This, here now is just a regular paragraph included in the facts.' }
+            ]
+          }
         ]
       }
-
     ]
   },
   {
