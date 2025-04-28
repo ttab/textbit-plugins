@@ -11,16 +11,10 @@ export const normalizeFactbox = (editor: Editor, nodeEntry: NodeEntry): boolean 
   const [, path] = nodeEntry
   const children = Array.from(Node.children(editor, path))
 
-  if (children.length < 1) {
-    Transforms.removeNodes(editor, { at: path })
-    return true
-  }
-
   if (!TextbitElement.isOfType(children[0][0], 'core/factbox/title')) {
     Transforms.insertNodes(
       editor,
       {
-        id: crypto.randomUUID(),
         class: 'text',
         type: 'core/factbox/title',
         children: [{ text: '' }]
@@ -31,36 +25,34 @@ export const normalizeFactbox = (editor: Editor, nodeEntry: NodeEntry): boolean 
     return true
   }
 
+  const afterTitle = children.slice(1)
+  const bodyIndex = afterTitle.findIndex(([n]) => TextbitElement.isOfType(n, 'core/factbox/body'))
+  const hasBody = bodyIndex !== -1
 
-  for (let n = 1; n < children.length; n++) {
-    const [child, childPath] = children[n]
+  if (!hasBody) {
+    const bodyChildren = afterTitle.map(([n]) => n)
 
-    if (!TextbitElement.isOfType(child, 'core/text') && !TextbitElement.isOfType(child, 'core/unordered-list')) {
-      Transforms.removeNodes(editor, { at: childPath })
+    // Remove everything after the title
+    for (let i = children.length - 1; i > 0; i--) {
+      Transforms.removeNodes(editor, { at: [...path, i] })
+    }
 
-      const textContent = Node.string(child)
-      if (textContent) {
-        Transforms.insertNodes(
-          editor,
-          {
+    // Insert one body with all collected nodes or a new body with empty text
+    Transforms.insertNodes(
+      editor,
+      {
+        class: 'text',
+        type: 'core/factbox/body',
+        children: bodyChildren.length
+          ? bodyChildren
+          : [{
             type: 'core/text',
-            children: [{ text: textContent }]
-          },
-          { at: childPath }
-        )
-      }
+            children: [{ text: '' }]
+          }]
+      },
+      { at: [...path, 1] }
+    )
 
-      return true
-    }
-
-    if (TextbitElement.isOfType(child, 'core/text') && child.properties?.type) {
-      Transforms.setNodes(
-        editor,
-        { type: 'core/text', properties: {} },
-        { at: childPath }
-      )
-
-      return true
-    }
+    return true
   }
 }

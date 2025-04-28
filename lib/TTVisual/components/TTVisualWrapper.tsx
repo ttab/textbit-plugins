@@ -3,6 +3,7 @@ import type { Plugin } from '@ttab/textbit'
 import { X } from 'lucide-react'
 import { cn } from '../../cn'
 import { type Descendant, Transforms } from 'slate'
+import { FocusBlock } from '../../components/FocusBlock'
 
 interface Child {
   props: { children: { props: { element: { type: string } } } }
@@ -34,41 +35,43 @@ export const TTVisualWrapper = ({ children, element, editor, options }: Plugin.C
   })
 
   return (
-    <figure
-      draggable={false}
-      className='relative group flex gap-1 flex-col my-2 min-h-10 group-data-[state="active"]:ring-1 rounded-sm ring-offset-4'
-    >
-      {removable && (
-        <div contentEditable={false} className='absolute hidden -right-1 top-2 size-8  text-slate-900 justify-between items-center group-hover:flex'>
-          <div
-            className={cn('p-1 rounded opacity-70 bg-slate-200 hover:opacity-100 hover:bg-slate-300')}
-            onMouseDown={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
+    <FocusBlock className='my-2'>
+      <figure
+        draggable={false}
+        className='relative group flex gap-1 flex-col min-h-10'
+      >
+        {removable && (
+          <div contentEditable={false} className='absolute hidden -right-1 top-2 size-8  text-slate-900 justify-between items-center group-hover:flex'>
+            <div
+              className={cn('p-1 rounded opacity-70 bg-slate-200 hover:opacity-100 hover:bg-slate-300')}
+              onMouseDown={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
 
-              if (n > -1) {
-                Transforms.removeNodes(editor, { at: [n] })
-              }
-            }}
+                if (n > -1) {
+                  Transforms.removeNodes(editor, { at: [n] })
+                }
+              }}
             >
-            <X size={15} />
+              <X size={15} />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {imageNode}
+        {imageNode}
 
-      {textNode.map((child, index) => (
-        <div key={index}>
-          {child}
-        </div>
-      ))}
-      {bylineNode.map((child, index) => (
-        <div key={index}>
-          {child}
-        </div>
-      ))}
-    </figure>
+        {textNode.map((child, index) => (
+          <div key={index}>
+            {child}
+          </div>
+        ))}
+        {bylineNode.map((child, index) => (
+          <div key={index}>
+            {child}
+          </div>
+        ))}
+      </figure>
+    </FocusBlock>
   )
 }

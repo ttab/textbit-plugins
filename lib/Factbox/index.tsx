@@ -7,6 +7,7 @@ import {
 import { normalizeFactbox } from './lib/normalizeFactbox'
 import { consumes } from './lib/consumes'
 import { consume } from './lib/consume'
+import { FactboxBody } from './components/FactboxBody'
 
 export const Factbox: Plugin.InitFunction = (options) => {
 
@@ -61,6 +62,11 @@ export const Factbox: Plugin.InitFunction = (options) => {
           constraints: {
             allowBreak: false
           }
+        },
+        {
+          type: 'body',
+          class: 'block',
+          component: FactboxBody
         }
       ]
     }

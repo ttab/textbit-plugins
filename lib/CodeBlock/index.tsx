@@ -27,7 +27,7 @@ declare module 'slate' {
 
 export const CodeBlock: Plugin.InitFunction = () => {
   return {
-    class: 'textblock',
+    class: 'block',
     name: 'dotvoid/codeblock',
     actions: [
       {
@@ -48,7 +48,7 @@ export const CodeBlock: Plugin.InitFunction = () => {
       }
     ],
     componentEntry: {
-      class: 'textblock',
+      class: 'block',
       component: CodeBlockComponent,
       children: [{
         type: 'body',

@@ -10,7 +10,7 @@ export const actionHandler = ({ editor }: { editor: Editor }): void => {
 
   const node = [{
     id: crypto.randomUUID(),
-    class: 'textblock',
+    class: 'block',
     type: 'core/blockquote',
     children: [
       {
