@@ -45,10 +45,14 @@ const createFactboxNode = (input: Plugin.Resource): Plugin.Resource => {
           children: [{ text: title }]
         },
         {
-          type: 'core/factbox/text',
+          type: 'core/factbox/body',
           class: 'text',
-          children: [{ text: text }]
-        },
+          children: [{
+            type: 'core/text',
+            class: 'text',
+            children: [{ text: text }]
+          }]
+        }
       ]
     }
   }
