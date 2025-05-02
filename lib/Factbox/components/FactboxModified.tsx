@@ -9,7 +9,7 @@ export const FactboxModified = ({ modified = '' }: Modified): JSX.Element => {
     const formatted = formatDate(modified as string)
     return (
       <div className='opacity-70 font-semibold text-xs flex justify-between items-center gap-1'>
-        <div>Senast ändrad</div>
+        <div>Originalet är från</div>
         <div>{formatted}</div>
       </div>
     )
