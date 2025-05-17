@@ -31,6 +31,7 @@ const createTTVisualNode = async (input: Plugin.Resource): Promise<Plugin.Resour
       type: 'tt/visual',
       properties: {
         href: props.href,
+        proxy: props.proxy,
         uri: `http://tt.se/media/image/${parseImageId(props.href)}`,
         rel: props.rel || 'self',
         text: props.text,
