@@ -23,7 +23,7 @@ function parseImageId(data: string): string | undefined {
 function idMatcher(value: string): string | undefined {
   // Regex to match SDL ID
   const matchers = [
-    /\/media\/image\/(sdl[A-Za-z0-9%_-]+(?=_(Normal|Watermark)Preview))/i,
+    /\/media\/(image|graphic)\/(sdl[A-Za-z0-9%_-]+(?=_(Normal|Watermark)Preview))/i,
     /https:\/\/tt\.se\/bild\/o\/[A-Za-z0-9-%_]*(sdl[A-Za-z0-9%_-]+)$/i
   ]
 
