@@ -28,7 +28,7 @@ function idMatcher(value: string): string | undefined {
   ]
 
   return matchers.reduce((prev: undefined | string, curr: RegExp): string | undefined => {
-    return prev || value.match(curr)?.[1]
+    return prev || value.match(curr)?.[0]
   }, undefined)
 }
 
