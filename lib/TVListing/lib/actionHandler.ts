@@ -30,14 +30,14 @@ export const actionHandler = ({ editor }: { editor: Editor }): void => {
         },
         {
           class: 'text',
-          type: 'tt/tv-listing/end_time',
+          type: 'tt/tv-listing/time',
           children: [{ text: '' }]
         },
         {
           class: 'text',
-          type: 'tt/tv-listing/time',
+          type: 'tt/tv-listing/end_time',
           children: [{ text: '' }]
-        },
+        }
       ]
     }]
 
