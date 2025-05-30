@@ -55,6 +55,38 @@ export const TextbitDocument: Descendant[] = [
     ]
   },
   {
+    type: 'tt/tv-listing',
+    id: 'e61e8819-62f8-44ad-810f-364607196364',
+    class: 'text',
+    children: [
+      {
+        class: 'text',
+        type: 'tt/tv-listing/title',
+        children: [{ text: '' }]
+      },
+      {
+        class: 'text',
+        type: 'tt/tv-listing/channel',
+        children: [{ text: '' }]
+      },
+      {
+        class: 'text',
+        type: 'tt/tv-listing/day',
+        children: [{ text: '' }]
+      },
+      {
+        class: 'text',
+        type: 'tt/tv-listing/end_time',
+        children: [{ text: '' }]
+      },
+      {
+        class: 'text',
+        type: 'tt/tv-listing/time',
+        children: [{ text: '' }]
+      },
+    ]
+  },
+  {
     type: 'core/table',
     id: 'f0600160-08ca-4732-8512-52c002e5cb93',
     class: 'block',

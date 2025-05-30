@@ -25,7 +25,8 @@ import {
   OEmbed,
   TTVisual,
   Factbox,
-  Table
+  Table,
+  TVListing
 } from '../../lib'
 
 /**
@@ -66,7 +67,8 @@ export function App(): JSX.Element {
     OEmbed(),
     TTVisual(),
     Factbox(),
-    Table()
+    Table(),
+    TVListing()
   ]
 
   return (
