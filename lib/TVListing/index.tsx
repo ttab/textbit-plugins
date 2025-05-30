@@ -55,18 +55,18 @@ export const TVListing: Plugin.InitFunction = (options) => {
           }
         },
         {
-          type: 'end_time',
+          type: 'time',
           class: 'text',
-          component: EndTime,
+          component: Time,
           constraints: {
             allowBreak: false,
             allowSoftBreak: false
           }
         },
         {
-          type: 'time',
+          type: 'end_time',
           class: 'text',
-          component: Time,
+          component: EndTime,
           constraints: {
             allowBreak: false,
             allowSoftBreak: false
