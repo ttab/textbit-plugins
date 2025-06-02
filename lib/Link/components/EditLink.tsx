@@ -1,6 +1,5 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Editor, Element, Transforms } from 'slate'
-import { ReactEditor } from 'slate-react'
 import {
   type Plugin,
   TextbitElement
@@ -16,10 +15,13 @@ export const EditLink = ({ editor, entry }: Plugin.ToolComponentProps): JSX.Elem
   const [url, seturl] = useState<string>(TextbitElement.isElement(node) && typeof node?.properties?.url === 'string' ? node.properties.url : '')
   const inputRef = useRef<HTMLInputElement>(null)
 
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
+
   if (!TextbitElement.isElement(node)) {
     return <></>
   }
-
 
   return <div className="flex -ml-1 select-none content-center gap-x-1">
     <div
@@ -54,20 +56,18 @@ export const EditLink = ({ editor, entry }: Plugin.ToolComponentProps): JSX.Elem
           if (url === '') {
             deleteLink(editor)
           }
-          ReactEditor.focus(editor as unknown as ReactEditor)
         }
       }}
       onBlur={() => {
-        Transforms.setNodes(
-          editor,
-          {
-            properties: {
-              ...node.properties,
-              url
-            }
-          },
-          { at: path }
-        )
+        if (url === '') {
+          deleteLink(editor)
+        } else {
+          Transforms.setNodes(
+            editor,
+            { properties: { ...node.properties, url } },
+            { at: path }
+          )
+        }
       }}
     />
 
@@ -78,7 +78,7 @@ export const EditLink = ({ editor, entry }: Plugin.ToolComponentProps): JSX.Elem
         e.stopPropagation()
       }}
     >
-      {isValidLink(url)
+      {isValidLink(url, true)
         ? <LinkIcon className="text-green-600" />
         : <UnlinkIcon className="text-red-600" />
       }
