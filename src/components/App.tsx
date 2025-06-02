@@ -100,7 +100,7 @@ function Editor({ initialValue }: {
         className="outline-none dark:text-slate-100"
         value={value}
         onChange={(value: Descendant[]) => {
-          console.log(value, null, 2)
+          console.log(JSON.stringify(value, null, 2))
           setValue(value)
         }}
       >
