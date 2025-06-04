@@ -5,6 +5,7 @@ import {
   ItalicIcon,
   UnderlineIcon
 } from 'lucide-react'
+import { actionHandler } from '../PrintText/lib/actionHandler'
 
 const Bold: Plugin.InitFunction = () => {
   return {
@@ -53,8 +54,22 @@ const Underline: Plugin.InitFunction = () => {
   }
 }
 
+const Role: Plugin.InitFunction = () => {
+  return {
+    class: 'leaf',
+    name: 'print-text/role',
+    actions: [{
+      name: 'set-role',
+      hotkey: undefined,
+      tool: () => <div className='text-xs'>Roll</div>,
+      handler: actionHandler
+    }]
+  }
+}
+
 export {
   Bold,
   Italic,
-  Underline
+  Underline,
+  Role
 }

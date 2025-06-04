@@ -79,7 +79,7 @@ export const CharacterCount = ({ element, className, type, countTypes }: {
   return <></>
 }
 
-function isClassNameOverridesOption(value: unknown): value is ClassNameOverridesType {
+export function isClassNameOverridesOption(value: unknown): value is ClassNameOverridesType {
   if (!value || typeof value !== 'object') {
     return false
   }

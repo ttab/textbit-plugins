@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Editor, Element, Transforms } from 'slate'
+import { Editor, Element, Node, Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 import {
   type Plugin,
@@ -89,6 +89,6 @@ export const EditLink = ({ editor, entry }: Plugin.ToolComponentProps): JSX.Elem
 
 const deleteLink = (editor: Editor): void => {
   Transforms.unwrapNodes(editor, {
-    match: n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'core/link'
+    match: (n: Node) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'core/link'
   })
 }
