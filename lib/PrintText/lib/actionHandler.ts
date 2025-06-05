@@ -1,3 +1,4 @@
+import { TextbitEditor } from '@ttab/textbit'
 import { Editor, Transforms } from 'slate'
 
 export const actionHandler = ({ editor }: { editor: Editor }): void => {
@@ -19,5 +20,13 @@ export const actionHandler = ({ editor }: { editor: Editor }): void => {
     ]
   }]
 
+
   Transforms.insertNodes(editor, node, { at: editor.selection })
+
+  const position = TextbitEditor.position(editor) + 1
+
+  Transforms.select(editor, {
+    anchor: { offset: 0, path: [position, 0, 0] },
+    focus: { offset: 0, path: [position, 0, 0] }
+  })
 }
