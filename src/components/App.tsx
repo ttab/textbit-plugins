@@ -26,7 +26,8 @@ import {
   TTVisual,
   Factbox,
   Table,
-  TVListing
+  TVListing,
+  PrintText
 } from '../../lib'
 
 /**
@@ -54,6 +55,7 @@ export function App(): JSX.Element {
         vignette: 'bg-slate-200'
       }
     }),
+    PrintText(),
     Bold(),
     Italic(),
     Underline(),
