@@ -16,7 +16,9 @@ export const EditLink = ({ editor, entry }: Plugin.ToolComponentProps): JSX.Elem
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    inputRef.current?.focus()
+    if (!isValidLink(url, true)) {
+      inputRef.current?.focus()
+    }
   }, [])
 
   if (!TextbitElement.isElement(node)) {
