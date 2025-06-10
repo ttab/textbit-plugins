@@ -5,13 +5,17 @@ import {
 import { TextbitEditor } from '@ttab/textbit'
 
 
-export const actionHandler = ({ editor }: { editor: Editor }): void => {
+export const actionHandler = ({ editor,  }: { editor: Editor }): void => {
   const text = TextbitEditor.getSelectedText(editor)
 
     const node = [{
       id: crypto.randomUUID(),
       class: 'block',
       type: 'tt/tv-listing',
+      properties: {
+        channel: '',
+        uri: ''
+      },
       children: [
         {
           class: 'text',
@@ -21,7 +25,7 @@ export const actionHandler = ({ editor }: { editor: Editor }): void => {
         {
           class: 'text',
           type: 'tt/tv-listing/channel',
-          children: [{ text: '' }]
+          children: []
         },
         {
           class: 'text',
