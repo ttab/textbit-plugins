@@ -39,8 +39,7 @@ export const TVListing: Plugin.InitFunction = (options) => {
         {
           type: 'channel',
           class: 'text',
-          component: Channel,
-          options,
+          component: Channel,          
           constraints: {
             allowBreak: false,
             allowSoftBreak: false

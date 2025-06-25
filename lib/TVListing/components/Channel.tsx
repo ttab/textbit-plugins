@@ -1,13 +1,10 @@
-import type { Plugin } from "@ttab/textbit"
 import type { PropsWithChildren } from "react"
 
-export const Channel = ({ options }: Plugin.ComponentProps) => {
-  const ChannelComponent = options?.channelComponent as React.ComponentType<PropsWithChildren> | undefined
-
+export const Channel = ({ children }: PropsWithChildren) => {
   return (
     <div className="border-b">
       <div contentEditable={false} className="font-semibold">Kanal</div>
-      {ChannelComponent && <ChannelComponent />}
+      {children}
     </div>
   )
 }
