@@ -55,6 +55,31 @@ export const TextbitDocument: Descendant[] = [
     ]
   },
   {
+    type: 'core/image',
+    id: crypto.randomUUID(),
+    class: 'block',
+    properties: {
+      type: 'image/jpg',
+      src: 'https://picsum.photos/800/600?random=1',
+      title: 'A random image',
+      size: 0,
+      width: 800,
+      height: 600
+    },
+    children: [
+      {
+        type: 'core/image/image',
+        class: 'text',
+        children: [{ text: '' }]
+      },
+      {
+        type: 'core/image/text',
+        class: 'text',
+        children: [{ text: 'A random image' }]
+      }
+    ]
+  },
+  {
     type: 'core/table',
     id: 'f0600160-08ca-4732-8512-52c002e5cb93',
     class: 'block',
