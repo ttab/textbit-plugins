@@ -1,8 +1,7 @@
-import { type CSSProperties, useEffect, useRef, useState } from 'react'
-import { cva } from 'class-variance-authority'
-import { CropDialogMenu } from './CropDialogMenu'
-import { cn } from '../../cn'
+import { useEffect, useRef, useState } from 'react'
+import { CropDialogMenu } from './Menu'
 import { Softcrop } from './Softcrop'
+import { Grid } from './Grid'
 
 export const CropDialog = ({src}: {
   src: string
@@ -16,7 +15,10 @@ export const CropDialog = ({src}: {
 
   useEffect(() => {
     if (!isActive && sf.current) {
+      console.log(sf.current.getCropData())
+      console.log(sf.current.getFocusPoint())
       sf.current.destroy()
+      sf.current = null
     }
 
     if (!containerEl.current || !wrapperEl.current || !imageEl.current || !focusPointEl.current) {
@@ -27,12 +29,7 @@ export const CropDialog = ({src}: {
       containerEl.current,
       wrapperEl.current,
       imageEl.current,
-      focusPointEl.current,
-      {
-        onChange: (data) => {
-          // FIXME: Handle data
-        }
-      }
+      focusPointEl.current
     )
   }, [isActive])
 
@@ -87,7 +84,7 @@ export const CropDialog = ({src}: {
               </div>
             </div>
           </div>
-          <CropGrid/>
+          <Grid/>
         </div>
       )}
 
@@ -108,54 +105,5 @@ export const CropDialog = ({src}: {
         }}
       />
     </>
-  )
-}
-
-
-const CropGrid = ():JSX.Element => {
-  return (
-    <>
-      <CropGridLine direction='horizontal' offset={33} />
-      <CropGridLine direction='horizontal' offset={67} />
-      <CropGridLine direction='vertical' offset={33} />
-      <CropGridLine direction='vertical' offset={67} />
-    </>
-  )
-}
-
-
-const CropGridLine = ({direction, offset}: {
-  direction: 'horizontal' | 'vertical'
-  offset: number
-}): JSX.Element => {
-  const line = cva(`
-    absolute
-    opacity-50
-    pointer-events-none
-    transition-[opacity]
-    ease-in-out
-    duration-200
-    group-[.grid]:opacity-50`
-  , {
-    variants: {
-      'direction': {
-        'horizontal': 'left-0 right-0 h-[1px]',
-        'vertical': 'top-0 bottom-0 w-[1px]'
-      }
-    }
-  })
-
-  const style: CSSProperties = {
-    backdropFilter: 'invert(0.8)'
-  }
-
-  if (direction === 'vertical') {
-    style.left = `${offset}%`
-  } else {
-    style.top = `${offset}%`
-  }
-
-  return (
-    <div className={cn(line({direction}))} style={style}></div>
   )
 }

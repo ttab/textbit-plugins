@@ -34,7 +34,6 @@ export class Softcrop {
   #imageDisplaySize: { width: number, height: number } = { width: 0, height: 0 }
 
   #options: SoftcropOptions
-  #onChange?: (data: SoftcropData) => void
 
   #scale: number = 1
   #imageX: number = 0
@@ -45,6 +44,9 @@ export class Softcrop {
   #focusPointX: number = 0 // Transform X position
   #focusPointY: number = 0 // Transform Y position
 
+  // Event state tracking
+  pinchStart: number | null = null
+  pinchCenter: number | null = null
   #isPressed: boolean = false
   #isDragging: boolean = false
   #dragStart: { x: number, y: number } = { x: 0, y: 0 }
@@ -74,7 +76,6 @@ export class Softcrop {
             ? options.maxZoom
             : 5
       }
-      this.#onChange = options.onChange
 
       this.#init()
     }
@@ -105,7 +106,6 @@ export class Softcrop {
 
       this.#updateContainerDimensions()
       this.#setFocusPoint(50, 33)
-      this.updateZoomInfo()
     }
 
 
@@ -146,7 +146,7 @@ export class Softcrop {
       this.#imageEl.addEventListener('touchstart', (e) => this.#startImageDrag(e), {capture: true})
 
       document.addEventListener('mousemove', (e) => this.#handleMove(e), {capture: true})
-      document.addEventListener('mouseup', (e) => this.#endDrag(e), {capture: true})
+      document.addEventListener('mouseup', (e) => this.#endDrag(e))
       document.addEventListener('touchmove', (e) => this.#handleMove(e), {capture: true})
     }
 
@@ -160,7 +160,7 @@ export class Softcrop {
       this.#imageEl.removeEventListener('touchstart', (e) => this.#startImageDrag(e), {capture: true})
 
       document.removeEventListener('mousemove', (e) => this.#handleMove(e), {capture: true})
-      document.removeEventListener('mouseup', (e) => this.#endDrag(e), {capture: true})
+      document.removeEventListener('mouseup', (e) => this.#endDrag(e))
       document.removeEventListener('touchmove', (e) => this.#handleMove(e), {capture: true})
     }
 
@@ -176,7 +176,7 @@ export class Softcrop {
 
     // handleTouchStart(e: TouchEvent) {
     //   if (e.touches.length === 2) {
-    //       this.pinchStart = this.getTouchDistance(e.touches)
+    //       this.pinchStart = this.#getTouchDistance(e.touches)
     //       this.pinchCenter = this.getTouchCenter(e.touches)
     //   } else if (e.touches.length === 1) {
     //       this.startImageDrag(e)
@@ -190,7 +190,7 @@ export class Softcrop {
       this.toggleGrid(true)
       this.#debouncedHideGrid()
 
-      if (e.touches.length === 2) {
+      if (e.touches.length === 2 && this.pinchStart) {
           e.preventDefault()
           const currentDistance = this.#getTouchDistance(e.touches)
           const delta = currentDistance / this.pinchStart
@@ -246,16 +246,20 @@ export class Softcrop {
 
           this.updateImageTransform()
           this.#updateFocusPointTransform()
-          this.updateZoomInfo()
       }
+    }
+
+    isTouchEvent(value: unknown): value is TouchEvent {
+      return value instanceof TouchEvent
     }
 
     #startImageDrag(e: MouseEvent | TouchEvent) {
       e.preventDefault()
       this.#isPressed = true
 
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY
+      const { clientX, clientY } = (e instanceof MouseEvent)
+        ? e
+        : { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY }
 
       this.#dragStart = { x: clientX, y: clientY }
       this.#dragOffset = { x: this.#imageX, y: this.#imageY }
@@ -270,8 +274,9 @@ export class Softcrop {
       this.toggleGrid(true)
       this.#debouncedHideGrid()
 
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY
+      const { clientX, clientY } = (e instanceof MouseEvent)
+        ? e
+        : { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY }
 
       const deltaX = clientX - this.#dragStart.x
       const deltaY = clientY - this.#dragStart.y
@@ -285,7 +290,6 @@ export class Softcrop {
 
       this.updateImageTransform()
       this.#updateFocusPointTransform()
-      this.updateZoomInfo()
     }
 
     #endDrag(e: MouseEvent) {
@@ -297,7 +301,7 @@ export class Softcrop {
       this.#isDragging = false
     }
 
-    #handleFocusPointClick(e: MouseEvent, clientX: number, clientY: number) {
+    #handleFocusPointClick(e: MouseEvent | TouchEvent, clientX: number, clientY: number) {
         if (this.#isDragging) return
 
         e.preventDefault()
@@ -325,7 +329,6 @@ export class Softcrop {
       this.#focusPoint = { x: xPercent, y: yPercent }
       this.#focusPointEl.style.display = 'flex'
       this.#updateFocusPointTransform()
-      this.updateZoomInfo()
     }
 
     getFocusPoint() {
@@ -393,29 +396,6 @@ export class Softcrop {
         this.#imageEl.style.transformOrigin = '0 0'
     }
 
-    updateZoomInfo() {
-        const zoomPercent = Math.round(this.#scale * 100)
-        const x = Math.round(this.#imageX)
-        const y = Math.round(this.#imageY)
-
-        const cropData = this.getCropAreaPercent()
-
-        let focusInfo = ''
-        if (this.#focusPoint) {
-            focusInfo = ` | Focus: ${this.#focusPoint.x.toFixed(1)}%, ${this.#focusPoint.y.toFixed(1)}%`
-        }
-
-        // FIXME: Remove when done!
-        // console.debug(`Zoom: ${zoomPercent}% | Position: ${x}, ${y} | Crop: x:${cropData.x}% y:${cropData.y}% w:${cropData.w}% h:${cropData.h}%${focusInfo}`)
-
-        if (this.#onChange) {
-          this.#onChange({
-            area: cropData,
-            point: this.#focusPoint
-          })
-        }
-    }
-
     // Debounce utility function
     debounce(func: (args?: unknown) => void, wait: number) {
         let timeout: NodeJS.Timeout
@@ -458,7 +438,6 @@ export class Softcrop {
 
         this.updateImageTransform()
         this.#updateFocusPointTransform()
-        this.updateZoomInfo()
     }
 
     zoomIn() {

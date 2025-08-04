@@ -60,7 +60,7 @@ export const TextbitDocument: Descendant[] = [
     class: 'block',
     properties: {
       type: 'image/jpg',
-      src: 'https://picsum.photos/800/600?random=1',
+      src: 'https://fastly.picsum.photos/id/534/800/600.jpg?hmac=Y1tfrqoUorsaytGK-alxu5DwWYG9wRbsXuaejW3RIOU',
       title: 'A random image',
       size: 0,
       width: 800,
