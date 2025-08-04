@@ -52,11 +52,6 @@ export class Softcrop {
   #dragStart: { x: number, y: number } = { x: 0, y: 0 }
   #dragOffset: { x: number, y: number } = { x: 0, y: 0 }
 
-  // Debounced grid hding
-  #debouncedHideGrid = this.debounce(() => {
-      this.toggleGrid(false)
-  }, 300)
-
   constructor(
     containerEl: HTMLDivElement,
     wrapperEl: HTMLDivElement,
@@ -187,9 +182,6 @@ export class Softcrop {
       if (!this.#isPressed) return
       this.#isDragging = true
 
-      this.toggleGrid(true)
-      this.#debouncedHideGrid()
-
       if (e.touches.length === 2 && this.pinchStart) {
           e.preventDefault()
           const currentDistance = this.#getTouchDistance(e.touches)
@@ -220,9 +212,6 @@ export class Softcrop {
     }
 
     #zoom(factor: number) {
-      this.toggleGrid(true)
-      this.#debouncedHideGrid()
-
       const minScaleX = this.#containerSize.width / this.#imageDisplaySize.width
       const minScaleY = this.#containerSize.height / this.#imageDisplaySize.height
       const minScale = Math.max(minScaleX, minScaleY)
@@ -270,9 +259,6 @@ export class Softcrop {
 
       e.preventDefault()
       this.#isDragging = true
-
-      this.toggleGrid(true)
-      this.#debouncedHideGrid()
 
       const { clientX, clientY } = (e instanceof MouseEvent)
         ? e
@@ -394,27 +380,6 @@ export class Softcrop {
     updateImageTransform() {
         this.#imageEl.style.transform = `translate(${this.#imageX}px, ${this.#imageY}px) scale(${this.#scale})`
         this.#imageEl.style.transformOrigin = '0 0'
-    }
-
-    // Debounce utility function
-    debounce(func: (args?: unknown) => void, wait: number) {
-        let timeout: NodeJS.Timeout
-        return function executedFunction(...args: unknown[]) {
-            const later = () => {
-                clearTimeout(timeout)
-                func(...args)
-            }
-            clearTimeout(timeout)
-            timeout = setTimeout(later, wait)
-        }
-    }
-
-    toggleGrid(visible: boolean) {
-      if (visible) {
-        this.#containerEl.classList.add('grid-visible')
-      } else {
-        this.#containerEl.classList.remove('grid-visible')
-      }
     }
 
     resetZoom() {
