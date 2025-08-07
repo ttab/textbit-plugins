@@ -117,16 +117,22 @@ export const calculateCropArea = (
     return null
   }
 
-  const {x, y, w, h} = {
+  const { x, y, w, h } = {
     x: Math.max(0, Math.round(cropX * 10) / 10),
     y: Math.max(0, Math.round(cropY * 10) / 10),
     w: Math.max(0, Math.round(cropW * 10) / 10),
     h: Math.max(0, Math.round(cropH * 10) / 10)
   }
 
-  return (x === 0 && y === 0 && w === 100 && h === 100)
-    ? null
-    : {x, y, w, h}
+  // Return null if this represents the full image (with tolerance for rounding)
+  const tolerance = 0.2 // Allow for small rounding differences
+  const isFullImage =
+    x <= tolerance &&
+    y <= tolerance &&
+    w >= (100 - tolerance) &&
+    h >= (100 - tolerance)
+
+  return isFullImage ? null : { x, y, w, h }
 }
 
 // Calculate transform state to display a specific crop area

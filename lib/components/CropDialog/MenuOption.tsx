@@ -13,13 +13,11 @@ export const MenuOption = ({onPress, children}: React.PropsWithChildren & {
         `
       }
       onClick={(e) => {
-        console.log('ONCLICK')
         e.preventDefault()
         e.stopPropagation()
         onPress()
       }}
       onMouseUpCapture={(e) => {
-        console.log('PREVENTED mouse up')
         e.preventDefault()
         e.stopPropagation()
       }}
