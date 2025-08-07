@@ -39,7 +39,9 @@ export const consume: Plugin.ConsumeFunction = async ({ input }) => {
                 title: name,
                 size,
                 width: tmpImage.width,
-                height: tmpImage.height
+                height: tmpImage.height,
+                point: null,
+                area: null
               },
               children: [
                 {
