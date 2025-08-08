@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { SoftcropArea, SoftcropPoint } from './softcrop-lib'
 import { CropDialogMenu } from './Menu'
 import { Softcrop, SoftcropRef } from './Softcrop'
@@ -33,12 +33,26 @@ export const CropDialog = ({ src, area, point, onChange }: {
   return (
     <>
       {isActive && (
-        <Softcrop ref={softcropRef} src={src} onChange={(cropArea, focusPoint) => {
-          console.log(
-            cropArea,
-            focusPoint
-          )
-        }}>
+        <Softcrop
+          ref={softcropRef}
+          src={src}
+          onReady={() => {
+            if (!softcropRef.current) return
+
+            if (area) {
+              const { x, y, w, h } = area
+              softcropRef.current.setCropArea(x, y, w, h)
+            } else {
+              softcropRef.current.setCropArea(0, 0, 0.5, 0.5)
+
+            }
+
+            if (point) {
+              const {x, y} = point
+              softcropRef.current.setFocusPoint(x, y)
+            }
+          }}
+        >
           <Grid />
         </Softcrop>
       )}

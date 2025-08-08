@@ -34,6 +34,7 @@ interface SoftcropProps {
   maxZoom?: number
   zoomSensitivity?: number
   onChange?: (cropArea: SoftcropArea | null, focusPoint: SoftcropPoint | null) => void
+  onReady?: () => void
 }
 
 export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
@@ -41,7 +42,8 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   children,
   maxZoom = 5,
   zoomSensitivity = 0.02,
-  onChange
+  onChange,
+  onReady
 }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -94,13 +96,38 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     setImageLoaded(true)
   }, [])
 
+  // When ready
+  const [isReady, setIsReady] = useState(false)
+  useEffect(() => {
+    if (isReady) return
+    if (imageLoaded &&
+        containerSize.width > 0 &&
+        containerSize.height > 0 &&
+        imageDimensions.width > 0 &&
+        imageDimensions.height > 0) {
+      setIsReady(true)
+      setTimeout(() => onReady?.(), 0)
+    }
+  }, [imageLoaded, containerSize.width, containerSize.height, imageDimensions.width, imageDimensions.height, isReady, onReady])
+
+
   // When relevant data for crop area or focus point changes we callback onChange() if exists
   useEffect(() => {
     if (!onChange) return
 
+    const a = calculateCropArea(scale, position, constraints)
+
     onChange(
-      calculateCropArea(scale, position, constraints),
-      focusPoint
+      !a ? null : {
+        x: a.x / 100,
+        y: a.y / 100,
+        w: a.w / 100,
+        h: a.h / 100
+      },
+      !focusPoint ? null : {
+        x: focusPoint.x / 100,
+        y: focusPoint.y / 100
+      }
     )
   }, [scale, position, focusPoint, onChange, constraints])
 
@@ -288,15 +315,45 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     return constrainedPos
   })() : null
 
+  const isValid = (v: number): boolean => {
+    return typeof v === 'number'
+      && v >= 0
+      && v <= 1
+  }
+
   // Expose methods via ref
   useImperativeHandle(ref, () => ({
-    getCropArea: () => calculateCropArea(scale, position, constraints),
+    getCropArea: () => {
+      const a = calculateCropArea(scale, position, constraints)
+      return !a ? null : {
+        x: a.x / 100,
+        y: a.y / 100,
+        w: a.w / 100,
+        h: a.h / 100
+      }
+    },
 
-    getFocusPoint: () => focusPoint,
+    getFocusPoint: () => {
+      return !focusPoint ? null : {
+        x: focusPoint.x / 100,
+        y: focusPoint.y / 100
+      }
+    },
 
     setCropArea: (x: number, y: number, w: number, h: number) => {
+      if (!isValid(x) ||!isValid(y) ||!isValid(w) ||!isValid(h)) {
+        console.warn('Invalid crop coordinates not applied', x, y, w, h)
+        return
+      }
+
       try {
-        const area = { x, y, w, h }
+        const area = {
+          x: x * 100,
+          y: y * 100,
+          w: w * 100,
+          h: h * 100
+        }
+
         const newState = calculateStateForCropArea(area, constraints)
         setScale(newState.scale)
         setPosition(newState.position)
@@ -306,7 +363,11 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     },
 
     setFocusPoint: (x: number, y: number) => {
-      setFocusPoint({ x, y })
+      if (!isValid(x) || !isValid(y)) {
+        console.warn('Invalid focus point coordinates not applied', x, y)
+      }
+
+      setFocusPoint({ x: x * 100 , y: y * 100 })
       if (focusPointRef.current) {
         focusPointRef.current.style.display = 'flex'
       }
