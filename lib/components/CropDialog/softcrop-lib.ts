@@ -1,13 +1,13 @@
 export interface SoftcropArea {
-  x: number
-  y: number
-  w: number
-  h: number
+  x: number // 0.0 - 1.0
+  y: number // 0.0 - 1.0
+  w: number // 0.0 - 1.0
+  h: number // 0.0 - 1.0
 }
 
 export interface SoftcropPoint {
-  x: number
-  y: number
+  x: number // 0.0 - 1.0
+  y: number // 0.0 - 1.0
 }
 
 export interface ImageDimensions {
@@ -102,35 +102,36 @@ export const calculateCropArea = (
     return null
   }
 
-  const cropX = (visibleLeft / scaledWidth) * 100
-  const cropY = (visibleTop / scaledHeight) * 100
-  const cropW = ((visibleRight - visibleLeft) / scaledWidth) * 100
-  const cropH = ((visibleBottom - visibleTop) / scaledHeight) * 100
+  // Use decimals instead of percentages
+  const cropX = visibleLeft / scaledWidth
+  const cropY = visibleTop / scaledHeight
+  const cropW = (visibleRight - visibleLeft) / scaledWidth
+  const cropH = (visibleBottom - visibleTop) / scaledHeight
 
-  // Check if calculated percentages are valid
+  // Check if calculated values are valid
   if (
     !isFinite(cropX) || !isFinite(cropY) || !isFinite(cropW) || !isFinite(cropH) ||
     cropW <= 0 || cropH <= 0 ||
     cropX < 0 || cropY < 0 ||
-    cropX + cropW > 100.1 || cropY + cropH > 100.1 // Small tolerance for rounding
+    cropX + cropW > 1.001 || cropY + cropH > 1.001 // Small tolerance for rounding
   ) {
     return null
   }
 
   const { x, y, w, h } = {
-    x: Math.max(0, Math.round(cropX * 10) / 10),
-    y: Math.max(0, Math.round(cropY * 10) / 10),
-    w: Math.max(0, Math.round(cropW * 10) / 10),
-    h: Math.max(0, Math.round(cropH * 10) / 10)
+    x: Math.max(0, Math.round(cropX * 1000) / 1000), // 3 decimal precision
+    y: Math.max(0, Math.round(cropY * 1000) / 1000),
+    w: Math.max(0, Math.round(cropW * 1000) / 1000),
+    h: Math.max(0, Math.round(cropH * 1000) / 1000)
   }
 
   // Return null if this represents the full image (with tolerance for rounding)
-  const tolerance = 0.2 // Allow for small rounding differences
+  const tolerance = 0.002 // Allow for small rounding differences
   const isFullImage =
     x <= tolerance &&
     y <= tolerance &&
-    w >= (100 - tolerance) &&
-    h >= (100 - tolerance)
+    w >= (1 - tolerance) &&
+    h >= (1 - tolerance)
 
   return isFullImage ? null : { x, y, w, h }
 }
@@ -142,8 +143,8 @@ export const calculateStateForCropArea = (
 ): { scale: number; position: Position } => {
   const { containerSize, imageDimensions, minScale, maxScale } = constraints
 
-  const cropWidthInPixels = (area.w / 100) * imageDimensions.width
-  const cropHeightInPixels = (area.h / 100) * imageDimensions.height
+  const cropWidthInPixels = area.w * imageDimensions.width
+  const cropHeightInPixels = area.h * imageDimensions.height
 
   const scaleX = containerSize.width / cropWidthInPixels
   const scaleY = containerSize.height / cropHeightInPixels
@@ -151,8 +152,8 @@ export const calculateStateForCropArea = (
 
   targetScale = Math.max(minScale, Math.min(maxScale, targetScale))
 
-  const cropStartX = (area.x / 100) * imageDimensions.width
-  const cropStartY = (area.y / 100) * imageDimensions.height
+  const cropStartX = area.x * imageDimensions.width
+  const cropStartY = area.y * imageDimensions.height
 
   const scaledCropStartX = cropStartX * targetScale
   const scaledCropStartY = cropStartY * targetScale
@@ -247,11 +248,11 @@ export const clickToFocusPoint = (
   const imageClickX = (clickX - imagePosition.x) / scale
   const imageClickY = (clickY - imagePosition.y) / scale
 
-  const xPercent = (imageClickX / imageDimensions.width) * 100
-  const yPercent = (imageClickY / imageDimensions.height) * 100
+  const xDecimal = imageClickX / imageDimensions.width
+  const yDecimal = imageClickY / imageDimensions.height
 
-  if (xPercent >= 0 && xPercent <= 100 && yPercent >= 0 && yPercent <= 100) {
-    return { x: xPercent, y: yPercent }
+  if (xDecimal >= 0 && xDecimal <= 1 && yDecimal >= 0 && yDecimal <= 1) {
+    return { x: xDecimal, y: yDecimal }
   }
 
   return null
@@ -265,8 +266,8 @@ export const calculateFocusPointScreenPosition = (
   imageDimensions: ImageDimensions
 ): Position => {
   return {
-    x: imagePosition.x + (focusPoint.x / 100) * imageDimensions.width * scale,
-    y: imagePosition.y + (focusPoint.y / 100) * imageDimensions.height * scale
+    x: imagePosition.x + focusPoint.x * imageDimensions.width * scale,
+    y: imagePosition.y + focusPoint.y * imageDimensions.height * scale
   }
 }
 
@@ -295,8 +296,8 @@ export const updateConstrainedFocusPoint = (
   const constrainedImageY = (constrainedScreenPosition.y - imagePosition.y) / scale
 
   return {
-    x: (constrainedImageX / imageDimensions.width) * 100,
-    y: (constrainedImageY / imageDimensions.height) * 100
+    x: constrainedImageX / imageDimensions.width,
+    y: constrainedImageY / imageDimensions.height
   }
 }
 

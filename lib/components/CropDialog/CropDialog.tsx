@@ -42,9 +42,6 @@ export const CropDialog = ({ src, area, point, onChange }: {
             if (area) {
               const { x, y, w, h } = area
               softcropRef.current.setCropArea(x, y, w, h)
-            } else {
-              softcropRef.current.setCropArea(0, 0, 0.5, 0.5)
-
             }
 
             if (point) {

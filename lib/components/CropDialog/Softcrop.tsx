@@ -65,23 +65,27 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   const [dragStart, setDragStart] = useState<Position>({ x: 0, y: 0 })
   const [dragOffset, setDragOffset] = useState<Position>({ x: 0, y: 0 })
 
-  // Calculate constraints - use container width for image display width
-  const imageDisplayWidth = containerSize.width
-  const imageDisplayHeight = imageDimensions.width > 0
-    ? containerSize.width * (imageDimensions.height / imageDimensions.width)
-    : 0
+  // Memoized calculations (reduces redundant calculations)
+  const displayDimensions = useCallback((): ImageDimensions => {
+    const imageDisplayWidth = containerSize.width
+    const imageDisplayHeight = imageDimensions.width > 0
+      ? containerSize.width * (imageDimensions.height / imageDimensions.width)
+      : 0
+    return { width: imageDisplayWidth, height: imageDisplayHeight }
+  }, [containerSize.width, imageDimensions])
 
-  const displayDimensions = {
-    width: imageDisplayWidth,
-    height: imageDisplayHeight
-  }
-
-  const constraints = {
-    minScale: calculateMinScale(containerSize, displayDimensions),
+  const constraints = useCallback(() => ({
+    minScale: calculateMinScale(containerSize, displayDimensions()),
     maxScale: maxZoom,
     containerSize,
-    imageDimensions: displayDimensions
-  }
+    imageDimensions: displayDimensions()
+  }), [containerSize, displayDimensions, maxZoom])
+
+  const isReady = imageLoaded &&
+                 containerSize.width > 0 &&
+                 containerSize.height > 0 &&
+                 imageDimensions.width > 0 &&
+                 imageDimensions.height > 0
 
   // Handle image load
   const handleImageLoad = useCallback(() => {
@@ -96,40 +100,22 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     setImageLoaded(true)
   }, [])
 
-  // When ready
-  const [isReady, setIsReady] = useState(false)
+  // Fire onReady when component becomes ready
   useEffect(() => {
-    if (isReady) return
-    if (imageLoaded &&
-        containerSize.width > 0 &&
-        containerSize.height > 0 &&
-        imageDimensions.width > 0 &&
-        imageDimensions.height > 0) {
-      setIsReady(true)
+    if (isReady) {
       setTimeout(() => onReady?.(), 0)
     }
-  }, [imageLoaded, containerSize.width, containerSize.height, imageDimensions.width, imageDimensions.height, isReady, onReady])
-
+  }, [isReady, onReady])
 
   // When relevant data for crop area or focus point changes we callback onChange() if exists
   useEffect(() => {
-    if (!onChange) return
-
-    const a = calculateCropArea(scale, position, constraints)
+    if (!onChange || !isReady) return
 
     onChange(
-      !a ? null : {
-        x: a.x / 100,
-        y: a.y / 100,
-        w: a.w / 100,
-        h: a.h / 100
-      },
-      !focusPoint ? null : {
-        x: focusPoint.x / 100,
-        y: focusPoint.y / 100
-      }
+      calculateCropArea(scale, position, constraints()),
+      focusPoint
     )
-  }, [scale, position, focusPoint, onChange, constraints])
+  }, [scale, position, focusPoint, onChange, isReady, constraints])
 
   // Handle container resize and set wrapper height
   useEffect(() => {
@@ -175,10 +161,10 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
       return
     }
 
-    const centeredState = calculateCenteredState(constraints)
+    const centeredState = calculateCenteredState(constraints())
     setScale(centeredState.scale)
     setPosition(centeredState.position)
-  }, [imageLoaded, containerSize.width, containerSize.height, imageDimensions])
+  }, [imageLoaded, containerSize.width, containerSize.height, imageDimensions, constraints])
 
   // Wheel event listener must have passive: false to prevent scrolling page or editor
   useEffect(() => {
@@ -189,7 +175,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
       e.stopPropagation()
 
       const factor = wheelEventToZoomFactor(e.deltaY, zoomSensitivity)
-      const newState = applyZoom(scale, position, factor, constraints)
+      const newState = applyZoom(scale, position, factor, constraints())
 
       setScale(newState.scale)
       setPosition(newState.position)
@@ -202,7 +188,6 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
       wrapper.removeEventListener('wheel', handleWheelEvent)
     }
   }, [scale, position, constraints, zoomSensitivity])
-
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
@@ -224,7 +209,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
       y: dragOffset.y + deltaY
     }
 
-    const constrainedPosition = constrainPosition(newPosition, scale, constraints)
+    const constrainedPosition = constrainPosition(newPosition, scale, constraints())
     setPosition(constrainedPosition)
   }, [isDragging, dragStart, dragOffset, scale, constraints])
 
@@ -244,31 +229,23 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
         rect,
         scale,
         position,
-        displayDimensions
+        displayDimensions()
       )
 
       if (newFocusPoint) {
         setFocusPoint(newFocusPoint)
       }
     }
-  }, [isDragging, scale, position, imageDimensions])
+  }, [isDragging, scale, position, displayDimensions])
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 2) return
 
     const touches = e.touches
-    // FIXME: This might be necessary...
-    // if (touches.length === 2) {
-    //   const dx = touches[0].clientX - touches[1].clientX
-    //   const dy = touches[0].clientY - touches[1].clientY
-    //   const start = Math.sqrt(dx * dx + dy * dy)
-    //   console.log('Pinch start:', start)
-    // } else if (e.touches.length === 1) {
-      e.preventDefault()
-      setIsDragging(true)
-      setDragStart({ x: touches[0].clientX, y: touches[0].clientY })
-      setDragOffset(position)
-    // }
+    e.preventDefault()
+    setIsDragging(true)
+    setDragStart({ x: touches[0].clientX, y: touches[0].clientY })
+    setDragOffset(position)
   }, [position])
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
@@ -284,7 +261,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
         y: dragOffset.y - deltaY
       },
       scale,
-      constraints
+      constraints()
     )
 
     setPosition(constrainedPosition)
@@ -297,18 +274,18 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     }
 
     if (e.touches.length === 0) {
-
+      // Handle touch end logic here if needed
     }
-  }, [])
+  }, [isDragging])
 
   // Calculate focus point display position
   const focusPointDisplay = focusPoint ? (() => {
-    const screenPos = calculateFocusPointScreenPosition(focusPoint, scale, position, displayDimensions)
+    const screenPos = calculateFocusPointScreenPosition(focusPoint, scale, position, displayDimensions())
     const constrainedPos = constrainFocusPointToVisibleArea(screenPos, containerSize, 40)
 
     // Update focus point if it was constrained
     if (screenPos.x !== constrainedPos.x || screenPos.y !== constrainedPos.y) {
-      const updatedPoint = updateConstrainedFocusPoint(constrainedPos, scale, position, displayDimensions)
+      const updatedPoint = updateConstrainedFocusPoint(constrainedPos, scale, position, displayDimensions())
       setTimeout(() => setFocusPoint(updatedPoint), 0)
     }
 
@@ -316,45 +293,30 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   })() : null
 
   const isValid = (v: number): boolean => {
-    return typeof v === 'number'
-      && v >= 0
-      && v <= 1
+    return typeof v === 'number' && v >= 0 && v <= 1 && isFinite(v)
   }
 
   // Expose methods via ref
   useImperativeHandle(ref, () => ({
-    getCropArea: () => {
-      const a = calculateCropArea(scale, position, constraints)
-      return !a ? null : {
-        x: a.x / 100,
-        y: a.y / 100,
-        w: a.w / 100,
-        h: a.h / 100
-      }
-    },
+    getCropArea: () => isReady ? calculateCropArea(scale, position, constraints()) : null,
 
-    getFocusPoint: () => {
-      return !focusPoint ? null : {
-        x: focusPoint.x / 100,
-        y: focusPoint.y / 100
-      }
-    },
+    getFocusPoint: () => focusPoint,
 
     setCropArea: (x: number, y: number, w: number, h: number) => {
-      if (!isValid(x) ||!isValid(y) ||!isValid(w) ||!isValid(h)) {
-        console.warn('Invalid crop coordinates not applied', x, y, w, h)
+      if (!isReady || !isValid(x) || !isValid(y) || !isValid(w) || !isValid(h)) {
+        console.warn('Cannot set crop area: component not ready or invalid coordinates', { ready: isReady, x, y, w, h })
         return
       }
 
       try {
-        const area = {
-          x: x * 100,
-          y: y * 100,
-          w: w * 100,
-          h: h * 100
+        const area = { x, y, w, h }
+        const newState = calculateStateForCropArea(area, constraints())
+
+        if (!isFinite(newState.scale) || !isFinite(newState.position.x) || !isFinite(newState.position.y)) {
+          console.warn('Invalid state calculated for crop area:', newState)
+          return
         }
 
-        const newState = calculateStateForCropArea(area, constraints)
         setScale(newState.scale)
         setPosition(newState.position)
       } catch (error) {
@@ -365,30 +327,35 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     setFocusPoint: (x: number, y: number) => {
       if (!isValid(x) || !isValid(y)) {
         console.warn('Invalid focus point coordinates not applied', x, y)
+        return
       }
 
-      setFocusPoint({ x: x * 100 , y: y * 100 })
+      setFocusPoint({ x, y })
       if (focusPointRef.current) {
         focusPointRef.current.style.display = 'flex'
       }
     },
 
     zoomIn: () => {
+      if (!isReady) return
+
       const factor = Math.pow(1 + zoomSensitivity, 3)
-      const newState = applyZoom(scale, position, factor, constraints)
+      const newState = applyZoom(scale, position, factor, constraints())
       setScale(newState.scale)
       setPosition(newState.position)
     },
 
     zoomOut: () => {
+      if (!isReady) return
       const factor = Math.pow(1 + zoomSensitivity, -3)
-      const newState = applyZoom(scale, position, factor, constraints)
+      const newState = applyZoom(scale, position, factor, constraints())
       setScale(newState.scale)
       setPosition(newState.position)
     },
 
     reset: () => {
-      const centeredState = calculateCenteredState(constraints)
+      if (!isReady) return
+      const centeredState = calculateCenteredState(constraints())
       setScale(centeredState.scale)
       setPosition(centeredState.position)
       setFocusPoint(null)
@@ -396,7 +363,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
         focusPointRef.current.style.display = 'none'
       }
     }
-  }), [scale, position, constraints, focusPoint, zoomSensitivity])
+  }), [scale, position, focusPoint, zoomSensitivity, isReady, constraints])
 
   return (
     <div
@@ -423,8 +390,8 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
           style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
             transformOrigin: '0 0',
-            width: displayDimensions.width || 'auto',
-            height: displayDimensions.height || 'auto'
+            width: displayDimensions().width || 'auto',
+            height: displayDimensions().height || 'auto'
           }}
           draggable={false}
         />
@@ -445,7 +412,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
             <FocusIcon
               color='rgba(255, 255, 255, 0.9)'
               className="w-[40px] h-[40px] rounded-[12px] flex items-center justify-center"
-            ></FocusIcon>
+            />
           </div>
         )}
       </div>
