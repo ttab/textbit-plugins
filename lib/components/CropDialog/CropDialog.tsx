@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import type { SoftcropArea, SoftcropPoint } from './softcrop-lib'
 import { CropDialogMenu } from './Menu'
 import { Softcrop, SoftcropRef } from './Softcrop'
