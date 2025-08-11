@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useCallback, forwardRef, useImperativeHandle } from 'react'
 import {
-  SoftcropArea,
-  SoftcropPoint,
-  ImageDimensions,
-  Position,
+  type SoftcropArea,
+  type SoftcropPoint,
+  type ImageDimensions,
+  type Position,
   calculateMinScale,
   constrainPosition,
   calculateCropArea,

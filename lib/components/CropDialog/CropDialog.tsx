@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import type { SoftcropArea, SoftcropPoint } from './softcrop-lib'
 import { CropDialogMenu } from './Menu'
-import { Softcrop, SoftcropRef } from './Softcrop'
+import { Softcrop, type SoftcropRef } from './Softcrop'
 import { Grid } from './Grid'
 
 export interface SoftcropData {
