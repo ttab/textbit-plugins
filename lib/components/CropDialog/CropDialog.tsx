@@ -5,8 +5,8 @@ import { Softcrop, SoftcropRef } from './Softcrop'
 import { Grid } from './Grid'
 
 export interface SoftcropData {
-  area: SoftcropArea | null
-  point: SoftcropPoint | null
+  crop: SoftcropArea | null
+  focus: SoftcropPoint | null
 }
 
 export const CropDialog = ({ src, area, point, onChange }: {
@@ -22,8 +22,8 @@ export const CropDialog = ({ src, area, point, onChange }: {
     if (!newState && softcropRef.current) {
       // Extract data when closing
       onChange({
-        area: softcropRef.current.getCropArea(),
-        point: softcropRef.current.getFocusPoint()
+        crop: softcropRef.current.getCropArea(),
+        focus: softcropRef.current.getFocusPoint()
       })
     }
 

@@ -70,15 +70,15 @@ export const FigureImage = ({ editor, children, rootNode }: Plugin.ComponentProp
           src={src}
           area={area}
           point={point}
-          onChange={({area, point}) => {
+          onChange={({crop, focus}) => {
             const n = editor.children.findIndex((child: Descendant) => child.id === rootNode?.id)
             if (n < 0) {
               return
             }
 
             // Convert back to string format for storage
-            const cropString = area ? `${area.x} ${area.y} ${area.w} ${area.h}` : null
-            const focusString = point ? `${point.x} ${point.y}` : null
+            const cropString = crop ? `${crop.x} ${crop.y} ${crop.w} ${crop.h}` : undefined
+            const focusString = focus ? `${focus.x} ${focus.y}` : undefined
 
             Transforms.setNodes(
               editor,
