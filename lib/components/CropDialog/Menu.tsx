@@ -1,4 +1,4 @@
-import { Crop, X, Expand, ZoomIn, ZoomOut } from 'lucide-react'
+import { Crop, X, ZoomIn, ZoomOut, Undo2 } from 'lucide-react'
 import { MenuOption } from './MenuOption'
 
 export const CropDialogMenu = ({onToggle, onZoom, onReset, active }: {
@@ -24,7 +24,7 @@ export const CropDialogMenu = ({onToggle, onZoom, onReset, active }: {
             </MenuOption>
 
             <MenuOption onPress={() => onReset()}>
-              <Expand size={20} strokeWidth={1.75} className="text-white "/>
+              <Undo2 size={20} strokeWidth={1.75} className="text-white "/>
             </MenuOption>
           </>
         )
