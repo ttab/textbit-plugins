@@ -22,8 +22,10 @@ import { DragHandle } from './DragHandle'
 export interface SoftcropRef {
   getCropArea: () => SoftcropArea | null
   getFocusPoint: () => SoftcropPoint | null
+  getCropOffsets: () => { top: number; right: number; bottom: number; left: number }
   setCropArea: (x: number, y: number, w: number, h: number) => void
   setFocusPoint: (x: number, y: number) => void
+  setCropOffsets: (offsets: { top: number; right: number; bottom: number; left: number }) => void
   zoomIn: () => void
   zoomOut: () => void
   reset: () => void
@@ -116,15 +118,42 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     }
   }, [isReady, onReady])
 
-  // When relevant data for crop area or focus point changes we callback onChange() if exists
-  useEffect(() => {
-    if (!onChange || !isReady) return
+  // Helper function to combine zoom/pan crop area with drag handle offsets
+  const calculateCombinedCropArea = useCallback((): SoftcropArea | null => {
+    if (!isReady) return null
 
-    onChange(
-      calculateCropArea(scale, position, constraints()),
-      focusPoint
-    )
-  }, [scale, position, focusPoint, onChange, isReady, constraints])
+    // Get the base crop area from zoom/pan
+    const baseCropArea = calculateCropArea(scale, position, constraints())
+    if (!baseCropArea) return null
+
+    // Apply drag handle offsets to reduce the crop area
+    const combinedCropArea: SoftcropArea = {
+      x: baseCropArea.x + (baseCropArea.w * cropOffsets.left),
+      y: baseCropArea.y + (baseCropArea.h * cropOffsets.top),
+      w: baseCropArea.w * (1 - cropOffsets.left - cropOffsets.right),
+      h: baseCropArea.h * (1 - cropOffsets.top - cropOffsets.bottom)
+    }
+
+    // Ensure the resulting crop area is valid
+    if (combinedCropArea.w <= 0 || combinedCropArea.h <= 0) return null
+
+    // Clamp values to ensure they stay within bounds [0, 1]
+    combinedCropArea.x = Math.max(0, Math.min(1, combinedCropArea.x))
+    combinedCropArea.y = Math.max(0, Math.min(1, combinedCropArea.y))
+    combinedCropArea.w = Math.max(0, Math.min(1 - combinedCropArea.x, combinedCropArea.w))
+    combinedCropArea.h = Math.max(0, Math.min(1 - combinedCropArea.y, combinedCropArea.h))
+
+    return combinedCropArea
+  }, [scale, position, constraints, cropOffsets, isReady])
+
+  // useEffect(() => {
+  //   if (!onChange || !isReady) return
+
+  //   onChange(
+  //     calculateCombinedCropArea(),
+  //     focusPoint
+  //   )
+  // }, [scale, position, focusPoint, cropOffsets, onChange, isReady, calculateCombinedCropArea])
 
   // Handle container resize and set wrapper height
   useEffect(() => {
@@ -307,9 +336,15 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
 
   // Expose methods via ref
   useImperativeHandle(ref, () => ({
-    getCropArea: () => isReady ? calculateCropArea(scale, position, constraints()) : null,
+    getCropArea: () => calculateCombinedCropArea(),
 
     getFocusPoint: () => focusPoint,
+
+    // Add method to get drag handle offsets
+    getCropOffsets: () => cropOffsets,
+
+    // Add method to set drag handle offsets
+    setCropOffsets: (offsets: typeof cropOffsets) => setCropOffsets(offsets),
 
     setCropArea: (x: number, y: number, w: number, h: number) => {
       if (!isReady || !isValid(x) || !isValid(y) || !isValid(w) || !isValid(h)) {
@@ -318,6 +353,10 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
       }
 
       try {
+        // When setting crop area programmatically, reset drag handle offsets
+        // and apply the crop area via zoom/pan only
+        setCropOffsets({ top: 0, right: 0, bottom: 0, left: 0 })
+
         const area = { x, y, w, h }
         const newState = calculateStateForCropArea(area, constraints())
 
@@ -378,7 +417,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
         focusPointRef.current.style.display = 'none'
       }
     }
-  }), [scale, position, focusPoint, zoomSensitivity, isReady, constraints])
+  }), [scale, position, focusPoint, zoomSensitivity, isReady, constraints, calculateCombinedCropArea, cropOffsets])
 
   return (
     <div
