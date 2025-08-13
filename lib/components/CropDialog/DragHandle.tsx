@@ -188,9 +188,9 @@ export const DragHandle = ({ side, offset, opposite, onChange, size }: {
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
         >
-          {side === 'top' && <GripHorizontal size={20} className='text-white'/>}
+          {side === 'top' && <GripHorizontal size={20} className='text-white -mt-0.5'/>}
           {side === 'right' && <GripVertical size={20} className='text-white ml-0.5'/>}
-          {side === 'bottom' && <GripHorizontal size={20} className='text-white'/>}
+          {side === 'bottom' && <GripHorizontal size={20} className='text-white mt-0.5'/>}
           {side === 'left' && <GripVertical size={20} className='text-white -ml-0.5'/>}
         </div>
       </div>
