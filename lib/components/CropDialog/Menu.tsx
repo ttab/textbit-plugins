@@ -10,7 +10,7 @@ export const CropDialogMenu = ({onToggle, onZoom, onReset, active }: {
   return (
     <div
       contentEditable={false}
-      className='absolute bottom-5 right-5 flex flex-col gap-2 items-center'
+      className='absolute bottom-5 right-5 flex flex-col gap-1 items-center'
     >
       {active
         && (
