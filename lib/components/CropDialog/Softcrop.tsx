@@ -17,6 +17,7 @@ import {
   wheelEventToZoomFactor
 } from './softcrop-lib'
 import { FocusIcon } from 'lucide-react'
+import { DragHandle } from './DragHandle'
 
 export interface SoftcropRef {
   getCropArea: () => SoftcropArea | null
@@ -64,6 +65,14 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState<Position>({ x: 0, y: 0 })
   const [dragOffset, setDragOffset] = useState<Position>({ x: 0, y: 0 })
+
+  // Crop area state for drag handles
+  const [cropOffsets, setCropOffsets] = useState({
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0
+  })
 
   // Memoized calculations (reduces redundant calculations)
   const displayDimensions = useCallback((): ImageDimensions => {
@@ -359,6 +368,12 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
       setScale(centeredState.scale)
       setPosition(centeredState.position)
       setFocusPoint(null)
+      setCropOffsets({
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
+      })
       if (focusPointRef.current) {
         focusPointRef.current.style.display = 'none'
       }
@@ -416,6 +431,45 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
           </div>
         )}
       </div>
+
+      <>
+        <DragHandle
+          side={'top'}
+          offset={cropOffsets.top}
+          opposite={cropOffsets.bottom}
+          onChange={(offset) => {
+            setCropOffsets((prev) => ({...prev, top: offset}))
+          }}
+          size={containerSize.height}
+        />
+        <DragHandle
+          side={'right'}
+          offset={cropOffsets.right}
+          opposite={cropOffsets.left}
+          onChange={(offset) => {
+            setCropOffsets((prev) => ({...prev, right: offset}))
+          }}
+          size={containerSize.width}
+        />
+        <DragHandle
+          side={'bottom'}
+          offset={cropOffsets.bottom}
+          opposite={cropOffsets.top}
+          onChange={(offset) => {
+            setCropOffsets((prev) => ({...prev, bottom: offset}))
+          }}
+          size={containerSize.height}
+        />
+        <DragHandle
+          side={'left'}
+          offset={cropOffsets.left}
+          opposite={cropOffsets.right}
+          onChange={(offset) => {
+            setCropOffsets((prev) => ({...prev, left: offset}))
+          }}
+          size={containerSize.width}
+        />
+      </>
 
       {/* Render children (Grid, etc.) */}
       {children}

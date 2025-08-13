@@ -16,15 +16,15 @@ export const CropDialogMenu = ({onToggle, onZoom, onReset, active }: {
         && (
           <>
             <MenuOption onPress={() => onZoom('in')}>
-              <ZoomIn size={20} strokeWidth={1.75} className="text-white "/>
+              <ZoomIn size={20} strokeWidth={1.75} className="text-white ml-[2px] mt-[2px]"/>
             </MenuOption>
 
             <MenuOption onPress={() => onZoom('out')}>
-              <ZoomOut size={20} strokeWidth={1.75} className="text-white "/>
+              <ZoomOut size={20} strokeWidth={1.75} className="text-white ml-[2px] mt-[2px]"/>
             </MenuOption>
 
             <MenuOption onPress={() => onReset()}>
-              <Undo2 size={20} strokeWidth={1.75} className="text-white "/>
+              <Undo2 size={20} strokeWidth={1.75} className="text-white ml-[1px]"/>
             </MenuOption>
           </>
         )
