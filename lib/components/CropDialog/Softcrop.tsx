@@ -337,7 +337,13 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
 
   const handleTouchEnd = useCallback(() => {
     setIsPressed(false)
-    setIsDragging(false)
+
+    // Allow all calculations to be done in this event loop
+    // before stopping dragging state, or else some zoom/pan
+    // movements will not be finished.
+    setTimeout(() => {
+      setIsDragging(false)
+    }, 0)
   }, [])
 
   // Calculate focus point display position
