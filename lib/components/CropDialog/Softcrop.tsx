@@ -35,6 +35,7 @@ interface SoftcropProps {
   onReady?: () => void
   enableFocusPoint?: boolean
   enableDragHandles?: boolean
+  enablePanAndZoom?: boolean
 }
 
 export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
@@ -45,7 +46,8 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   onChange,
   onReady,
   enableFocusPoint = true,
-  enableDragHandles = true
+  enableDragHandles = true,
+  enablePanAndZoom = true
 }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -200,6 +202,8 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     if (!wrapperRef.current) return
 
     const handleWheelEvent = (e: WheelEvent) => {
+      if (!enablePanAndZoom) return
+
       e.preventDefault()
       e.stopPropagation()
 
@@ -251,7 +255,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   }, [])
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!isPressed) return
+    if (!isPressed || !enablePanAndZoom) return
 
     e.preventDefault()
     setIsDragging(true)
@@ -279,16 +283,15 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   const handleMouseUp = useCallback((e: React.MouseEvent) => {
     setIsPressed(false)
 
-    const deltaX = e.clientX - dragStart.x
-    const deltaY = e.clientY - dragStart.y
-
     // Handle focus point click (only if no drag occurred)
-    if (!containerRef.current || Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) return
-
-    const rect = containerRef.current.getBoundingClientRect()
-    const { scale, position } = getDisplayTransform()
-
     if (!isDragging) {
+      const deltaX = e.clientX - dragStart.x
+      const deltaY = e.clientY - dragStart.y
+      if (!containerRef.current || Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) return
+
+      const rect = containerRef.current.getBoundingClientRect()
+      const { scale, position } = getDisplayTransform()
+
       const newFocusPoint = clickToFocusPoint(
         { x: e.clientX, y: e.clientY },
         rect,
@@ -315,7 +318,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   }, [])
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!isPressed) return
+    if (!enablePanAndZoom || !isPressed) return
     setIsDragging(true)
 
     e.preventDefault()
