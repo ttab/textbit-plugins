@@ -4,17 +4,12 @@ import {
   type SoftcropPoint,
   type ImageDimensions,
   type Position,
-  calculateMinScale,
-  constrainPosition,
-  calculateCropArea,
-  calculateStateForCropArea,
-  calculateCenteredState,
-  applyZoom,
   clickToFocusPoint,
   calculateFocusPointScreenPosition,
   constrainFocusPointToVisibleArea,
   updateConstrainedFocusPoint,
-  wheelEventToZoomFactor
+  wheelEventToZoomFactor,
+  decomposeCropArea
 } from './softcrop-lib'
 import { FocusIcon } from 'lucide-react'
 import { DragHandle } from './DragHandle'
@@ -57,26 +52,22 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   const [imageLoaded, setImageLoaded] = useState(false)
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions>({ width: 0, height: 0 })
   const [containerSize, setContainerSize] = useState<ImageDimensions>({ width: 0, height: 0 })
-
-  // Transform state
-  const [scale, setScale] = useState(1)
-  const [position, setPosition] = useState<Position>({ x: 0, y: 0 })
   const [focusPoint, setFocusPoint] = useState<SoftcropPoint | null>(null)
 
   // Interaction state
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState<Position>({ x: 0, y: 0 })
-  const [dragOffset, setDragOffset] = useState<Position>({ x: 0, y: 0 })
 
-  // Crop area state for drag handles
-  const [cropOffsets, setCropOffsets] = useState({
+  // CLEAN STATE: Only base crop and drag handle offsets
+  const [baseCrop, setBaseCrop] = useState<SoftcropArea>({ x: 0, y: 0, w: 1, h: 1 })
+  const [dragOffsets, setDragOffsets] = useState({
     top: 0,
     right: 0,
     bottom: 0,
     left: 0
   })
 
-  // Memoized calculations (reduces redundant calculations)
+  // Calculate image display dimensions
   const displayDimensions = useCallback((): ImageDimensions => {
     const imageDisplayWidth = containerSize.width
     const imageDisplayHeight = imageDimensions.width > 0
@@ -85,18 +76,58 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     return { width: imageDisplayWidth, height: imageDisplayHeight }
   }, [containerSize.width, imageDimensions])
 
-  const constraints = useCallback(() => ({
-    minScale: calculateMinScale(containerSize, displayDimensions()),
-    maxScale: maxZoom,
-    containerSize,
-    imageDimensions: displayDimensions()
-  }), [containerSize, displayDimensions, maxZoom])
+  const isReady = imageLoaded
+    && containerSize.width > 0
+    && containerSize.height > 0
+    && imageDimensions.width > 0
+    && imageDimensions.height > 0
 
-  const isReady = imageLoaded &&
-                 containerSize.width > 0 &&
-                 containerSize.height > 0 &&
-                 imageDimensions.width > 0 &&
-                 imageDimensions.height > 0
+  // Calculate scale and position from base crop (for display only)
+  const getDisplayTransform = useCallback(() => {
+    if (!isReady) return { scale: 1, position: { x: 0, y: 0 } }
+
+    const display = displayDimensions()
+
+    // Calculate scale to show the base crop area filling the container
+    const scaleX = containerSize.width / (baseCrop.w * display.width)
+    const scaleY = containerSize.height / (baseCrop.h * display.height)
+    const scale = Math.min(scaleX, scaleY)
+
+    // Calculate position to center the base crop area
+    const scaledCropWidth = baseCrop.w * display.width * scale
+    const scaledCropHeight = baseCrop.h * display.height * scale
+
+    const position = {
+      x: (containerSize.width - scaledCropWidth) / 2 - (baseCrop.x * display.width * scale),
+      y: (containerSize.height - scaledCropHeight) / 2 - (baseCrop.y * display.height * scale)
+    }
+
+    return { scale, position }
+  }, [isReady, baseCrop, containerSize, displayDimensions])
+
+  // Combine base crop with drag handle offsets
+  const getCombinedCropArea = useCallback((): SoftcropArea | null => {
+    if (!isReady) return null
+
+    // Apply drag handle offsets to the base crop
+    const combinedCrop: SoftcropArea = {
+      x: baseCrop.x + (baseCrop.w * dragOffsets.left),
+      y: baseCrop.y + (baseCrop.h * dragOffsets.top),
+      w: baseCrop.w * (1 - dragOffsets.left - dragOffsets.right),
+      h: baseCrop.h * (1 - dragOffsets.top - dragOffsets.bottom)
+    }
+
+    // Ensure valid crop area
+    if (combinedCrop.w <= 0 || combinedCrop.h <= 0) return null
+
+    // Clamp to bounds
+    combinedCrop.x = Math.max(0, Math.min(1, combinedCrop.x))
+    combinedCrop.y = Math.max(0, Math.min(1, combinedCrop.y))
+    combinedCrop.w = Math.max(0, Math.min(1 - combinedCrop.x, combinedCrop.w))
+    combinedCrop.h = Math.max(0, Math.min(1 - combinedCrop.y, combinedCrop.h))
+
+    return combinedCrop
+  }, [baseCrop, dragOffsets, isReady])
 
   // Handle image load
   const handleImageLoad = useCallback(() => {
@@ -118,44 +149,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     }
   }, [isReady, onReady])
 
-  // Helper function to combine zoom/pan crop area with drag handle offsets
-  const calculateCombinedCropArea = useCallback((): SoftcropArea | null => {
-    if (!isReady) return null
-
-    // Get the base crop area from zoom/pan
-    const baseCropArea = calculateCropArea(scale, position, constraints())
-    if (!baseCropArea) return null
-
-    // Apply drag handle offsets to reduce the crop area
-    const combinedCropArea: SoftcropArea = {
-      x: baseCropArea.x + (baseCropArea.w * cropOffsets.left),
-      y: baseCropArea.y + (baseCropArea.h * cropOffsets.top),
-      w: baseCropArea.w * (1 - cropOffsets.left - cropOffsets.right),
-      h: baseCropArea.h * (1 - cropOffsets.top - cropOffsets.bottom)
-    }
-
-    // Ensure the resulting crop area is valid
-    if (combinedCropArea.w <= 0 || combinedCropArea.h <= 0) return null
-
-    // Clamp values to ensure they stay within bounds [0, 1]
-    combinedCropArea.x = Math.max(0, Math.min(1, combinedCropArea.x))
-    combinedCropArea.y = Math.max(0, Math.min(1, combinedCropArea.y))
-    combinedCropArea.w = Math.max(0, Math.min(1 - combinedCropArea.x, combinedCropArea.w))
-    combinedCropArea.h = Math.max(0, Math.min(1 - combinedCropArea.y, combinedCropArea.h))
-
-    return combinedCropArea
-  }, [scale, position, constraints, cropOffsets, isReady])
-
-  // useEffect(() => {
-  //   if (!onChange || !isReady) return
-
-  //   onChange(
-  //     calculateCombinedCropArea(),
-  //     focusPoint
-  //   )
-  // }, [scale, position, focusPoint, cropOffsets, onChange, isReady, calculateCombinedCropArea])
-
-  // Handle container resize and set wrapper height
+  // Handle container resize
   useEffect(() => {
     if (!containerRef.current || !wrapperRef.current) return
 
@@ -170,7 +164,6 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
         height: containerHeight
       })
 
-      // Set wrapper height to match container
       wrapperRef.current.style.height = containerHeight + 'px'
     }
 
@@ -181,30 +174,23 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     return () => resizeObserver.disconnect()
   }, [])
 
-  // Center image when dimensions change
+  // Set wrapper height based on image aspect ratio if needed
   useEffect(() => {
     if (!imageLoaded || containerSize.width === 0 || !wrapperRef.current) return
 
-    // Set wrapper height based on image aspect ratio if container height is 0
     if (containerSize.height === 0 && imageDimensions.width > 0) {
       const aspectRatio = imageDimensions.height / imageDimensions.width
       const calculatedHeight = containerSize.width * aspectRatio
       wrapperRef.current.style.height = calculatedHeight + 'px'
 
-      // Update container size state
       setContainerSize(prev => ({
         ...prev,
         height: calculatedHeight
       }))
-      return
     }
+  }, [imageLoaded, containerSize.width, containerSize.height, imageDimensions])
 
-    const centeredState = calculateCenteredState(constraints())
-    setScale(centeredState.scale)
-    setPosition(centeredState.position)
-  }, [imageLoaded, containerSize.width, containerSize.height, imageDimensions, constraints])
-
-  // Wheel event listener must have passive: false to prevent scrolling page or editor
+  // Wheel zoom - directly modify base crop
   useEffect(() => {
     if (!wrapperRef.current) return
 
@@ -213,10 +199,35 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
       e.stopPropagation()
 
       const factor = wheelEventToZoomFactor(e.deltaY, zoomSensitivity)
-      const newState = applyZoom(scale, position, factor, constraints())
 
-      setScale(newState.scale)
-      setPosition(newState.position)
+      // Get mouse position relative to container (0-1 range)
+      const rect = containerRef.current?.getBoundingClientRect()
+      if (!rect) return
+
+      const mouseX = (e.clientX - rect.left) / containerSize.width
+      const mouseY = (e.clientY - rect.top) / containerSize.height
+
+      setBaseCrop(prev => {
+        // Calculate new crop dimensions
+        let newW = prev.w / factor
+        let newH = prev.h / factor
+
+        // Apply zoom limits
+        const minCrop = 1 / maxZoom
+        const maxCrop = 1
+        newW = Math.max(minCrop, Math.min(maxCrop, newW))
+        newH = Math.max(minCrop, Math.min(maxCrop, newH))
+
+        // Calculate new position to zoom towards mouse
+        const newX = prev.x + (prev.w - newW) * mouseX
+        const newY = prev.y + (prev.h - newH) * mouseY
+
+        // Ensure crop stays within bounds
+        const finalX = Math.max(0, Math.min(1 - newW, newX))
+        const finalY = Math.max(0, Math.min(1 - newH, newY))
+
+        return { x: finalX, y: finalY, w: newW, h: newH }
+      })
     }
 
     const wrapper = wrapperRef.current
@@ -225,14 +236,14 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     return () => {
       wrapper.removeEventListener('wheel', handleWheelEvent)
     }
-  }, [scale, position, constraints, zoomSensitivity])
+  }, [containerSize, maxZoom, zoomSensitivity])
 
+  // Mouse/touch handlers for pan - directly modify base crop
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
     setIsDragging(true)
     setDragStart({ x: e.clientX, y: e.clientY })
-    setDragOffset(position)
-  }, [position])
+  }, [])
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!isDragging) return
@@ -242,14 +253,22 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     const deltaX = e.clientX - dragStart.x
     const deltaY = e.clientY - dragStart.y
 
-    const newPosition = {
-      x: dragOffset.x + deltaX,
-      y: dragOffset.y + deltaY
-    }
+    // Convert pixel movement to base crop movement
+    const display = displayDimensions()
+    const { scale } = getDisplayTransform()
 
-    const constrainedPosition = constrainPosition(newPosition, scale, constraints())
-    setPosition(constrainedPosition)
-  }, [isDragging, dragStart, dragOffset, scale, constraints])
+    const cropDeltaX = -deltaX / (display.width * scale)
+    const cropDeltaY = -deltaY / (display.height * scale)
+
+    setBaseCrop(prev => {
+      const newX = Math.max(0, Math.min(1 - prev.w, prev.x + cropDeltaX))
+      const newY = Math.max(0, Math.min(1 - prev.h, prev.y + cropDeltaY))
+      return { ...prev, x: newX, y: newY }
+    })
+
+    // Update drag start for continuous movement
+    setDragStart({ x: e.clientX, y: e.clientY })
+  }, [isDragging, dragStart, displayDimensions, getDisplayTransform])
 
   const handleMouseUp = useCallback((e: React.MouseEvent) => {
     const deltaX = e.clientX - dragStart.x
@@ -257,24 +276,24 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
 
     setIsDragging(false)
 
-    // Handle focus point click
-    if (!containerRef.current) return
+    // Handle focus point click (only if no drag occurred)
+    if (!containerRef.current || Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) return
 
-    if (!deltaX && !deltaY) {
-      const rect = containerRef.current.getBoundingClientRect()
-      const newFocusPoint = clickToFocusPoint(
-        { x: e.clientX, y: e.clientY },
-        rect,
-        scale,
-        position,
-        displayDimensions()
-      )
+    const rect = containerRef.current.getBoundingClientRect()
+    const { scale, position } = getDisplayTransform()
 
-      if (newFocusPoint) {
-        setFocusPoint(newFocusPoint)
-      }
+    const newFocusPoint = clickToFocusPoint(
+      { x: e.clientX, y: e.clientY },
+      rect,
+      scale,
+      position,
+      displayDimensions()
+    )
+
+    if (newFocusPoint) {
+      setFocusPoint(newFocusPoint)
     }
-  }, [isDragging, scale, position, displayDimensions])
+  }, [dragStart, getDisplayTransform, displayDimensions])
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 2) return
@@ -283,41 +302,39 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     e.preventDefault()
     setIsDragging(true)
     setDragStart({ x: touches[0].clientX, y: touches[0].clientY })
-    setDragOffset(position)
-  }, [position])
+  }, [])
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isDragging) return
 
     e.preventDefault()
 
-    const deltaX = dragStart.x - e.touches[0].clientX
-    const deltaY = dragStart.y - e.touches[0].clientY
-    const constrainedPosition = constrainPosition(
-      {
-        x: dragOffset.x - deltaX,
-        y: dragOffset.y - deltaY
-      },
-      scale,
-      constraints()
-    )
+    const deltaX = e.touches[0].clientX - dragStart.x
+    const deltaY = e.touches[0].clientY - dragStart.y
 
-    setPosition(constrainedPosition)
-  }, [isDragging, dragStart, dragOffset, scale, constraints])
+    // Convert pixel movement to base crop movement
+    const display = displayDimensions()
+    const { scale } = getDisplayTransform()
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (isDragging) {
-      setIsDragging(false)
-      return
-    }
+    const cropDeltaX = -deltaX / (display.width * scale)
+    const cropDeltaY = -deltaY / (display.height * scale)
 
-    if (e.touches.length === 0) {
-      // Handle touch end logic here if needed
-    }
-  }, [isDragging])
+    setBaseCrop(prev => {
+      const newX = Math.max(0, Math.min(1 - prev.w, prev.x + cropDeltaX))
+      const newY = Math.max(0, Math.min(1 - prev.h, prev.y + cropDeltaY))
+      return { ...prev, x: newX, y: newY }
+    })
+
+    setDragStart({ x: e.touches[0].clientX, y: e.touches[0].clientY })
+  }, [isDragging, dragStart, displayDimensions, getDisplayTransform])
+
+  const handleTouchEnd = useCallback(() => {
+    setIsDragging(false)
+  }, [])
 
   // Calculate focus point display position
   const focusPointDisplay = focusPoint ? (() => {
+    const { scale, position } = getDisplayTransform()
     const screenPos = calculateFocusPointScreenPosition(focusPoint, scale, position, displayDimensions())
     const constrainedPos = constrainFocusPointToVisibleArea(screenPos, containerSize, 40)
 
@@ -334,90 +351,102 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     return typeof v === 'number' && v >= 0 && v <= 1 && isFinite(v)
   }
 
-  // Expose methods via ref
+  // Drag handle updates
+  const updateDragHandle = useCallback((side: 'top' | 'right' | 'bottom' | 'left', offset: number) => {
+    setDragOffsets(prev => ({ ...prev, [side]: offset }))
+  }, [])
+
+  // Convert drag offsets to handle positions
+  const getDragHandleOffset = useCallback((side: 'top' | 'right' | 'bottom' | 'left'): number => {
+    return dragOffsets[side]
+  }, [dragOffsets])
+
+  const getDragHandleOpposite = useCallback((side: 'top' | 'right' | 'bottom' | 'left'): number => {
+    switch (side) {
+      case 'top': return dragOffsets.bottom
+      case 'right': return dragOffsets.left
+      case 'bottom': return dragOffsets.top
+      case 'left': return dragOffsets.right
+    }
+  }, [dragOffsets])
+
+  // Convert to legacy offset format
+  const getCropOffsets = useCallback(() => dragOffsets, [dragOffsets])
+
+  // onChange effect
+  useEffect(() => {
+    if (!onChange || !isReady) return
+    onChange(getCombinedCropArea(), focusPoint)
+  }, [baseCrop, dragOffsets, focusPoint, onChange, isReady, getCombinedCropArea])
+
+  // Get current display transform
+  const { scale, position } = getDisplayTransform()
+
+  // Imperative handle
   useImperativeHandle(ref, () => ({
-    getCropArea: () => calculateCombinedCropArea(),
-
+    getCropArea: () => getCombinedCropArea(),
     getFocusPoint: () => focusPoint,
-
-    // Add method to get drag handle offsets
-    getCropOffsets: () => cropOffsets,
-
-    // Add method to set drag handle offsets
-    setCropOffsets: (offsets: typeof cropOffsets) => setCropOffsets(offsets),
+    getCropOffsets,
 
     setCropArea: (x: number, y: number, w: number, h: number) => {
-      if (!isReady || !isValid(x) || !isValid(y) || !isValid(w) || !isValid(h)) {
-        console.warn('Cannot set crop area: component not ready or invalid coordinates', { ready: isReady, x, y, w, h })
+      if (!isValid(x) || !isValid(y) || !isValid(w) || !isValid(h)) {
+        console.warn('Invalid crop area coordinates', { x, y, w, h })
         return
       }
 
-      try {
-        // When setting crop area programmatically, reset drag handle offsets
-        // and apply the crop area via zoom/pan only
-        setCropOffsets({ top: 0, right: 0, bottom: 0, left: 0 })
+      const targetCrop = { x, y, w, h }
+      // Decompose incoming crop area into base crop + drag offsets
+      const decomposed = decomposeCropArea(containerSize, targetCrop)
 
-        const area = { x, y, w, h }
-        const newState = calculateStateForCropArea(area, constraints())
 
-        if (!isFinite(newState.scale) || !isFinite(newState.position.x) || !isFinite(newState.position.y)) {
-          console.warn('Invalid state calculated for crop area:', newState)
-          return
-        }
-
-        setScale(newState.scale)
-        setPosition(newState.position)
-      } catch (error) {
-        console.warn('Failed to set crop area:', error)
-      }
+      setBaseCrop(decomposed.baseCrop)
+      setDragOffsets(decomposed.dragOffsets)
     },
 
     setFocusPoint: (x: number, y: number) => {
       if (!isValid(x) || !isValid(y)) {
-        console.warn('Invalid focus point coordinates not applied', x, y)
+        console.warn('Invalid focus point coordinates', { x, y })
         return
       }
-
       setFocusPoint({ x, y })
       if (focusPointRef.current) {
         focusPointRef.current.style.display = 'flex'
       }
     },
 
-    zoomIn: () => {
-      if (!isReady) return
+    setCropOffsets: (offsets) => setDragOffsets(offsets),
 
+    zoomIn: () => {
       const factor = Math.pow(1 + zoomSensitivity, 3)
-      const newState = applyZoom(scale, position, factor, constraints())
-      setScale(newState.scale)
-      setPosition(newState.position)
+      setBaseCrop(prev => {
+        const newW = Math.max(1 / maxZoom, prev.w / factor)
+        const newH = Math.max(1 / maxZoom, prev.h / factor)
+        const newX = Math.max(0, Math.min(1 - newW, prev.x + (prev.w - newW) / 2))
+        const newY = Math.max(0, Math.min(1 - newH, prev.y + (prev.h - newH) / 2))
+        return { x: newX, y: newY, w: newW, h: newH }
+      })
     },
 
     zoomOut: () => {
-      if (!isReady) return
       const factor = Math.pow(1 + zoomSensitivity, -3)
-      const newState = applyZoom(scale, position, factor, constraints())
-      setScale(newState.scale)
-      setPosition(newState.position)
+      setBaseCrop(prev => {
+        const newW = Math.min(1, prev.w / factor)
+        const newH = Math.min(1, prev.h / factor)
+        const newX = Math.max(0, Math.min(1 - newW, prev.x + (prev.w - newW) / 2))
+        const newY = Math.max(0, Math.min(1 - newH, prev.y + (prev.h - newH) / 2))
+        return { x: newX, y: newY, w: newW, h: newH }
+      })
     },
 
     reset: () => {
-      if (!isReady) return
-      const centeredState = calculateCenteredState(constraints())
-      setScale(centeredState.scale)
-      setPosition(centeredState.position)
+      setBaseCrop({ x: 0, y: 0, w: 1, h: 1 })
+      setDragOffsets({ top: 0, right: 0, bottom: 0, left: 0 })
       setFocusPoint(null)
-      setCropOffsets({
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0
-      })
       if (focusPointRef.current) {
         focusPointRef.current.style.display = 'none'
       }
     }
-  }), [scale, position, focusPoint, zoomSensitivity, isReady, constraints, calculateCombinedCropArea, cropOffsets])
+  }), [baseCrop, dragOffsets, focusPoint, getCombinedCropArea, getCropOffsets, zoomSensitivity, maxZoom, containerSize])
 
   return (
     <div
@@ -471,44 +500,35 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
         )}
       </div>
 
-      <>
-        <DragHandle
-          side={'top'}
-          offset={cropOffsets.top}
-          opposite={cropOffsets.bottom}
-          onChange={(offset) => {
-            setCropOffsets((prev) => ({...prev, top: offset}))
-          }}
-          size={containerSize.height}
-        />
-        <DragHandle
-          side={'right'}
-          offset={cropOffsets.right}
-          opposite={cropOffsets.left}
-          onChange={(offset) => {
-            setCropOffsets((prev) => ({...prev, right: offset}))
-          }}
-          size={containerSize.width}
-        />
-        <DragHandle
-          side={'bottom'}
-          offset={cropOffsets.bottom}
-          opposite={cropOffsets.top}
-          onChange={(offset) => {
-            setCropOffsets((prev) => ({...prev, bottom: offset}))
-          }}
-          size={containerSize.height}
-        />
-        <DragHandle
-          side={'left'}
-          offset={cropOffsets.left}
-          opposite={cropOffsets.right}
-          onChange={(offset) => {
-            setCropOffsets((prev) => ({...prev, left: offset}))
-          }}
-          size={containerSize.width}
-        />
-      </>
+      {/* Drag handles */}
+      <DragHandle
+        side="top"
+        offset={getDragHandleOffset('top')}
+        opposite={getDragHandleOpposite('top')}
+        onChange={(offset) => updateDragHandle('top', offset)}
+        size={containerSize.height}
+      />
+      <DragHandle
+        side="right"
+        offset={getDragHandleOffset('right')}
+        opposite={getDragHandleOpposite('right')}
+        onChange={(offset) => updateDragHandle('right', offset)}
+        size={containerSize.width}
+      />
+      <DragHandle
+        side="bottom"
+        offset={getDragHandleOffset('bottom')}
+        opposite={getDragHandleOpposite('bottom')}
+        onChange={(offset) => updateDragHandle('bottom', offset)}
+        size={containerSize.height}
+      />
+      <DragHandle
+        side="left"
+        offset={getDragHandleOffset('left')}
+        opposite={getDragHandleOpposite('left')}
+        onChange={(offset) => updateDragHandle('left', offset)}
+        size={containerSize.width}
+      />
 
       {/* Render children (Grid, etc.) */}
       {children}

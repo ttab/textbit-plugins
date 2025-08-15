@@ -27,213 +27,6 @@ export interface SoftcropConstraints {
   imageDimensions: ImageDimensions
 }
 
-// Calculate minimum scale to fill container
-export const calculateMinScale = (
-  containerSize: ImageDimensions,
-  imageDimensions: ImageDimensions
-): number => {
-  return Math.max(
-    containerSize.width / imageDimensions.width,
-    containerSize.height / imageDimensions.height
-  )
-}
-
-// Constrain position to keep image covering container
-export const constrainPosition = (
-  position: Position,
-  scale: number,
-  constraints: SoftcropConstraints
-): Position => {
-  const { containerSize, imageDimensions } = constraints
-
-  const scaledWidth = imageDimensions.width * scale
-  const scaledHeight = imageDimensions.height * scale
-
-  const minX = containerSize.width - scaledWidth
-  const maxX = 0
-  const minY = containerSize.height - scaledHeight
-  const maxY = 0
-
-  return {
-    x: Math.max(minX, Math.min(maxX, position.x)),
-    y: Math.max(minY, Math.min(maxY, position.y))
-  }
-}
-
-// Calculate current crop area from transform state
-export const calculateCropArea = (
-  scale: number,
-  position: Position,
-  constraints: SoftcropConstraints
-): SoftcropArea | null => {
-  const { containerSize, imageDimensions } = constraints
-
-  // Check for invalid input data
-  if (
-    !imageDimensions ||
-    !containerSize ||
-    imageDimensions.width <= 0 ||
-    imageDimensions.height <= 0 ||
-    containerSize.width <= 0 ||
-    containerSize.height <= 0 ||
-    scale <= 0 ||
-    !isFinite(scale) ||
-    !isFinite(position.x) ||
-    !isFinite(position.y)
-  ) {
-    return null
-  }
-
-  const scaledWidth = imageDimensions.width * scale
-  const scaledHeight = imageDimensions.height * scale
-
-  // Check if scaled dimensions are valid
-  if (scaledWidth <= 0 || scaledHeight <= 0 || !isFinite(scaledWidth) || !isFinite(scaledHeight)) {
-    return null
-  }
-
-  const visibleLeft = Math.max(0, -position.x)
-  const visibleTop = Math.max(0, -position.y)
-  const visibleRight = Math.min(scaledWidth, containerSize.width - position.x)
-  const visibleBottom = Math.min(scaledHeight, containerSize.height - position.y)
-
-  // Check if we have valid visible area
-  if (visibleRight <= visibleLeft || visibleBottom <= visibleTop) {
-    return null
-  }
-
-  // Use decimals instead of percentages
-  const cropX = visibleLeft / scaledWidth
-  const cropY = visibleTop / scaledHeight
-  const cropW = (visibleRight - visibleLeft) / scaledWidth
-  const cropH = (visibleBottom - visibleTop) / scaledHeight
-
-  // Check if calculated values are valid
-  if (
-    !isFinite(cropX) || !isFinite(cropY) || !isFinite(cropW) || !isFinite(cropH) ||
-    cropW <= 0 || cropH <= 0 ||
-    cropX < 0 || cropY < 0 ||
-    cropX + cropW > 1.001 || cropY + cropH > 1.001 // Small tolerance for rounding
-  ) {
-    return null
-  }
-
-  const { x, y, w, h } = {
-    x: Math.max(0, Math.round(cropX * 1000) / 1000), // 3 decimal precision
-    y: Math.max(0, Math.round(cropY * 1000) / 1000),
-    w: Math.max(0, Math.round(cropW * 1000) / 1000),
-    h: Math.max(0, Math.round(cropH * 1000) / 1000)
-  }
-
-  // Return null if this represents the full image (with tolerance for rounding)
-  const tolerance = 0.002 // Allow for small rounding differences
-  const isFullImage =
-    x <= tolerance &&
-    y <= tolerance &&
-    w >= (1 - tolerance) &&
-    h >= (1 - tolerance)
-
-  return isFullImage ? null : { x, y, w, h }
-}
-
-// Calculate transform state to display a specific crop area
-export const calculateStateForCropArea = (
-  area: SoftcropArea,
-  constraints: SoftcropConstraints
-): { scale: number; position: Position } => {
-  const { containerSize, imageDimensions, minScale, maxScale } = constraints
-
-  const cropWidthInPixels = area.w * imageDimensions.width
-  const cropHeightInPixels = area.h * imageDimensions.height
-
-  const scaleX = containerSize.width / cropWidthInPixels
-  const scaleY = containerSize.height / cropHeightInPixels
-  let targetScale = Math.min(scaleX, scaleY)
-
-  targetScale = Math.max(minScale, Math.min(maxScale, targetScale))
-
-  const cropStartX = area.x * imageDimensions.width
-  const cropStartY = area.y * imageDimensions.height
-
-  const scaledCropStartX = cropStartX * targetScale
-  const scaledCropStartY = cropStartY * targetScale
-  const scaledCropWidth = cropWidthInPixels * targetScale
-  const scaledCropHeight = cropHeightInPixels * targetScale
-
-  const targetX = (containerSize.width - scaledCropWidth) / 2 - scaledCropStartX
-  const targetY = (containerSize.height - scaledCropHeight) / 2 - scaledCropStartY
-
-  const constrainedPosition = constrainPosition(
-    { x: targetX, y: targetY },
-    targetScale,
-    constraints
-  )
-
-  return {
-    scale: targetScale,
-    position: constrainedPosition
-  }
-}
-
-// Calculate centered image state
-export const calculateCenteredState = (
-  constraints: SoftcropConstraints
-): { scale: number; position: Position } => {
-  const { containerSize, imageDimensions, minScale } = constraints
-
-  const scale = Math.max(minScale, 1)
-  const scaledWidth = imageDimensions.width * scale
-  const scaledHeight = imageDimensions.height * scale
-
-  const centerX = (containerSize.width - scaledWidth) / 2
-  const centerY = (containerSize.height - scaledHeight) / 2
-
-  const constrainedPosition = constrainPosition(
-    { x: centerX, y: centerY },
-    scale,
-    constraints
-  )
-
-  return {
-    scale,
-    position: constrainedPosition
-  }
-}
-
-// Apply zoom transformation
-export const applyZoom = (
-  currentScale: number,
-  currentPosition: Position,
-  zoomFactor: number,
-  constraints: SoftcropConstraints
-): { scale: number; position: Position } => {
-  const { minScale, maxScale, containerSize } = constraints
-
-  const newScale = Math.max(minScale, Math.min(maxScale, currentScale * zoomFactor))
-
-  if (newScale === currentScale) {
-    return { scale: currentScale, position: currentPosition }
-  }
-
-  const centerX = containerSize.width / 2
-  const centerY = containerSize.height / 2
-
-  const scaleDiff = newScale / currentScale
-  const newX = centerX - (centerX - currentPosition.x) * scaleDiff
-  const newY = centerY - (centerY - currentPosition.y) * scaleDiff
-
-  const constrainedPosition = constrainPosition(
-    { x: newX, y: newY },
-    newScale,
-    constraints
-  )
-
-  return {
-    scale: newScale,
-    position: constrainedPosition
-  }
-}
-
 // Convert click position to focus point
 export const clickToFocusPoint = (
   clickPosition: Position,
@@ -328,4 +121,77 @@ export const parseFocusString = (focus: string | undefined): { x: number, y: num
         return parts.length === 2 ? { x: parts[0], y: parts[1] } : null
       })()
     : null
+}
+
+export const decomposeCropArea = (
+  containerSize: { width: number, height: number },
+  targetCrop: SoftcropArea,
+) => {
+  const containerAspectRatio = containerSize.width / containerSize.height
+  // Convert target crop ratios to actual aspect ratio by multiplying by container dimensions
+  const targetAspectRatio = (containerSize.width * targetCrop.w) / (containerSize.height * targetCrop.h)
+
+  const baseCrop = {...targetCrop}
+  const dragOffsets = {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0
+  }
+
+  if (Math.abs(targetAspectRatio - containerAspectRatio) < 0.001) {
+    // Aspect ratio already the same which means we can just use
+    // the targetCrop as is with zero drag offsets.
+    return {
+      baseCrop: targetCrop,
+      dragOffsets
+    }
+  }
+
+  if (targetAspectRatio > containerAspectRatio) {
+    // Target proportionally wider than container
+    const newHeightInPx = (targetCrop.w * containerSize.width) / containerAspectRatio
+    const newHeight = newHeightInPx / containerSize.height
+
+    // Get the difference from the target crop height taking scale into account
+    const factor = containerSize.height / newHeightInPx
+    const diff = (newHeight - baseCrop.h) * factor
+
+    // Expaned base crop height to get correct proportions
+    baseCrop.h = newHeight
+
+    const overflow = baseCrop.y + baseCrop.h - 1
+    if (overflow > 0) {
+      dragOffsets.top = overflow * factor
+      dragOffsets.bottom = diff - (overflow * factor)
+      baseCrop.y -= overflow
+    } else {
+      dragOffsets.bottom = diff
+    }
+  } else {
+    // Target is proportionally taller
+    const newWidthInPx = (targetCrop.h * containerSize.height) * containerAspectRatio
+    const newWidth = newWidthInPx / containerSize.width
+
+    // Get the difference from the target crop width taking scale into account
+    const factor = containerSize.width / newWidthInPx
+    const diff = (newWidth - baseCrop.w) * factor
+
+    // Expand base crop width to get correct proportions
+    baseCrop.w = newWidth
+
+    // Now add dragged dimmers offsets
+    // Check wheter it overflows the right edge
+    const overflow = baseCrop.x + baseCrop.w - 1
+    if (overflow > 0) {
+      // Overflows on the right
+      dragOffsets.left = overflow * factor
+      dragOffsets.right = diff - (overflow * factor)
+      baseCrop.x -= overflow
+    } else {
+      dragOffsets.right = diff
+    }
+  }
+
+  return { baseCrop, dragOffsets }
 }
