@@ -9,11 +9,20 @@ export interface SoftcropData {
   focus: SoftcropPoint | null
 }
 
-export const CropDialog = ({ src, area, point, onChange }: {
+export const CropDialog = ({
+  src,
+  area,
+  point,
+  onChange,
+  enableFocusPoint = true,
+  enableDragHandles = true
+}: {
   src: string
   area: SoftcropArea | null
   point: SoftcropPoint | null
   onChange: (arg: SoftcropData) => void
+  enableFocusPoint?: boolean
+  enableDragHandles?: boolean
 }): JSX.Element => {
   const [isActive, toggleIsActive] = useState(false)
   const softcropRef = useRef<SoftcropRef>(null)
@@ -36,6 +45,8 @@ export const CropDialog = ({ src, area, point, onChange }: {
         <Softcrop
           ref={softcropRef}
           src={src}
+          enableDragHandles={enableDragHandles}
+          enableFocusPoint={enableFocusPoint}
           onReady={() => {
             if (!softcropRef.current) return
 

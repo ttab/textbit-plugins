@@ -33,6 +33,8 @@ interface SoftcropProps {
   zoomSensitivity?: number
   onChange?: (cropArea: SoftcropArea | null, focusPoint: SoftcropPoint | null) => void
   onReady?: () => void
+  enableFocusPoint?: boolean
+  enableDragHandles?: boolean
 }
 
 export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
@@ -41,7 +43,9 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   maxZoom = 5,
   zoomSensitivity = 0.02,
   onChange,
-  onReady
+  onReady,
+  enableFocusPoint = true,
+  enableDragHandles = true
 }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -390,7 +394,10 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   // onChange effect
   useEffect(() => {
     if (!onChange || !isReady) return
-    onChange(getCombinedCropArea(), focusPoint)
+    onChange(
+      getCombinedCropArea(),
+      enableFocusPoint ? focusPoint : null
+    )
   }, [baseCrop, dragOffsets, focusPoint, onChange, isReady, getCombinedCropArea])
 
   // Get current display transform
@@ -399,7 +406,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   // Imperative handle
   useImperativeHandle(ref, () => ({
     getCropArea: () => getCombinedCropArea(),
-    getFocusPoint: () => focusPoint,
+    getFocusPoint: () => enableFocusPoint ? focusPoint : null,
     getCropOffsets,
 
     setCropArea: (x: number, y: number, w: number, h: number) => {
@@ -497,7 +504,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
         />
 
         {/* Focus Point */}
-        {focusPointDisplay && (
+        {focusPointDisplay && enableFocusPoint && (
           <div
             ref={focusPointRef}
             className="absolute top-0 left-0 w-[40px] h-[40px] rounded-[12px] pointer-events-none"
@@ -518,34 +525,38 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
       </div>
 
       {/* Drag handles */}
-      <DragHandle
-        side="top"
-        offset={getDragHandleOffset('top')}
-        opposite={getDragHandleOpposite('top')}
-        onChange={(offset) => updateDragHandle('top', offset)}
-        size={containerSize.height}
-      />
-      <DragHandle
-        side="right"
-        offset={getDragHandleOffset('right')}
-        opposite={getDragHandleOpposite('right')}
-        onChange={(offset) => updateDragHandle('right', offset)}
-        size={containerSize.width}
-      />
-      <DragHandle
-        side="bottom"
-        offset={getDragHandleOffset('bottom')}
-        opposite={getDragHandleOpposite('bottom')}
-        onChange={(offset) => updateDragHandle('bottom', offset)}
-        size={containerSize.height}
-      />
-      <DragHandle
-        side="left"
-        offset={getDragHandleOffset('left')}
-        opposite={getDragHandleOpposite('left')}
-        onChange={(offset) => updateDragHandle('left', offset)}
-        size={containerSize.width}
-      />
+      {enableDragHandles &&
+        <>
+          <DragHandle
+            side="top"
+            offset={getDragHandleOffset('top')}
+            opposite={getDragHandleOpposite('top')}
+            onChange={(offset) => updateDragHandle('top', offset)}
+            size={containerSize.height}
+          />
+          <DragHandle
+            side="right"
+            offset={getDragHandleOffset('right')}
+            opposite={getDragHandleOpposite('right')}
+            onChange={(offset) => updateDragHandle('right', offset)}
+            size={containerSize.width}
+          />
+          <DragHandle
+            side="bottom"
+            offset={getDragHandleOffset('bottom')}
+            opposite={getDragHandleOpposite('bottom')}
+            onChange={(offset) => updateDragHandle('bottom', offset)}
+            size={containerSize.height}
+          />
+          <DragHandle
+            side="left"
+            offset={getDragHandleOffset('left')}
+            opposite={getDragHandleOpposite('left')}
+            onChange={(offset) => updateDragHandle('left', offset)}
+            size={containerSize.width}
+          />
+        </>
+      }
 
       {/* Render children (Grid, etc.) */}
       {children}
