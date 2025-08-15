@@ -55,6 +55,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   const [focusPoint, setFocusPoint] = useState<SoftcropPoint | null>(null)
 
   // Interaction state
+  const [isPressed, setIsPressed] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState<Position>({ x: 0, y: 0 })
 
@@ -241,14 +242,15 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   // Mouse/touch handlers for pan - directly modify base crop
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
-    setIsDragging(true)
+    setIsPressed(true)
     setDragStart({ x: e.clientX, y: e.clientY })
   }, [])
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!isDragging) return
+    if (!isPressed) return
 
     e.preventDefault()
+    setIsDragging(true)
 
     const deltaX = e.clientX - dragStart.x
     const deltaY = e.clientY - dragStart.y
@@ -268,13 +270,13 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
 
     // Update drag start for continuous movement
     setDragStart({ x: e.clientX, y: e.clientY })
-  }, [isDragging, dragStart, displayDimensions, getDisplayTransform])
+  }, [isPressed, dragStart, displayDimensions, getDisplayTransform])
 
   const handleMouseUp = useCallback((e: React.MouseEvent) => {
+    setIsPressed(false)
+
     const deltaX = e.clientX - dragStart.x
     const deltaY = e.clientY - dragStart.y
-
-    setIsDragging(false)
 
     // Handle focus point click (only if no drag occurred)
     if (!containerRef.current || Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) return
@@ -282,17 +284,21 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     const rect = containerRef.current.getBoundingClientRect()
     const { scale, position } = getDisplayTransform()
 
-    const newFocusPoint = clickToFocusPoint(
-      { x: e.clientX, y: e.clientY },
-      rect,
-      scale,
-      position,
-      displayDimensions()
-    )
+    if (!isDragging) {
+      const newFocusPoint = clickToFocusPoint(
+        { x: e.clientX, y: e.clientY },
+        rect,
+        scale,
+        position,
+        displayDimensions()
+      )
 
-    if (newFocusPoint) {
-      setFocusPoint(newFocusPoint)
+      if (newFocusPoint) {
+        setFocusPoint(newFocusPoint)
+      }
     }
+
+    setIsDragging(false)
   }, [dragStart, getDisplayTransform, displayDimensions])
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -300,12 +306,13 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
 
     const touches = e.touches
     e.preventDefault()
-    setIsDragging(true)
+    setIsPressed(true)
     setDragStart({ x: touches[0].clientX, y: touches[0].clientY })
   }, [])
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!isDragging) return
+    if (!isPressed) return
+    setIsDragging(true)
 
     e.preventDefault()
 
@@ -326,9 +333,10 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     })
 
     setDragStart({ x: e.touches[0].clientX, y: e.touches[0].clientY })
-  }, [isDragging, dragStart, displayDimensions, getDisplayTransform])
+  }, [isPressed, dragStart, displayDimensions, getDisplayTransform])
 
   const handleTouchEnd = useCallback(() => {
+    setIsPressed(false)
     setIsDragging(false)
   }, [])
 
@@ -459,7 +467,10 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        onMouseLeave={() => setIsDragging(false)}
+        onMouseLeave={() => {
+          setIsDragging(false)
+          setIsPressed(false)
+        }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
