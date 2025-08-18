@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority"
 import { GripHorizontal, GripVertical } from "lucide-react"
-import { CSSProperties, useCallback, useEffect, useState } from "react"
+import { type CSSProperties, useCallback, useEffect, useState } from "react"
 import { cn } from "../../cn"
 
 export const DragHandle = ({ side, offset, opposite, onChange, size }: {
