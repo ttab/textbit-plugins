@@ -1,4 +1,8 @@
 import './index.css'
+import { CropDialog } from './components/CropDialog/CropDialog'
+import { VisualCrop } from './components/CropDialog/VisualCrop'
+import { VisualFocus } from './components/CropDialog/VisualFocus'
+
 export { Bold, Italic, Underline } from './Leafs'
 export { Link } from './Link'
 export { UnorderedList, OrderedList } from './List'
@@ -13,3 +17,9 @@ export { TTVisual } from './TTVisual'
 export { Factbox } from './Factbox'
 export { Table } from './Table'
 export { TVListing } from './TVListing'
+
+export const Crop = {
+  Dialog: CropDialog,
+  VisualCrop,
+  VisualFocus
+}
