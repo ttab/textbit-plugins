@@ -140,7 +140,6 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
       w: Number(combinedCrop.w.toFixed(5)),
       h: Number(combinedCrop.h.toFixed(5))
     }
-    return combinedCrop
   }, [baseCrop, dragOffsets, isReady])
 
   // Handle image load
