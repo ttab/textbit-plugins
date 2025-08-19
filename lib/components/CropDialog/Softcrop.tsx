@@ -133,6 +133,13 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     combinedCrop.w = Math.max(0, Math.min(1 - combinedCrop.x, combinedCrop.w))
     combinedCrop.h = Math.max(0, Math.min(1 - combinedCrop.y, combinedCrop.h))
 
+    // Round all values to 5 decimal places
+    return {
+      x: Number(combinedCrop.x.toFixed(5)),
+      y: Number(combinedCrop.y.toFixed(5)),
+      w: Number(combinedCrop.w.toFixed(5)),
+      h: Number(combinedCrop.h.toFixed(5))
+    }
     return combinedCrop
   }, [baseCrop, dragOffsets, isReady])
 
@@ -301,7 +308,10 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
       )
 
       if (newFocusPoint) {
-        setFocusPoint(newFocusPoint)
+        setFocusPoint({
+          x: Number(newFocusPoint.x.toFixed(5)),
+          y: Number(newFocusPoint.y.toFixed(5))
+        })
       }
     }
 
@@ -362,7 +372,12 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     // Update focus point if it was constrained
     if (screenPos.x !== constrainedPos.x || screenPos.y !== constrainedPos.y) {
       const updatedPoint = updateConstrainedFocusPoint(constrainedPos, scale, position, displayDimensions())
-      setTimeout(() => setFocusPoint(updatedPoint), 0)
+      setTimeout(() => {
+        setFocusPoint({
+          x: Number(updatedPoint.x.toFixed(5)),
+          y: Number(updatedPoint.y.toFixed(5))
+        })
+      }, 0)
     }
 
     return constrainedPos
@@ -432,7 +447,12 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
         console.warn('Invalid focus point coordinates', { x, y })
         return
       }
-      setFocusPoint({ x, y })
+
+      setFocusPoint({
+        x: Number(x.toFixed(5)),
+        y: Number(y.toFixed(5))
+      })
+
       if (focusPointRef.current) {
         focusPointRef.current.style.display = 'flex'
       }
