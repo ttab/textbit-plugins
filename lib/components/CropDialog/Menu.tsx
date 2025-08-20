@@ -1,4 +1,4 @@
-import { Crop, X, ZoomIn, ZoomOut, Undo2 } from 'lucide-react'
+import { Crop, ZoomIn, ZoomOut, Undo2, Check } from 'lucide-react'
 import { MenuOption } from './MenuOption'
 import { useEffect } from 'react'
 
@@ -66,7 +66,7 @@ export const CropDialogMenu = ({onToggle, onZoom, onReset, active }: {
       <MenuOption onPress={() => {onToggle(!active)}}>
         {!active
           ? <Crop size={20} strokeWidth={2.75} className="text-white"/>
-          : <X size={20} strokeWidth={2.75} className="text-white "/>
+          : <Check size={20} strokeWidth={2.75} className="text-white "/>
         }
       </MenuOption>
     </div>
