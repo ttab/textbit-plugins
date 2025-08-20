@@ -3,18 +3,27 @@ export const MenuOption = ({onPress, children}: React.PropsWithChildren & {
 }): JSX.Element => {
   return (
     <a
+      contentEditable={false}
+      tabIndex={0}
       className={`
+        block
         relative
         h-10
         w-10
         rounded-full
         overflow-hidden
         group/icon
+        focus:ring-2
         `
       }
-      onClick={(e) => {
+      onKeyDownCapture={(e) => {
+        if (e.key === ' ') {
+          e.preventDefault()
+          onPress()
+        }
+      }}
+      onMouseDown={(e) => {
         e.preventDefault()
-        e.stopPropagation()
         onPress()
       }}
       onMouseUpCapture={(e) => {
@@ -22,10 +31,10 @@ export const MenuOption = ({onPress, children}: React.PropsWithChildren & {
         e.stopPropagation()
       }}
     >
-      <div className='absolute w-full h-full bg-black opacity-60 group-hover/icon:opacity-80 flex items-center justify-center'></div>
-      <div className='absolute w-full h-full flex items-center justify-center'>
+      <span className='absolute w-full h-full bg-black opacity-60 group-hover/icon:opacity-80 flex items-center justify-center'></span>
+      <span className='absolute w-full h-full flex items-center justify-center'>
         {children}
-      </div>
+      </span>
     </a>
   )
 }
