@@ -1,5 +1,6 @@
 import { Crop, X, ZoomIn, ZoomOut, Undo2 } from 'lucide-react'
 import { MenuOption } from './MenuOption'
+import { useEffect } from 'react'
 
 export const CropDialogMenu = ({onToggle, onZoom, onReset, active }: {
   onToggle: (newState: boolean) => void
@@ -7,6 +8,38 @@ export const CropDialogMenu = ({onToggle, onZoom, onReset, active }: {
   onReset: () => void
   active: boolean
 }):JSX.Element => {
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (!active || !['Escape', 'Enter', '+', '-'].includes(e.key)) {
+        return
+      }
+
+      switch(e.key) {
+        case 'Escape':
+          onReset()
+          break
+
+        case 'Enter':
+          onToggle(false)
+          break
+
+        case '+':
+          onZoom('in')
+          break
+
+        case '-':
+          onZoom('out')
+          break
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [active, onToggle])
+
   return (
     <div
       contentEditable={false}

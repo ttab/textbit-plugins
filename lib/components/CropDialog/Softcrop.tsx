@@ -494,6 +494,7 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   return (
     <div
       ref={containerRef}
+      contentEditable={false}
       className="absolute top-0 left-0 w-full h-full rounded-lg overflow-hidden"
     >
       <div
