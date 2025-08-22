@@ -14,11 +14,31 @@ export const consume: Plugin.ConsumeFunction = async ({ input }) => {
 
 /**
 * Create a Factbox node
-* @param {FactboxInterface} input
-* @returns {FactboxInterface}
+* @param {Plugin.Resource} input
+* @returns {Plugin.Resource}
 */
 const createFactboxNode = (input: Plugin.Resource): Plugin.Resource => {
-  const { text, title, modified, id, original_version, original_updated, locally_changed } = JSON.parse(input.data as string)
+  const { 
+    text, 
+    title, 
+    modified, 
+    id, 
+    original_version, 
+    original_updated, 
+    locally_changed
+  } = JSON.parse(input.data as string)
+
+  const body = {
+    type: 'core/factbox/body',
+    class: 'text',
+    children: text
+      .split('\n')
+      .map((t: string) => ({
+       type: 'core/text',
+       class: 'text',
+       children: [{ text: t }]
+     }))
+    }
 
   return {
     ...input,
@@ -44,15 +64,7 @@ const createFactboxNode = (input: Plugin.Resource): Plugin.Resource => {
           class: 'text',
           children: [{ text: title }]
         },
-        {
-          type: 'core/factbox/body',
-          class: 'text',
-          children: [{
-            type: 'core/text',
-            class: 'text',
-            children: [{ text: text }]
-          }]
-        }
+        body
       ]
     }
   }
