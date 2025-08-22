@@ -28,17 +28,17 @@ const createFactboxNode = (input: Plugin.Resource): Plugin.Resource => {
     locally_changed
   } = JSON.parse(input.data as string)
 
-  const body = text
-    .split('\n')
-    .map((t: string) => ({
-     type: 'core/factbox/body',
-     class: 'text',
-     children: [{
+  const body = {
+    type: 'core/factbox/body',
+    class: 'text',
+    children: text
+      .split('\n')
+      .map((t: string) => ({
        type: 'core/text',
        class: 'text',
        children: [{ text: t }]
-     }]
-  }))
+     }))
+    }
 
   return {
     ...input,
@@ -64,7 +64,7 @@ const createFactboxNode = (input: Plugin.Resource): Plugin.Resource => {
           class: 'text',
           children: [{ text: title }]
         },
-        ...body
+        body
       ]
     }
   }
