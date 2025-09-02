@@ -5,6 +5,8 @@ import { FactboxHeaderItem } from './FactboxHeaderItem'
 import { type Descendant, Transforms } from 'slate'
 import { FocusBlock } from '../../components/FocusBlock'
 
+const MESSAGE = 'Ändringar i faktarutans text sker endast för denna artikel'
+
 export const Factbox = ({ children, element, options, editor }: Plugin.ComponentProps): JSX.Element => {
   const original_updated = element?.properties?.original_updated ?? ''
   const original_id = element?.properties?.original_id
@@ -19,7 +21,7 @@ export const Factbox = ({ children, element, options, editor }: Plugin.Component
           onMouseDown={(e) => { e.stopPropagation() }}
         >
           <FactboxHeaderItem
-            title='Ändringar i artikelns faktarutas text sker endast i denna artikel.'
+            title={MESSAGE}
             icon={{
               icon: MessageCircleWarning,
               className: 'text-red-800'
@@ -73,7 +75,7 @@ export const Factbox = ({ children, element, options, editor }: Plugin.Component
 
 
         <div contentEditable={false} className='flex items-center gap-2 text-xs text-red-800 m-1 p-2 bg-slate-100 rounded-sm px-2 py-1'>
-          Ändringar i artikelns faktarutas text sker endast i denna artikel.
+          {MESSAGE}
         </div>
       </div>
     </FocusBlock>
