@@ -41,7 +41,7 @@ export const TTVisualWrapper = ({ children, element, editor, options }: Plugin.C
         className='relative group flex gap-1 flex-col min-h-10'
       >
         {removable && (
-          <div contentEditable={false} className='absolute hidden -right-1 top-2 size-8  text-slate-900 justify-between items-center group-hover:flex'>
+          <div contentEditable={false} className='absolute hidden right-1 top-2 size-8 w-fit text-slate-900 justify-between items-center group-hover:block z-50'>
             <div
               className={cn('p-1 rounded opacity-70 bg-slate-200 hover:opacity-100 hover:bg-slate-300')}
               onMouseDown={(e) => {
