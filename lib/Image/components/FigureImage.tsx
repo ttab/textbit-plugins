@@ -34,6 +34,7 @@ export const FigureImage = ({ editor, children, rootNode }: Plugin.ComponentProp
           area={crop}
           point={focus}
           onChange={({crop, focus}) => {
+            // @ts-expect-error TODO: overhaul of typings
             const n = editor.children.findIndex((child: Descendant) => child.id === rootNode?.id)
             if (n < 0) {
               return
@@ -47,6 +48,7 @@ export const FigureImage = ({ editor, children, rootNode }: Plugin.ComponentProp
               editor,
               {
                 properties: {
+                  // @ts-expect-error TODO: overhaul of typings
                   ...rootNode.properties,
                   crop: cropString,
                   focus: focusString
