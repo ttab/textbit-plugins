@@ -87,15 +87,15 @@ function Editor({ initialValue }: {
   initialValue: Descendant[]
 }): JSX.Element {
   const [value, setValue] = useState<Descendant[]>(initialValue)
-  const { characters, words } = useTextbit()
+  const { stats } = useTextbit()
 
   return (
     <div className="mr-12">
       <div className="flex items-center justify-between font-sans text-sm gap-4 ml-14 py-4 mb-2 border-b">
         <ThemeSwitcher />
         <div className="flex items-end gap-4">
-          <div> Words: {words}</div>
-          <div> Characters: {characters}</div>
+          <div>{` Words: ${stats.short.words} (${stats.full.words})`}</div>
+          <div>{` Characters: ${stats.short.characters} (${stats.full.characters})`}</div>
         </div>
       </div>
       <Textbit.Editable
