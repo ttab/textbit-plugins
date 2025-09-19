@@ -21,7 +21,11 @@ export const actionHandler = ({ editor }: { editor: Editor }): void => {
   }]
 
 
-  Transforms.insertNodes(editor, node, { at: editor.selection })
+  if (editor.selection) {
+    Transforms.insertNodes(editor, node, { at: editor.selection });
+  } else {
+    console.warn('No selection found when inserting')
+  }
 
   const position = TextbitEditor.position(editor) + 1
 

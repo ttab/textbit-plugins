@@ -39,6 +39,7 @@ export const TTVisualImage = ({ editor, children, rootNode, options }: Plugin.Co
               area={crop}
               point={focus}
               onChange={({crop, focus}) => {
+                // @ts-expect-error TODO: overhaul of typings
                 const n = editor.children.findIndex((child: Descendant) => child.id === rootNode?.id)
                 if (n < 0) {
                   return
@@ -52,6 +53,7 @@ export const TTVisualImage = ({ editor, children, rootNode, options }: Plugin.Co
                   editor,
                   {
                     properties: {
+                      // @ts-expect-error TODO: overhaul of typings
                       ...rootNode.properties,
                       crop: cropString,
                       focus: focusString
