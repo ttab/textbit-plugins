@@ -18,7 +18,6 @@ export interface TTVisualInterface {
   children: [
     {
       type: 'tt/visual/image'
-      class: 'text'
       children: [{ text: string }]
     },
     {

@@ -44,7 +44,6 @@ export const consume: Plugin.ConsumeFunction = async ({ input }) => {
               children: [
                 {
                   type: 'core/image/image',
-                  class: 'text',
                   children: [{ text: '' }]
                 },
                 {
