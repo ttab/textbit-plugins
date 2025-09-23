@@ -13,7 +13,6 @@ export interface TTVisualInterface {
   children: [
     {
       type: 'core/image/image'
-      class: 'text'
       children: [{ text: '' }]
     },
     {
