@@ -30,7 +30,7 @@ const createFactboxNode = (input: Plugin.Resource): Plugin.Resource => {
 
   const body = {
     type: 'core/factbox/body',
-    class: 'text',
+    class: 'block',
     children: text
       .split('\n')
       .map((t: string) => ({

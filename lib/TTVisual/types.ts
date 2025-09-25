@@ -18,6 +18,7 @@ export interface TTVisualInterface {
   children: [
     {
       type: 'tt/visual/image'
+      class?: 'block'
       children: [{ text: string }]
     },
     {
