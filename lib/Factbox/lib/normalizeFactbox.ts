@@ -41,7 +41,7 @@ export const normalizeFactbox = (editor: Editor, nodeEntry: NodeEntry): boolean 
     Transforms.insertNodes(
       editor,
       {
-        class: 'text',
+        class: 'block',
         type: 'core/factbox/body',
         children: bodyChildren.length
           ? bodyChildren
