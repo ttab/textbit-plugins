@@ -69,7 +69,10 @@ export const normalizeTTVisual = (editor: Editor, nodeEntry: NodeEntry): boolean
     if (n === 1 && !TextbitElement.isOfType(child, 'tt/visual/text')) {
       Transforms.setNodes(
         editor,
-        { type: 'tt/visual/text' },
+        { 
+          type: 'tt/visual/text',
+          class: 'text'
+        },
         { at: childPath }
       )
       return true
@@ -78,7 +81,10 @@ export const normalizeTTVisual = (editor: Editor, nodeEntry: NodeEntry): boolean
     if (n === 2 && !TextbitElement.isOfType(child, 'tt/visual/byline')) {
       Transforms.setNodes(
         editor,
-        { type: 'tt/visual/byline' },
+        { 
+          type: 'tt/visual/byline',
+          class: 'text'
+        },
         { at: childPath }
       )
       return true

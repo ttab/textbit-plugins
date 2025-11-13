@@ -43,6 +43,7 @@ const createTTVisualNode = async (input: TBResource): Promise<TBResource> => {
       children: [
         {
           type: 'tt/visual/image',
+          class: 'block',
           children: [{ text: props.href }]
         },
         {
