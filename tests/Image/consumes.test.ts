@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { consumes } from '../../lib/Image/lib/consumes'
 
 describe('Image plugin consumer', () => {
-  it('should consume image/jpg', async () => {
+  it('should consume image/jpg', () => {
     const resource = {
       input: {
         source: '',
@@ -14,7 +14,7 @@ describe('Image plugin consumer', () => {
     expect(consumes(resource)).toEqual([true, 'core/image', false])
   })
 
-  it('should consume tt/visual', async () => {
+  it('should consume tt/visual', () => {
     const resource = {
       input: {
         source: 'drop',
@@ -26,7 +26,7 @@ describe('Image plugin consumer', () => {
     expect(consumes(resource)).toEqual([false])
   })
 
-  it('should consume text/uri-list', async () => {
+  it('should consume text/uri-list', () => {
     const resource = {
       input: {
         source: 'drop',
@@ -38,7 +38,7 @@ describe('Image plugin consumer', () => {
     expect(consumes(resource)).toEqual([false])
   })
 
-  it('should consume text/plain', async () => {
+  it('should consume text/plain', () => {
     const resource = {
       input: {
         source: 'text',
@@ -50,7 +50,7 @@ describe('Image plugin consumer', () => {
     expect(consumes(resource)).toEqual([false])
   })
 
-  it('should not consume text/text', async () => {
+  it('should not consume text/text', () => {
     const resource = {
       input: {
         source: '',

@@ -9,7 +9,7 @@ export const FactboxHeaderItem = ({ icon, title, className, onMouseDown, childre
     className?: string
   }
   onMouseDown?: React.MouseEventHandler<HTMLSpanElement>
-}): JSX.Element => {
+}) => {
   const hoverClasses = (onMouseDown) ? 'hover:bg-slate-300' : ''
 
   return (

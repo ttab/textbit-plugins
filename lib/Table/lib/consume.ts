@@ -1,6 +1,6 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBConsumeFunction, TBResource } from '@ttab/textbit'
 
-export const consume: Plugin.ConsumeFunction = async ({ input }) => {
+export const consume: TBConsumeFunction = async ({ input }) => {
   if (Array.isArray(input)) {
     throw new Error('Table plugin expected string for consumption, not a list/array')
   }
@@ -17,7 +17,7 @@ export const consume: Plugin.ConsumeFunction = async ({ input }) => {
 * @param {TableInterface} input
 * @returns {TableInterface}
 */
-const createTableNode = (input: Plugin.Resource): Plugin.Resource => {
+const createTableNode = (input: TBResource): TBResource => {
   const { text } = JSON.parse(input.data as string)
   return {
     ...input,

@@ -1,31 +1,12 @@
-import type {
-  Plugin,
-  TBEditor,
-  TBElement,
-  TBText
-} from '@ttab/textbit'
-
+import type { TBPluginInitFunction } from '@ttab/textbit'
 import { CodeSquareIcon } from 'lucide-react'
-
 import {
   CodeBlock as CodeBlockComponent,
   CodeBlockBody as CodeBlockBodyComponent
 } from './components'
-
 import { actionHandler } from './lib/actionHandler'
 
-/**
- * Define Slate CustomTypes to be Textbit types
- */
-declare module 'slate' {
-  interface CustomTypes {
-    Editor: TBEditor
-    Element: TBElement
-    Text: TBText
-  }
-}
-
-export const CodeBlock: Plugin.InitFunction = () => {
+export const CodeBlock: TBPluginInitFunction = () => {
   return {
     class: 'block',
     name: 'dotvoid/codeblock',

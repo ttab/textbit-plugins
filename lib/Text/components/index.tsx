@@ -1,11 +1,12 @@
-import { type TBElement, type Plugin } from '@ttab/textbit'
+import type { TBComponentProps } from '@ttab/textbit'
+import type { Element } from 'slate'
 import { getTextStyles } from '../textStyles'
 import { Node } from 'slate'
 import { cn } from '../../cn'
 
 type ClassNameOverridesType = Record<string, string>
 
-export const Text = ({ children, element, options }: Plugin.ComponentProps): JSX.Element => {
+export const Text = ({ children, element, options }: TBComponentProps) => {
   const style = getTextStyles({}).find(t => t.role === element?.properties?.role)
   const countCharacters = Array.isArray(options?.countCharacters) ? options.countCharacters as string[] : []
   const classNames = isClassNameOverridesOption(options?.classNames) ? options.classNames : {}
@@ -50,8 +51,7 @@ export const Text = ({ children, element, options }: Plugin.ComponentProps): JSX
       </div>
 
     default:
-      const errorClassName = classNames['error'] || undefined
-      return <div draggable={false} className={cn('font-serif opacity-80 italic line-through px-1 bg-red-200 dark:text-gray-700', errorClassName)}>
+      return <div draggable={false} className={cn('font-serif opacity-80 italic line-through px-1 bg-red-200 dark:text-gray-700', classNames['error'] || undefined)}>
         {children}
         <CharacterCount element={element} type='default' countTypes={countCharacters} />
       </div>
@@ -59,7 +59,7 @@ export const Text = ({ children, element, options }: Plugin.ComponentProps): JSX
 }
 
 export const CharacterCount = ({ element, className, type, countTypes }: {
-  element: TBElement
+  element: Element
   type: string
   countTypes: string[]
   className?: string

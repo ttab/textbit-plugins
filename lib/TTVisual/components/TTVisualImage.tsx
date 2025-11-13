@@ -1,4 +1,4 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBComponentProps } from '@ttab/textbit'
 import { type Descendant, Element, Transforms } from 'slate'
 import { parseCropString, parseFocusString } from '../../components/CropDialog/softcrop-lib'
 import { useRef } from 'react'
@@ -6,7 +6,7 @@ import { VisualCrop } from '../../components/CropDialog/VisualCrop'
 import { VisualFocus } from '../../components/CropDialog/VisualFocus'
 import { CropDialog } from '../../components/CropDialog/CropDialog'
 
-export const TTVisualImage = ({ editor, children, rootNode, options }: Plugin.ComponentProps): JSX.Element => {
+export const TTVisualImage = ({ editor, children, rootNode, options }: TBComponentProps) => {
   const { properties = { href: '' } } = Element.isElement(rootNode) ? rootNode : {}
   const href = properties.href as string
 

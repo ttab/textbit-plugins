@@ -1,8 +1,8 @@
-import { Plugin } from '@ttab/textbit'
-import { X } from 'lucide-react'
+import type { TBComponentProps } from '@ttab/textbit'
+import { XIcon } from 'lucide-react'
 import { type Descendant, Transforms } from 'slate'
 
-export const TVLWrapper = ({ editor, children, element }: Plugin.ComponentProps) => {
+export const TVLWrapper = ({ editor, children, element }: TBComponentProps) => {
   return (
     <div className='border rounded'>
       <div className='flex flex-nowrap justify-between items-center basis-full p-1 bg-slate-300'>
@@ -19,7 +19,7 @@ export const TVLWrapper = ({ editor, children, element }: Plugin.ComponentProps)
             }
           }}
         >
-          <X size={15} />
+          <XIcon size={15} />
         </div>
 
       </div>

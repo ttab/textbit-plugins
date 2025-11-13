@@ -1,7 +1,7 @@
-import type { Plugin } from '@ttab/textbit'
+import type { TBComponentProps } from '@ttab/textbit'
 import { FocusBlock } from '../../components/FocusBlock'
 
-export const OembedWrapper = ({ children }: Plugin.ComponentProps): JSX.Element => {
+export const OembedWrapper = ({ children }: TBComponentProps) => {
   return (
     <FocusBlock className='my-2'>
       <div

@@ -1,4 +1,4 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBConsumeFunction } from '@ttab/textbit'
 import { type BaseRange, Editor, Node, Path, Text, Transforms } from 'slate'
 
 const LOCALIZED_QUOTES: Record<string, string[]>  = {
@@ -56,7 +56,7 @@ const KEY_CODES = [
   63 // ?
 ]
 
-export const consume: Plugin.ConsumeFunction = async ({ editor, input }) => {
+export const consume: TBConsumeFunction = async ({ editor, input }) => {
   const { selection } = editor
   const lang = editor.lang.substring(0, 2).toLowerCase()
 
@@ -79,21 +79,21 @@ export const consume: Plugin.ConsumeFunction = async ({ editor, input }) => {
       }
     }
   }
-  
+
   // If input is a dash immediately following a preceding dash, turn them into a long dash
   if (data[0] === '-') {
     const { anchor } = selection
-  
+
     // Find the previous character regardless of nesting
     const before = Editor.before(editor, anchor, { unit: 'character' })
-  
+
     if (before) {
       const [node] = Editor.node(editor, before.path) // Get the node at that position
-  
+
       if (Text.isText(node)) {
         const text = node.text
         const charBefore = text[before.offset] // Get the actual character before the cursor
-  
+
         if (charBefore === '-') {
           Transforms.delete(editor, { at: before }) // Remove the previous dash
           return {
@@ -104,7 +104,7 @@ export const consume: Plugin.ConsumeFunction = async ({ editor, input }) => {
       }
     }
   }
-  
+
 
   const basePos = selection.anchor.path[0] // Position of basenode in editor
   let firstOffset = selection.anchor.offset // Start text offset in first node

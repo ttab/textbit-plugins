@@ -38,7 +38,7 @@ interface SoftcropProps {
   enablePanAndZoom?: boolean
 }
 
-export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
+const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
   src,
   children,
   maxZoom = 5,
@@ -586,3 +586,6 @@ export const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
     </div>
   )
 })
+
+Softcrop.displayName = 'Softcrop'
+export { Softcrop }

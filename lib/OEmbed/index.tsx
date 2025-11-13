@@ -1,4 +1,4 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBPluginInitFunction } from '@ttab/textbit'
 
 import { consume } from './lib/consume'
 import { consumes } from './lib/consumes'
@@ -9,8 +9,7 @@ import {
   OembedTitle
 } from './components'
 
-
-export const OEmbed: Plugin.InitFunction = () => {
+export const OEmbed: TBPluginInitFunction = () => {
   return {
     class: 'block',
     name: 'core/oembed',

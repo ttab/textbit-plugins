@@ -1,7 +1,7 @@
-import { Plugin } from '@ttab/textbit'
+import type { TBComponentProps } from '@ttab/textbit'
 import { forwardRef } from 'react'
 
-export const TableCell = forwardRef<HTMLTableCellElement, Plugin.ComponentProps>(({children, element}, ref) => {
+export const TableCell = forwardRef<HTMLTableCellElement, TBComponentProps>(({children, element}, ref) => {
   const {colspan, rowspan} = element?.properties || {}
 
   return (

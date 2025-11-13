@@ -1,15 +1,15 @@
 import { useState, useRef, useEffect } from 'react'
 import { Editor, Element, Transforms } from 'slate'
 import {
-  type Plugin,
+  type TBToolComponentProps,
   TextbitElement
 } from '@ttab/textbit'
 import { Link2OffIcon, LinkIcon, UnlinkIcon } from 'lucide-react'
 import { isValidLink } from '../../shared/isValidLink'
 
 // FIXME: excessively deep type instantiation
-// @ts-ignore
-export const EditLink = ({ editor, entry }: Plugin.ToolComponentProps): JSX.Element => {
+
+export const EditLink = ({ editor, entry }: TBToolComponentProps) => {
   const [node, path] = entry || []
 
   const [url, seturl] = useState<string>(TextbitElement.isElement(node) && typeof node?.properties?.url === 'string' ? node.properties.url : '')

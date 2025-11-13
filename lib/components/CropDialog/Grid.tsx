@@ -1,6 +1,6 @@
 import { GridLine } from './GridLine'
 
-export const Grid = ():JSX.Element => {
+export const Grid = () => {
   return (
     <>
       <GridLine direction='horizontal' offset={33} />

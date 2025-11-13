@@ -1,4 +1,4 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBComponentProps } from '@ttab/textbit'
 import { FilePen, MessageCircleWarning, X } from 'lucide-react'
 import { FactboxModified } from './FactboxModified'
 import { FactboxHeaderItem } from './FactboxHeaderItem'
@@ -7,7 +7,7 @@ import { FocusBlock } from '../../components/FocusBlock'
 
 const MESSAGE = 'Ändringar i faktarutans text sker endast för denna artikel'
 
-export const Factbox = ({ children, element, options, editor }: Plugin.ComponentProps): JSX.Element => {
+export const Factbox = ({ children, element, options, editor }: TBComponentProps) => {
   const original_updated = element?.properties?.original_updated ?? ''
   const original_id = element?.properties?.original_id
   const removable = options?.removable as boolean ?? false
@@ -30,13 +30,13 @@ export const Factbox = ({ children, element, options, editor }: Plugin.Component
 
           {options?.onEditOriginal && typeof options.onEditOriginal === 'function' && original_id
             ? <FactboxHeaderItem
-              title={'Redigera faktarutans original'}
-              onMouseDown={(e) => {
+                title={'Redigera faktarutans original'}
+                onMouseDown={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 (options.onEditOriginal as (id: string) => void)(original_id as string)
               }}
-              icon={{
+                icon={{
                 icon: FilePen
               }} />
             : null

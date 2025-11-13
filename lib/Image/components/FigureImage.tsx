@@ -1,4 +1,4 @@
-import type { Plugin } from '@ttab/textbit'
+import type { TBComponentProps } from '@ttab/textbit'
 import { useRef } from 'react'
 import { type Descendant, Element, Transforms } from 'slate'
 import { CropDialog } from '../../components/CropDialog/CropDialog'
@@ -6,7 +6,7 @@ import { parseCropString, parseFocusString } from '../../components/CropDialog/s
 import { VisualCrop } from '../../components/CropDialog/VisualCrop'
 import { VisualFocus } from '../../components/CropDialog/VisualFocus'
 
-export const FigureImage = ({ editor, children, rootNode }: Plugin.ComponentProps): JSX.Element => {
+export const FigureImage = ({ editor, children, rootNode }: TBComponentProps) => {
   const { properties = {} } = Element.isElement(rootNode) ? rootNode : {}
   const src: string = properties?.src as string || ''
 

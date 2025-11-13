@@ -1,10 +1,9 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBPluginInitFunction } from '@ttab/textbit'
+import type { Element } from 'slate'
 import { Text as TextComponent } from './components'
-
 import { getTextStyles } from './textStyles'
 
-
-export const Text: Plugin.InitFunction = (options) => {
+export const Text: TBPluginInitFunction = (options) => {
   return {
     class: 'text',
     name: 'core/text',
@@ -12,12 +11,23 @@ export const Text: Plugin.InitFunction = (options) => {
     componentEntry: {
       class: 'text',
       component: TextComponent,
-      placeholder: '¶', // FIXME: Needs to be a render function for subtypes
+      placeholder,
       constraints: {
         allowBreak: !options?.singleLine,
         allowSoftBreak: !options?.singleLine
       }
     },
     actions: getTextStyles(options || {})
+  }
+}
+
+function placeholder(element: Element) {
+  switch (element.properties?.role) {
+    case 'heading-1':
+      return 'Title'
+    case 'heading-2':
+      return 'Heading'
+    default:
+      return '¶'
   }
 }

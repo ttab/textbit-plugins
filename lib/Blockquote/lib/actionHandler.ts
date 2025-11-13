@@ -1,24 +1,23 @@
-import {
-  type Editor,
-  Transforms
-} from 'slate'
+import { type Editor, Transforms, type Descendant } from 'slate'
 import { TextbitEditor } from '@ttab/textbit'
 
 
 export const actionHandler = ({ editor }: { editor: Editor }): void => {
   const text = TextbitEditor.getSelectedText(editor)
 
-  const node = [{
+  const node: Descendant[] = [{
     id: crypto.randomUUID(),
     class: 'block',
     type: 'core/blockquote',
     children: [
       {
+        id: crypto.randomUUID(),
         type: 'core/blockquote/body',
         class: 'text',
         children: [{ text: text || '' }]
       },
       {
+        id: crypto.randomUUID(),
         type: 'core/blockquote/caption',
         class: 'text',
         children: [{ text: '' }]

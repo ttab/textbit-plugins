@@ -1,4 +1,4 @@
-import { type Descendant } from 'slate'
+import type { Descendant } from 'slate'
 
 export const TextbitDocument: Descendant[] = [
   {
@@ -68,11 +68,13 @@ export const TextbitDocument: Descendant[] = [
     },
     children: [
       {
+        id: crypto.randomUUID(),
         type: 'core/image/image',
         class: 'text',
         children: [{ text: '' }]
       },
       {
+        id: crypto.randomUUID(),
         type: 'core/image/text',
         class: 'text',
         children: [{ text: 'A random image' }]
@@ -89,10 +91,12 @@ export const TextbitDocument: Descendant[] = [
     },
     children: [
       {
+        id: crypto.randomUUID(),
         type: 'core/table/row',
         class: 'block',
         children: [
           {
+            id: crypto.randomUUID(),
             type: 'core/table/row/cell',
             class: 'text',
             children: [{ text: `Superman` }],
@@ -103,15 +107,18 @@ export const TextbitDocument: Descendant[] = [
         ]
       },
       {
+        id: crypto.randomUUID(),
         type: 'core/table/row',
         class: 'block',
         children: [
           {
+            id: crypto.randomUUID(),
             type: 'core/table/row/cell',
             class: 'text',
             children: [{ text: `Name` }]
           },
           {
+            id: crypto.randomUUID(),
             type: 'core/table/row/cell',
             class: 'text',
             children: [{ text: `City` }]
@@ -119,15 +126,18 @@ export const TextbitDocument: Descendant[] = [
         ]
       },
       {
+        id: crypto.randomUUID(),
         type: 'core/table/row',
         class: 'block',
         children: [
           {
+            id: crypto.randomUUID(),
             type: 'core/table/row/cell',
             class: 'text',
             children: [{ text: `Batman` }]
           },
           {
+            id: crypto.randomUUID(),
             type: 'core/table/row/cell',
             class: 'text',
             children: [{ text: `Gotham` }]
@@ -135,15 +145,18 @@ export const TextbitDocument: Descendant[] = [
         ]
       },
       {
+        id: crypto.randomUUID(),
         type: 'core/table/row',
         class: 'block',
         children: [
           {
+            id: crypto.randomUUID(),
             type: 'core/table/row/cell',
             class: 'text',
             children: [{ text: `Spider-Man` }]
           },
           {
+            id: crypto.randomUUID(),
             type: 'core/table/row/cell',
             class: 'text',
             children: [{ text: `New York` }],
@@ -154,10 +167,12 @@ export const TextbitDocument: Descendant[] = [
         ]
       },
       {
+        id: crypto.randomUUID(),
         type: 'core/table/row',
         class: 'block',
         children: [
           {
+            id: crypto.randomUUID(),
             type: 'core/table/row/cell',
             class: 'text',
             children: [{ text: `Fantastic 4` }]
@@ -167,14 +182,15 @@ export const TextbitDocument: Descendant[] = [
     ]
   },
   {
+    id: crypto.randomUUID(),
     type: 'core/factbox',
     class: 'block',
-    id: '538345e5-bacc-48f9-8ef1-1214443a32da',
     properties: {
       editable: false
     },
     children: [
       {
+        id: crypto.randomUUID(),
         type: 'core/factbox/title',
         class: 'text',
         children: [
@@ -182,6 +198,7 @@ export const TextbitDocument: Descendant[] = [
         ]
       },
       {
+        id: crypto.randomUUID(),
         type: 'core/factbox/body',
         class: 'block',
         children: [

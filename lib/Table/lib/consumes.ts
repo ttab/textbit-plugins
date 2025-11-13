@@ -1,6 +1,6 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBConsumesFunction } from '@ttab/textbit'
 
-export const consumes: Plugin.ConsumesFunction = ({ input }) => {
+export const consumes: TBConsumesFunction = ({ input }) => {
   const { type, data } = input
 
   if (typeof data !== 'string') {

@@ -1,6 +1,6 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBComponentProps } from '@ttab/textbit'
 
-export const ListItem = ({ children }: Plugin.ComponentProps): JSX.Element => {
+export const ListItem = ({ children }: TBComponentProps) => {
   return <div className="list-item pl-4">
     {children}
   </div>

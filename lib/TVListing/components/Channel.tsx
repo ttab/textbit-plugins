@@ -1,7 +1,7 @@
-import type { Plugin } from "@ttab/textbit"
+import type { TBComponentProps } from '@ttab/textbit'
 import type { PropsWithChildren } from "react"
 
-export const Channel = ({ options }: Plugin.ComponentProps) => {
+export const Channel = ({ options }: TBComponentProps) => {
   const ChannelComponent = options?.channelComponent as React.ComponentType<PropsWithChildren> | undefined
 
   return (

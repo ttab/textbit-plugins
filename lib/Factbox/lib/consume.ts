@@ -1,6 +1,6 @@
-import type { Plugin } from '@ttab/textbit'
+import type { TBConsumeFunction, TBResource } from '@ttab/textbit'
 
-export const consume: Plugin.ConsumeFunction = async ({ input }) => {
+export const consume: TBConsumeFunction = async ({ input }) => {
   if (Array.isArray(input)) {
     throw new Error('Factbox plugin expected string for consumation, not a list/array')
   }
@@ -17,14 +17,14 @@ export const consume: Plugin.ConsumeFunction = async ({ input }) => {
 * @param {Plugin.Resource} input
 * @returns {Plugin.Resource}
 */
-const createFactboxNode = (input: Plugin.Resource): Plugin.Resource => {
-  const { 
-    text, 
-    title, 
-    modified, 
-    id, 
-    original_version, 
-    original_updated, 
+const createFactboxNode = (input: TBResource): TBResource => {
+  const {
+    text,
+    title,
+    modified,
+    id,
+    original_version,
+    original_updated,
     locally_changed
   } = JSON.parse(input.data as string)
 

@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import { glob } from 'glob'
+import path from 'path'
 
 import { peerDependencies } from './package.json'
 
@@ -12,6 +13,18 @@ export default defineConfig({
     react(),
     dts({ rollupTypes: true })
   ],
+  resolve: {
+    alias: {
+      'react': path.resolve(__dirname, './node_modules/react'),
+      'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
+      'slate': path.resolve(__dirname, './node_modules/slate'),
+      'slate-react': path.resolve(__dirname, './node_modules/slate-react'),
+      'slate-history': path.resolve(__dirname, './node_modules/slate-history'),
+      '@slate-yjs/core': path.resolve(__dirname, './node_modules/@slate-yjs/core'),
+      '@slate-yjs/react': path.resolve(__dirname, './node_modules/@slate-yjs/react'),
+      'yjs': path.resolve(__dirname, './node_modules/yjs')
+    }
+  },
   build: {
     target: 'esnext',
     minify: true,

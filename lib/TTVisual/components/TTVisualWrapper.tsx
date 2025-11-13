@@ -1,15 +1,15 @@
 import React from 'react'
-import type { Plugin } from '@ttab/textbit'
+import type { TBComponentProps } from '@ttab/textbit'
 import { X } from 'lucide-react'
 import { cn } from '../../cn'
 import { type Descendant, Transforms } from 'slate'
 import { FocusBlock } from '../../components/FocusBlock'
 
-interface Child {
+type Child = React.ReactNode & {
   props: { children: { props: { element: { type: string } } } }
 }
 
-export const TTVisualWrapper = ({ children, element, editor, options }: Plugin.ComponentProps): JSX.Element => {
+export const TTVisualWrapper = ({ children, element, editor, options }: TBComponentProps) => {
   const removable = options?.removable as boolean ?? true
 
   const getType = (child: Child): string => {
@@ -23,7 +23,7 @@ export const TTVisualWrapper = ({ children, element, editor, options }: Plugin.C
   const bylineNode: React.ReactNode[] = []
   const imageNode: React.ReactNode[] = []
 
-  children.forEach((child: React.ReactElement) => {
+  children.forEach((child: Child) => {
     const type: string = getType(child)
     if (type.includes('text')) {
       textNode.push(child)

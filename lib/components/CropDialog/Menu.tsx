@@ -7,7 +7,7 @@ export const CropDialogMenu = ({onToggle, onZoom, onReset, active }: {
   onZoom: (direction: 'in' | 'out') => void
   onReset: () => void
   active: boolean
-}):JSX.Element => {
+}) => {
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (!active || !['Escape', 'Enter', '+', '-'].includes(e.key)) {

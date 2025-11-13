@@ -1,6 +1,6 @@
-import type { Plugin } from '@ttab/textbit'
+import type { TBComponentProps } from '@ttab/textbit'
 
-export const FigureText = ({ children }: Plugin.ComponentProps): JSX.Element => {
+export const FigureText = ({ children }: TBComponentProps) => {
   return <div
     draggable={false}
     className="p-2 flex rounded rounded-xs text-sm bg-slate-200 dark:bg-slate-800"

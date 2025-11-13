@@ -15,6 +15,7 @@ export const normalizeFactbox = (editor: Editor, nodeEntry: NodeEntry): boolean 
     Transforms.insertNodes(
       editor,
       {
+        id: crypto.randomUUID(),
         class: 'text',
         type: 'core/factbox/title',
         children: [{ text: '' }]
@@ -41,12 +42,15 @@ export const normalizeFactbox = (editor: Editor, nodeEntry: NodeEntry): boolean 
     Transforms.insertNodes(
       editor,
       {
+        id: crypto.randomUUID(),
         class: 'text',
         type: 'core/factbox/body',
         children: bodyChildren.length
           ? bodyChildren
           : [{
+            id: crypto.randomUUID(),
             type: 'core/text',
+            class: 'text',
             children: [{ text: '' }]
           }]
       },

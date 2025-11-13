@@ -25,7 +25,7 @@ export const CropDialog = ({
   enableFocusPoint?: boolean
   enableDragHandles?: boolean
   enablePanAndZoom?: boolean
-}): JSX.Element => {
+}) => {
   const [isActive, toggleIsActive] = useState(false)
   const softcropRef = useRef<SoftcropRef>(null)
 

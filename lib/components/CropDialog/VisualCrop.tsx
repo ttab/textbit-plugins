@@ -5,7 +5,7 @@ export const VisualCrop = ({ crop }: {
     w: number
     h: number
   }
-}): JSX.Element => {
+}) => {
   return (
     <div
       className="absolute inset-0 bg-black bg-opacity-30 pointer-events-none"

@@ -1,9 +1,9 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBPluginInitFunction} from '@ttab/textbit'
 import { Channel, Day, Time, EndTime, Title, TVLWrapper } from './components'
 import { Table } from 'lucide-react'
 import { actionHandler } from './lib/actionHandler'
 
-export const TVListing: Plugin.InitFunction = (options) => {
+export const TVListing: TBPluginInitFunction = (options) => {
   return {
     class: 'block',
     name: 'tt/tv-listing',

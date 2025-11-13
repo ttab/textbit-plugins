@@ -1,14 +1,10 @@
-import {
-  type Editor,
-  Transforms
-} from 'slate'
+import { type Editor, Transforms, type Descendant } from 'slate'
 import { TextbitEditor } from '@ttab/textbit'
-
 
 export const actionHandler = ({ editor,  }: { editor: Editor }): void => {
   const text = TextbitEditor.getSelectedText(editor)
 
-    const node = [{
+    const node: Descendant[] = [{
       id: crypto.randomUUID(),
       class: 'block',
       type: 'tt/tv-listing',
@@ -18,26 +14,31 @@ export const actionHandler = ({ editor,  }: { editor: Editor }): void => {
       },
       children: [
         {
+          id: crypto.randomUUID(),
           class: 'text',
           type: 'tt/tv-listing/title',
           children: [{ text: '' }]
         },
         {
+          id: crypto.randomUUID(),
           class: 'text',
           type: 'tt/tv-listing/channel',
           children: []
         },
         {
+          id: crypto.randomUUID(),
           class: 'text',
           type: 'tt/tv-listing/day',
           children: [{ text: '' }]
         },
         {
+          id: crypto.randomUUID(),
           class: 'text',
           type: 'tt/tv-listing/time',
           children: [{ text: '' }]
         },
         {
+          id: crypto.randomUUID(),
           class: 'text',
           type: 'tt/tv-listing/end_time',
           children: [{ text: '' }]
