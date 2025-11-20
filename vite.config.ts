@@ -15,13 +15,6 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      'react': path.resolve(__dirname, './node_modules/react'),
-      'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
-      'slate': path.resolve(__dirname, './node_modules/slate'),
-      'slate-react': path.resolve(__dirname, './node_modules/slate-react'),
-      'slate-history': path.resolve(__dirname, './node_modules/slate-history'),
-      '@slate-yjs/core': path.resolve(__dirname, './node_modules/@slate-yjs/core'),
-      '@slate-yjs/react': path.resolve(__dirname, './node_modules/@slate-yjs/react'),
       'yjs': path.resolve(__dirname, './node_modules/yjs')
     }
   },
