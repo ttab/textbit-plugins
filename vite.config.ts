@@ -16,7 +16,16 @@ export default defineConfig({
   resolve: {
     alias: {
       'yjs': path.resolve(__dirname, './node_modules/yjs')
-    }
+    },
+    dedupe: [
+      'react',
+      'react-dom',
+      'slate',
+      'slate-react',
+      'slate-history',
+      '@slate-yjs/core',
+      '@slate-yjs/react'
+    ]
   },
   build: {
     target: 'esnext',
