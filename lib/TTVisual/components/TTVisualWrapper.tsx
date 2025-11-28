@@ -5,7 +5,7 @@ import { cn } from '../../cn'
 import { type Descendant, Transforms } from 'slate'
 import { FocusBlock } from '../../components/FocusBlock'
 
-type Child = React.ReactNode & {
+type Child = React.ReactElement & {
   props: { children: { props: { element: { type: string } } } }
 }
 
@@ -23,7 +23,8 @@ export const TTVisualWrapper = ({ children, element, editor, options }: TBCompon
   const bylineNode: React.ReactNode[] = []
   const imageNode: React.ReactNode[] = []
 
-  children.forEach((child: Child) => {
+  const childArray = React.Children.toArray(children) as Child[]
+  childArray.forEach((child: Child) => {
     const type: string = getType(child)
     if (type.includes('text')) {
       textNode.push(child)

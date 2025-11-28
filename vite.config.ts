@@ -24,7 +24,8 @@ export default defineConfig({
       'slate-react',
       'slate-history',
       '@slate-yjs/core',
-      '@slate-yjs/react'
+      '@slate-yjs/react',
+      'yjs'
     ]
   },
   build: {

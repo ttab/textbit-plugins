@@ -1,7 +1,6 @@
 import type { TBComponentProps } from '@ttab/textbit'
-import { forwardRef } from 'react'
 
-export const TableCell = forwardRef<HTMLTableCellElement, TBComponentProps>(({children, element}, ref) => {
+export const TableCell = ({element, children, ref} : TBComponentProps<HTMLTableCellElement>) =>{
   const {colspan, rowspan} = element?.properties || {}
 
   return (
@@ -9,6 +8,6 @@ export const TableCell = forwardRef<HTMLTableCellElement, TBComponentProps>(({ch
       {children}
     </td>
   )
-})
+}
 
 TableCell.displayName = 'TableCell'
