@@ -43,12 +43,11 @@
     "postversion": "git push && git push --tags"
   },
   "peerDependencies": {
-    "lucide-react": "^0.555.0",
+    "lucide-react": ">=0.475.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
     "yjs": "^13.6.26",
     "slate": "^0.118.1",
-    "slate-history": "^0.113.1",
     "slate-react": "^0.119.0",
     "@slate-yjs/core": "^1.0.2",
     "@slate-yjs/react": "^1.1.0"
@@ -79,7 +78,7 @@
     "vite-plugin-dts": "^4.5.0",
     "vite-plugin-lib-inject-css": "^2.2.1",
     "vitest": "^4.0.8",
-    "lucide-react": "^0.475.0",
+    "lucide-react": "^0.555.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "yjs": "^13.6.26",
