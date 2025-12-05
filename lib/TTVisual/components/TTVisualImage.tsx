@@ -1,5 +1,5 @@
 import type { TBComponentProps } from '@ttab/textbit'
-import { type Descendant, Element, Transforms } from 'slate'
+import { Element, Transforms } from 'slate'
 import { parseCropString, parseFocusString } from '../../components/CropDialog/softcrop-lib'
 import { useRef } from 'react'
 import { VisualCrop } from '../../components/CropDialog/VisualCrop'
@@ -39,8 +39,7 @@ export const TTVisualImage = ({ editor, children, rootNode, options }: TBCompone
               area={crop}
               point={focus}
               onChange={({crop, focus}) => {
-                // @ts-expect-error TODO: overhaul of typings
-                const n = editor.children.findIndex((child: Descendant) => child.id === rootNode?.id)
+                const n = editor.children.findIndex((child) => child.id === rootNode?.id)
                 if (n < 0) {
                   return
                 }
