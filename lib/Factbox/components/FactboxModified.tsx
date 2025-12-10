@@ -4,7 +4,7 @@ interface Modified {
   modified?: string | undefined | boolean | number
 }
 
-export const FactboxModified = ({ modified = '' }: Modified): JSX.Element => {
+export const FactboxModified = ({ modified = '' }: Modified) => {
   if (modified) {
     const formatted = formatDate(modified as string)
     return (

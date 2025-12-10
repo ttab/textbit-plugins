@@ -1,4 +1,4 @@
-import type { Plugin } from '@ttab/textbit'
+import type { TBPluginInitFunction } from '@ttab/textbit'
 
 import {
   BoldIcon,
@@ -6,7 +6,7 @@ import {
   UnderlineIcon
 } from 'lucide-react'
 
-const Bold: Plugin.InitFunction = () => {
+const Bold: TBPluginInitFunction = () => {
   return {
     class: 'leaf',
     name: 'core/bold',
@@ -21,7 +21,7 @@ const Bold: Plugin.InitFunction = () => {
     }
   }
 }
-const Italic: Plugin.InitFunction = () => {
+const Italic: TBPluginInitFunction = () => {
   return {
     class: 'leaf',
     name: 'core/italic',
@@ -37,7 +37,7 @@ const Italic: Plugin.InitFunction = () => {
   }
 }
 
-const Underline: Plugin.InitFunction = () => {
+const Underline: TBPluginInitFunction = () => {
   return {
     class: 'leaf',
     name: 'core/underline',

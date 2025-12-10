@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './themeSwitcher.css'
 
-export function ThemeSwitcher(): JSX.Element {
+export function ThemeSwitcher() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light')
 
   useEffect(() => { toggleTheme(theme || 'light') }, [theme])

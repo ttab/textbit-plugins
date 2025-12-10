@@ -1,28 +1,9 @@
-import type {
-  Plugin,
-  TBEditor,
-  TBElement,
-  TBText
-} from '@ttab/textbit'
-
+import type { TBPluginInitFunction } from '@ttab/textbit'
 import { Link2Icon } from 'lucide-react'
-
 import { Link as LinkComponent } from './components/Link'
 import { EditLink as EditLinkComponent } from './components/EditLink'
 
 import { actionHandler } from './lib/actionHandler'
-
-/**
- * Define Slate CustomTypes to be Textbit types
- */
-declare module 'slate' {
-  interface CustomTypes {
-    Editor: TBEditor
-    Element: TBElement
-    Text: TBText
-  }
-}
-
 
 /**
  * FIXME
@@ -33,7 +14,7 @@ declare module 'slate' {
  * 5.   Add InlineChromiumBugfix as is in https://github.com/ianstormtaylor/slate/blob/main/site/examples/inlines.tsx
  */
 
-const Link: Plugin.InitFunction = () => {
+const Link: TBPluginInitFunction = () => {
   return {
     class: 'inline',
     name: 'core/link',

@@ -1,12 +1,5 @@
-import {
-  Editor,
-  Transforms,
-  Range,
-  Element
-} from 'slate'
-
-import { TextbitElement } from '@ttab/textbit'
-
+import { TextbitElement, } from '@ttab/textbit'
+import { Range, Editor, Element, type Descendant, Transforms } from 'slate'
 
 export const actionHandler = (editor: Editor, typeName: string): void => {
   if (!editor.selection) {
@@ -33,7 +26,7 @@ export const actionHandler = (editor: Editor, typeName: string): void => {
 
   const id = crypto.randomUUID()
 
-  const link = {
+  const link: Descendant = {
     class: 'inline',
     type: typeName,
     id,

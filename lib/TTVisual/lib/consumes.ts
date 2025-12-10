@@ -1,7 +1,7 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBConsumesFunction } from '@ttab/textbit'
 import parseImageId from './parseImageId'
 
-export const consumes: Plugin.ConsumesFunction = ({ input }) => {
+export const consumes: TBConsumesFunction = ({ input }) => {
   const { type, data } = input
 
   // If data is not a string abort

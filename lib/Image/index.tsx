@@ -1,4 +1,4 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBPluginInitFunction } from '@ttab/textbit'
 import { ImageIcon } from 'lucide-react'
 
 import {
@@ -11,7 +11,7 @@ import { consumes } from './lib/consumes'
 import { normalizeImage } from './lib/normalizeImage'
 import { actionHandler } from './lib/actionHandler'
 
-export const Image: Plugin.InitFunction = () => {
+export const Image: TBPluginInitFunction = () => {
   return {
     class: 'block',
     name: 'core/image',

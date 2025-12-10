@@ -1,4 +1,4 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBPluginInitFunction } from '@ttab/textbit'
 
 import { consume } from './lib/consume'
 import { consumes } from './lib/consumes'
@@ -10,7 +10,7 @@ import {
 } from './components'
 import { normalizeTTVisual } from './lib/normalizeTTVisual'
 
-export const TTVisual: Plugin.InitFunction = (options) => {
+export const TTVisual: TBPluginInitFunction = (options) => {
   return {
     class: 'block',
     name: 'tt/visual',

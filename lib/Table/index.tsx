@@ -1,4 +1,4 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBPluginInitFunction } from '@ttab/textbit'
 import {
   TableCell,
   Table as TableComponent,
@@ -7,7 +7,7 @@ import {
 import { consumes } from './lib/consumes'
 import { consume } from './lib/consume'
 
-export const Table: Plugin.InitFunction = () => {
+export const Table: TBPluginInitFunction = () => {
   return {
     class: 'block',
     name: 'core/table',

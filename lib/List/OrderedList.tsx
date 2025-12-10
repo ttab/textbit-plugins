@@ -4,16 +4,17 @@ import { List, ListItem } from './components'
 import { actionHandler } from './lib/actionHandler'
 import { normalizeNode } from './lib/normalizeNode'
 import type { Editor, NodeEntry } from 'slate'
-import type { Plugin } from '@ttab/textbit'
+import type { TBPluginDefinition } from '@ttab/textbit'
 
-export const OrderedList: Plugin.InitFunction = (options) => {
+export const OrderedList: (options?: { title?: string }) => TBPluginDefinition = (options) => {
+
   return {
     class: 'text',
     name: 'core/ordered-list',
     actions: [
       {
         name: 'add-ordered-list',
-        title: `${options?.title}` || 'Number list',
+        title: options?.title || 'Number list',
         tool: () => <ListOrderedIcon style={{ width: '1em', height: '1em' }} />,
         hotkey: 'mod+shift+7',
         handler: ({ editor }): void => {

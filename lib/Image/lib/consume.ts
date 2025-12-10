@@ -1,9 +1,9 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBConsumeFunction, TBResource } from '@ttab/textbit'
 
 /**
  * Consume a FileList and produce an array of core/image objects
  */
-export const consume: Plugin.ConsumeFunction = async ({ input }) => {
+export const consume: TBConsumeFunction = async ({ input }) => {
   if (Array.isArray(input)) {
     throw new Error('Image plugin expected File for consumation, not a list/array')
   }
@@ -14,7 +14,7 @@ export const consume: Plugin.ConsumeFunction = async ({ input }) => {
 
   const { name, type, size } = input.data
 
-  const readerPromise = new Promise<Plugin.Resource>((resolve, reject) => {
+  const readerPromise = new Promise<TBResource>((resolve, reject) => {
     const reader = new FileReader()
 
     reader.addEventListener('load', () => {

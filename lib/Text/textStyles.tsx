@@ -3,7 +3,8 @@ import {
   type Element
 } from 'slate'
 import {
-  type Plugin,
+  type TBAction,
+  type TBPluginOptions,
   TextbitEditor
 } from '@ttab/textbit'
 
@@ -15,9 +16,9 @@ import {
   TextIcon
 } from 'lucide-react'
 
-type TextStyleAction = Plugin.Action & { role?: string }
+type TextStyleAction = TBAction & { role?: string }
 
-export const getTextStyles = (options: Plugin.Options): TextStyleAction[] => {
+export const getTextStyles = (options: TBPluginOptions): TextStyleAction[] => {
   const textStyles: TextStyleAction[] = [
     {
       name: 'set-heading-1',

@@ -1,8 +1,8 @@
-import type { Plugin } from '@ttab/textbit'
+import type { TBConsumeFunction, TBResource } from '@ttab/textbit'
 import { getOembedUrl } from './getOembedUrl'
 
 
-export const consume: Plugin.ConsumeFunction = async ({ input }) => {
+export const consume: TBConsumeFunction = async ({ input }) => {
   if (Array.isArray(input)) {
     console.warn('Oembed plugin expected string for consumation, not a list/array')
     return
@@ -18,7 +18,7 @@ export const consume: Plugin.ConsumeFunction = async ({ input }) => {
 }
 
 
-const createOembedNode = async (input: Plugin.Resource): Promise<Plugin.Resource | undefined> => {
+const createOembedNode = async (input: TBResource): Promise<TBResource | undefined> => {
   const props = await fetchOembed(input.data as string)
   if (!props) {
     return

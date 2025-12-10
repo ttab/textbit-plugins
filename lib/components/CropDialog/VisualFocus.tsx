@@ -5,7 +5,7 @@ export const VisualFocus = ({ focus }: {
     x: number
     y: number
   }
-}): JSX.Element => {
+}) => {
   return (
     <FocusIcon
       color='rgba(255, 255, 255, 0.9)'

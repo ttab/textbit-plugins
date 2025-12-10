@@ -1,6 +1,6 @@
 export const MenuOption = ({onPress, children}: React.PropsWithChildren & {
   onPress: () => void
-}): JSX.Element => {
+}) => {
   return (
     <a
       contentEditable={false}

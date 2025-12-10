@@ -1,12 +1,12 @@
-import type { Plugin } from '@ttab/textbit'
+import type { TBComponentProps } from '@ttab/textbit'
 import { useRef } from 'react'
-import { type Descendant, Element, Transforms } from 'slate'
+import { Element, Transforms } from 'slate'
 import { CropDialog } from '../../components/CropDialog/CropDialog'
 import { parseCropString, parseFocusString } from '../../components/CropDialog/softcrop-lib'
 import { VisualCrop } from '../../components/CropDialog/VisualCrop'
 import { VisualFocus } from '../../components/CropDialog/VisualFocus'
 
-export const FigureImage = ({ editor, children, rootNode }: Plugin.ComponentProps): JSX.Element => {
+export const FigureImage = ({ editor, children, rootNode }: TBComponentProps) => {
   const { properties = {} } = Element.isElement(rootNode) ? rootNode : {}
   const src: string = properties?.src as string || ''
 
@@ -34,8 +34,7 @@ export const FigureImage = ({ editor, children, rootNode }: Plugin.ComponentProp
           area={crop}
           point={focus}
           onChange={({crop, focus}) => {
-            // @ts-expect-error TODO: overhaul of typings
-            const n = editor.children.findIndex((child: Descendant) => child.id === rootNode?.id)
+            const n = editor.children.findIndex((child) => child.id === rootNode?.id)
             if (n < 0) {
               return
             }

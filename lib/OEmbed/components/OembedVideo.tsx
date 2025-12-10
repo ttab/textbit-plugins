@@ -1,8 +1,8 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBComponentProps } from '@ttab/textbit'
 import { useEffect, useState } from 'react'
 import { Element } from 'slate'
 
-export const OembedVideo = ({ children, rootNode }: Plugin.ComponentProps): JSX.Element => {
+export const OembedVideo = ({ children, rootNode }: TBComponentProps) => {
   const { properties = {} } = Element.isElement(rootNode) ? rootNode : {}
   const src = properties?.src || ''
   const html = properties?.html || ''

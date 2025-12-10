@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
 import { consume } from '../../lib/Factbox/lib/consume'
-import { Plugin } from '@ttab/textbit'
-import { Editor } from 'slate'
+import type { TBResource } from '@ttab/textbit'
+import type { Editor } from 'slate'
 
 describe('Factbox consume', () => {
-  const validInput: Plugin.Resource = {
+  const validInput: TBResource = {
     data: JSON.stringify({
       text: 'Factbox line 1\nFactbox line 2',
       title: 'Factbox Title',
@@ -36,6 +36,7 @@ describe('Factbox consume', () => {
       throw new Error('No data returned from consume')
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = result.data as any
 
     expect(data).toBeDefined()

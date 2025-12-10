@@ -11,8 +11,6 @@ export const actionHandler = (editor: Editor, type: string): void => {
   const isActive = TextbitEditor.includes(editor, listType)
 
   Transforms.unwrapNodes(editor, {
-    // FIXME: Property 'type' does not exist on type 'never'
-    // @ts-ignore
     match: (n) => !TextbitEditor.isEditor(n) && TextbitElement.isElement(n) && ['core/unordered-list', 'core/ordered-list'].includes(n.type),
     split: true
   })
@@ -24,8 +22,6 @@ export const actionHandler = (editor: Editor, type: string): void => {
 
   Transforms.setNodes<Element>(editor, newProperties, {
     match: (n) => {
-      // FIXME: Property 'class' does not exist on type 'never'
-      // @ts-ignore
       return !TextbitEditor.isEditor(n) && TextbitElement.isElement(n) && n.class === 'text'
     }
   })

@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import { Text } from '../../lib/Text/components'
-import { Plugin } from '@ttab/textbit'
-import { Editor } from 'slate'
+import type { TBComponentProps } from '@ttab/textbit'
+import type { Editor } from 'slate'
 
 vi.mock('slate-react', () => ({
   useSelected: vi.fn(),
@@ -12,7 +12,7 @@ vi.mock('slate-react', () => ({
 describe('Minimal test', () => {
   const text = 'A heading'
 
-  const renderElementProps: Plugin.ComponentProps = {
+  const renderElementProps: TBComponentProps = {
     editor: {} as Editor,
     children: [text],
     element: {
@@ -30,6 +30,6 @@ describe('Minimal test', () => {
     render(<Text {...renderElementProps} />)
 
     expect(screen.getByText(text)).toBeInTheDocument()
-    expect(screen.getByText(text)).toContainHTML(`${text}`)
+    expect(screen.getByText(text)).toContainHTML(text)
   })
 })

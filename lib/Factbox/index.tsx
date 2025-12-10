@@ -1,5 +1,5 @@
 import { Editor, Element, Transforms } from 'slate'
-import { type Plugin } from '@ttab/textbit'
+import type { TBPluginInitFunction } from '@ttab/textbit'
 import {
   Factbox as FactboxComponent,
   FactboxTitle
@@ -9,7 +9,7 @@ import { consumes } from './lib/consumes'
 import { consume } from './lib/consume'
 import { FactboxBody } from './components/FactboxBody'
 
-export const Factbox: Plugin.InitFunction = (options) => {
+export const Factbox: TBPluginInitFunction = (options) => {
 
   return {
     class: 'block',

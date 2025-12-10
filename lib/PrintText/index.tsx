@@ -1,4 +1,4 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBPluginInitFunction } from '@ttab/textbit'
 import { PrintText as PrintTextComponent } from './components'
 import { actionHandler } from './lib/actionHandler'
 import { Text } from 'lucide-react'
@@ -6,12 +6,12 @@ import { TextRole } from './components/TextRole'
 import { Text as TextComponent } from './components/Text'
 import { normalizePrintText } from './lib/normalizePrintText'
 
-export const PrintText: Plugin.InitFunction = (options) => {
+export const PrintText: TBPluginInitFunction = (options) => {
   return {
     class: 'block',
     name: 'tt/print-text',
     options,
-    
+
     actions: [
       {
         name: 'tt/print-text',

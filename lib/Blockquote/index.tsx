@@ -1,4 +1,4 @@
-import { type Plugin } from '@ttab/textbit'
+import type { TBPluginInitFunction } from '@ttab/textbit'
 import {
   Blockquote as BlockquoteComponent,
   BlockquoteBody,
@@ -9,7 +9,7 @@ import { normalizeBlockquote } from './lib/normalizeBlockquote'
 import { MessageSquareQuoteIcon } from 'lucide-react'
 
 
-export const Blockquote: Plugin.InitFunction = () => {
+export const Blockquote: TBPluginInitFunction = () => {
   return {
     class: 'block',
     name: 'core/blockquote',

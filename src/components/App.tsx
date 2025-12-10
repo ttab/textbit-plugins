@@ -1,13 +1,14 @@
 import { type PropsWithChildren, useState } from 'react'
-import { type Descendant } from 'slate'
 import {
   Textbit,
   Menu,
   Toolbar,
   usePluginRegistry,
   useTextbit,
-  DropMarker
+  type TBPluginRegistryAction,
+  type TBPluginDefinition
 } from '@ttab/textbit'
+
 import { ThemeSwitcher } from './themeSwitcher'
 import { TextbitDocument } from './TextbitDocument'
 import {
@@ -30,31 +31,10 @@ import {
   PrintText
 } from '../../lib'
 
-/**
- * Define Slate CustomTypes to be Textbit types
- */
-import {
-  type TBElement,
-  type TBEditor,
-  type TBText,
-  type PluginRegistryAction
-} from '@ttab/textbit'
-
-declare module 'slate' {
-  interface CustomTypes {
-    Editor: TBEditor
-    Element: TBElement
-    Text: TBText
-  }
-}
-
-export function App(): JSX.Element {
-  const plugins = [
-    Text({
-      classNames: {
-        vignette: 'bg-slate-200'
-      }
-    }),
+export function App() {
+  const [value, setValue] = useState(TextbitDocument)
+  const plugins: TBPluginDefinition[] = [
+    Text({ classNames: { vignette: 'bg-slate-200'}}),
     PrintText(),
     Bold(),
     Italic(),
@@ -74,51 +54,53 @@ export function App(): JSX.Element {
   ]
 
   return (
-    <div className="flex flex-col h-[100vh] mx-auto my-0 max-w-screen-md text-left">
-      <Textbit.Root verbose={true} plugins={plugins}>
-        <Editor initialValue={TextbitDocument} />
-      </Textbit.Root>
-    </div >
+    <Textbit.Root
+      verbose={true}
+      plugins={plugins}
+      value={value}
+      placeholders='multiple'
+      onChange={(value) => {
+        console.log(JSON.stringify(value, null, 2))
+        setValue(value)
+      }}
+      className='h-screen grid grid-rows-[48px_1fr] mx-auto my-0 max-w-screen-md text-left'
+    >
+      <Header/>
+      <Editable/>
+    </Textbit.Root>
   )
 }
 
-
-function Editor({ initialValue }: {
-  initialValue: Descendant[]
-}): JSX.Element {
-  const [value, setValue] = useState<Descendant[]>(initialValue)
+function Header() {
   const { stats } = useTextbit()
 
   return (
-    <div className="mr-12">
-      <div className="flex items-center justify-between font-sans text-sm gap-4 ml-14 py-4 mb-2 border-b">
-        <ThemeSwitcher />
-        <div className="flex items-end gap-4">
-          <div>{` Words: ${stats.short.words} (${stats.full.words})`}</div>
-          <div>{` Characters: ${stats.short.characters} (${stats.full.characters})`}</div>
-        </div>
+    <div className="px-8 flex-grow-0 flex items-center justify-between font-sans border-b">
+      <ThemeSwitcher />
+      <div className="flex items-end gap-4 text-sm">
+        <div>{` Words: ${stats.short.words} (${stats.full.words})`}</div>
+        <div>{` Characters: ${stats.short.characters} (${stats.full.characters})`}</div>
       </div>
-      <Textbit.Editable
-        className="outline-none dark:text-slate-100"
-        value={value}
-        onChange={(value: Descendant[]) => {
-          console.log(JSON.stringify(value, null, 2))
-          setValue(value)
-        }}
-      >
-        <DropMarker className="h-[3px] rounded bg-blue-400/75 dark:bg-blue-500/75" />
+    </div>
+  )
+}
 
+function Editable() {
+  return (
+    <div style={{display: 'grid', gridTemplateColumns: '50px 1fr'}}>
+      <Textbit.Gutter>
+        <ContentMenu />
+      </Textbit.Gutter>
+
+      <Textbit.Editable className="h-full relative overflow-scroll outline-none dark:text-slate-100">
+        <Textbit.DropMarker className="h-[3px] rounded bg-blue-400/75 dark:bg-blue-500/75" />
         <ToolbarMenu />
-
-        <Textbit.Gutter className="w-14">
-          <ContentMenu />
-        </Textbit.Gutter>
       </Textbit.Editable>
     </div>
   )
 }
 
-function ToolbarMenu(): JSX.Element {
+function ToolbarMenu() {
   const { actions } = usePluginRegistry()
 
   const leafActions = actions.filter(action => ['leaf'].includes(action.plugin.class))
@@ -146,14 +128,14 @@ function ToolbarMenu(): JSX.Element {
   )
 }
 
-function ToolbarItem({ action }: { action: PluginRegistryAction }): JSX.Element {
+function ToolbarItem({ action }: { action: TBPluginRegistryAction }) {
   return <Toolbar.Item
     action={action}
     className="p-2 w-8 h-8 flex place-items-center rounded border border-white hover:bg-gray-100 hover:border-gray-200 pointer data-[state='active']:bg-gray-100 data-[state='active']:border-gray-200 dark:border-gray-900 dark:hover:bg-slate-800 dark:hover:border-slate-700 dark:data-[state='active']:bg-gray-800 dark:data-[state='active']:border-slate-800 dark:hover:data-[state='active']:border-slate-700"
   />
 }
 
-function ContentMenu(): JSX.Element {
+function ContentMenu() {
   const { actions } = usePluginRegistry()
 
   const textActions = actions.filter(action => action.plugin.class === 'text')
@@ -162,7 +144,7 @@ function ContentMenu(): JSX.Element {
   return (
     <Menu.Root className="group">
       <Menu.Trigger className="flex justify-center place-items-center center font-bold border w-8 h-8 ml-3 rounded-full cursor-default group-data-[state='open']:border-gray-200 hover:border-gray-400 dark:text-slate-200 dark:bg-slate-950 dark:border-slate-600 dark:group-data-[state='open']:border-slate-700 dark:hover:border-slate-500">⋮</Menu.Trigger>
-      <Menu.Content className="flex flex-col -mt-[0.75rem] ml-[2.25rem] border rounded-lg divide-y shadow-xl bg-white border-gray-100 dark:text-white dark:bg-slate-900 dark:border-slate-800 dark:divide-slate-800 dark:shadow-none">
+      <Menu.Content className="flex flex-col border rounded-lg divide-y shadow-xl bg-white border-gray-100 dark:text-white dark:bg-slate-900 dark:border-slate-800 dark:divide-slate-800 dark:shadow-none">
         {textActions.length > 0 &&
           <ContentMenuGroup>
             {textActions.map(action => <ContentMenuItem action={action} key={action.name} />)}
@@ -180,7 +162,7 @@ function ContentMenu(): JSX.Element {
   )
 }
 
-function ContentMenuGroup({ children }: PropsWithChildren): JSX.Element {
+function ContentMenuGroup({ children }: PropsWithChildren) {
   return (
     <Menu.Group className="flex flex-col p-1 text-md">
       {children}
@@ -188,7 +170,7 @@ function ContentMenuGroup({ children }: PropsWithChildren): JSX.Element {
   )
 }
 
-function ContentMenuItem({ action }: { action: PluginRegistryAction }): JSX.Element {
+function ContentMenuItem({ action }: { action: TBPluginRegistryAction }) {
   return (
     <Menu.Item
       action={action.name}
@@ -200,3 +182,36 @@ function ContentMenuItem({ action }: { action: PluginRegistryAction }): JSX.Elem
     </Menu.Item>
   )
 }
+
+/**
+Before (but still valid):
+import type { TBEditor, TBElement, TBText } from '@tt/textbit'
+
+declare module 'slate' {
+  interface CustomTypes {
+    Editor: TBEditor
+    Element: TBElement
+    Text: TBText
+  }
+}
+
+import type { Element, Text, Descendant, Ancesotor } from 'slate'
+
+
+Now:
+import type { Element, Text, Descendant, Ancestor } from '@tt/textbit'
+
+Before:
+  <Textbit.Root>
+    <Textbit.Editable initialValue={value}>
+      {children}
+    </Textbit.Editable>
+    <Textbit.Root>
+
+Now:
+  <Textbit.Root value={value}/>
+    <Textbit.Editable>
+      {children}
+    </Textbit.Editable>
+  </Textbit.Root>
+*/

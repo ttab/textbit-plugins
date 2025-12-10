@@ -1,7 +1,7 @@
-import { forwardRef, type PropsWithChildren } from 'react'
+import type { TBComponentProps } from '@ttab/textbit'
 
-export const TableRow = forwardRef<HTMLTableRowElement, PropsWithChildren>(({ children }, ref) => (
+export const TableRow = ({ children, ref }: TBComponentProps<HTMLTableRowElement>) => (
   <tr ref={ref}>{children}</tr>
-))
+)
 
 TableRow.displayName = 'TableRow'

@@ -5,7 +5,7 @@ import { cn } from '../../cn'
 export const GridLine = ({direction, offset}: {
   direction: 'horizontal' | 'vertical'
   offset: number
-}): JSX.Element => {
+}) => {
   const line = cva(`
     absolute
     opacity-50

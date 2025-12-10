@@ -1,6 +1,6 @@
-import { TextbitElement, type Plugin } from '@ttab/textbit'
+import { TextbitElement, type TBComponentProps } from '@ttab/textbit'
 
-export const FactboxBody = ({ children, rootNode }: Plugin.ComponentProps): JSX.Element => {
+export const FactboxBody = ({ children, rootNode }: TBComponentProps) => {
   const editable = (TextbitElement.isElement(rootNode) && rootNode?.properties?.editable === false) ? false : undefined
 
   return <div

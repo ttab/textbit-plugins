@@ -1,8 +1,8 @@
-import type { Plugin } from '@ttab/textbit'
+import type { TBConsumeFunction, TBResource } from '@ttab/textbit'
 import type { VisualPropertiesInterface } from '../types'
 import parseImageId, { parseJSON } from './parseImageId'
 
-export const consume: Plugin.ConsumeFunction = async ({ input }) => {
+export const consume: TBConsumeFunction = async ({ input }) => {
   if (Array.isArray(input)) {
     throw new Error('VisualEx plugin expected string for consumation, not a list/array')
   }
@@ -20,7 +20,7 @@ export const consume: Plugin.ConsumeFunction = async ({ input }) => {
 * @param {VisualPropertiesInterface} props
 * @returns {TTVisualInterface}
 */
-const createTTVisualNode = async (input: Plugin.Resource): Promise<Plugin.Resource> => {
+const createTTVisualNode = async (input: TBResource): Promise<TBResource> => {
   const props = await createVisualProperties(input)
 
   return {
@@ -89,7 +89,7 @@ const getImageResolution = async (url: string): Promise<{ width: number, height:
 * @returns {Promise<VisualPropertiesInterface>}
 * @throws {Error}
 */
-const createVisualProperties = async (input: Plugin.Resource): Promise<VisualPropertiesInterface> => {
+const createVisualProperties = async (input: TBResource): Promise<VisualPropertiesInterface> => {
   if (typeof input.data !== 'string') {
     throw new Error('VisualEx plugin expected string for consumation')
   }

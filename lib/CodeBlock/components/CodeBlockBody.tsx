@@ -1,7 +1,7 @@
-import type { Plugin } from '@ttab/textbit'
+import type { TBComponentProps } from '@ttab/textbit'
 
 // TODO: Use https://prismjs.com/ to display code
-export const CodeBlockBody = ({ children }: Plugin.ComponentProps): JSX.Element => {
+export const CodeBlockBody = ({ children }: TBComponentProps) => {
   return (
     <code className="prewrap">
       {children}
