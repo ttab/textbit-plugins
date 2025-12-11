@@ -10,10 +10,22 @@ export const Text: TBPluginInitFunction = (options) => {
         return (typeof options?.titleLabel === 'string')
           ? options.titleLabel
           : '¶'
+
       case 'heading-2':
         return (typeof options?.subTitleLabel === 'string')
           ? options.subTitleLabel
           : '¶'
+
+      case 'preamble':
+        return (typeof options?.preambleLabel === 'string')
+          ? options.preambleLabel
+          : '¶'
+
+      case 'vignette':
+        return (typeof options?.vignetteLabel === 'string')
+          ? options.vignetteLabel
+          : '¶'
+
       default:
         return '¶'
     }
