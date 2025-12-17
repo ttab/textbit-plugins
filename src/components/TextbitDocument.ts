@@ -70,7 +70,7 @@ export const TextbitDocument: Descendant[] = [
       {
         id: crypto.randomUUID(),
         type: 'core/image/image',
-        class: 'text',
+        class: 'void',
         children: [{ text: '' }]
       },
       {
