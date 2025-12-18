@@ -13,7 +13,7 @@ export const Text = ({ children, element, options }: TBComponentProps) => {
   const className = classNames[style?.role || 'body'] || undefined
 
   if (style && !style.role) {
-    return <div draggable={false} className={cn('py-2 font-serif dark:tracking-wide', className)}>
+    return <div className={cn('py-2 font-serif dark:tracking-wide', className)}>
       {children}
       <CharacterCount element={element} type='body' countTypes={countCharacters} />
     </div>
@@ -22,26 +22,26 @@ export const Text = ({ children, element, options }: TBComponentProps) => {
   switch (style?.role) {
     case 'heading-1':
       return (
-        <div draggable={false} className={cn('font-sans font-bold text-4xl pt-2 pb-4', className)}>
+        <div className={cn('font-sans font-bold text-4xl pt-2 pb-4', className)}>
           {children}
           <CharacterCount element={element} type='heading-1' countTypes={countCharacters} />
         </div>
       )
 
     case 'heading-2':
-      return <div draggable={false} className={cn('font-sans font-bold text-xl py-2', className)}>
+      return <div className={cn('font-sans font-bold text-xl py-2', className)}>
         {children}
         <CharacterCount element={element} type='heading-2' countTypes={countCharacters} />
       </div>
 
     case 'preamble':
-      return <div draggable={false} className={cn('font-serif font-semibold py-2 dark:tracking-wide', className)}>
+      return <div className={cn('font-serif font-semibold py-2 dark:tracking-wide', className)}>
         {children}
         <CharacterCount element={element} type='preamble' countTypes={countCharacters} />
       </div>
 
     case 'vignette':
-      return <div draggable={false}>
+      return <div>
         <span
           className={cn('my-1 px-[0.4rem] py-[0.2rem] font-sans font-bold text-sm inline-block bg-slate-300 dark:text-slate-900', className)}
         >
@@ -51,7 +51,7 @@ export const Text = ({ children, element, options }: TBComponentProps) => {
       </div>
 
     default:
-      return <div draggable={false} className={cn('font-serif opacity-80 italic line-through px-1 bg-red-200 dark:text-gray-700', classNames['error'] || undefined)}>
+      return <div className={cn('font-serif opacity-80 italic line-through px-1 bg-red-200 dark:text-gray-700', classNames['error'] || undefined)}>
         {children}
         <CharacterCount element={element} type='default' countTypes={countCharacters} />
       </div>

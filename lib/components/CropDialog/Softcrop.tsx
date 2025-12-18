@@ -523,7 +523,6 @@ const Softcrop = forwardRef<SoftcropRef, SoftcropProps>(({
             width: displayDimensions().width || 'auto',
             height: displayDimensions().height || 'auto'
           }}
-          draggable={false}
         />
 
         {/* Focus Point */}

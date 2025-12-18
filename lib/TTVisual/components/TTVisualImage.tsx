@@ -22,7 +22,7 @@ export const TTVisualImage = ({ editor, children, rootNode, options }: TBCompone
   const proxy = properties.proxy as string
 
   return (
-    <div contentEditable={false} draggable={false}>
+    <div contentEditable={false}>
       <div ref={imgContainerRef} className='relative rounded rounded-xs overflow-hidden'>
         <img width='100%' src={proxy || href} />
 

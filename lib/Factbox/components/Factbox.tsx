@@ -17,7 +17,8 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
       <div className='group border-2 rounded border-slate-200'>
         <div
           contentEditable={false}
-          className='flex justify-start items-center bg-slate-200 border-b-2 border-slate-200 ps-0.5 pb-[2px] pt-[1px]'
+          draggable={true}
+          className='flex justify-start items-center bg-slate-200 border-b-2 border-slate-200 ps-0.5 pb-[2px] pt-[1px] cursor-default'
           onMouseDown={(e) => { e.stopPropagation() }}
         >
           <FactboxHeaderItem
