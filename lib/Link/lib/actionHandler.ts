@@ -38,16 +38,17 @@ export const actionHandler = (editor: Editor, typeName: string): void => {
     children: isCollapsed ? [{ text: '' }] : []
   }
 
-  if (isCollapsed) {
-    Transforms.insertNodes(editor, link)
-  } else {
-    Transforms.wrapNodes(editor, link, { split: true })
-    Transforms.collapse(editor, { edge: 'end' })
-  }
 
-  // HACK: Let the event loop make sure everyting is rerendered. Then focus
-  // FIXME: Use temporary property that signal this is a new/uninitial. Then
+  Editor.withoutNormalizing(editor, () => {
+    if (isCollapsed) {
+      Transforms.insertNodes(editor, link)
+    } else {
+      Transforms.wrapNodes(editor, link, { split: true })
+      Transforms.collapse(editor, { edge: 'end' })
+    }
+  })
+
   setTimeout(() => {
     document.getElementById(id)?.focus()
-  })
+  }, 0)
 }

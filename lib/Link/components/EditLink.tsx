@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { Editor, Element, Transforms } from 'slate'
 import {
   type TBToolComponentProps,
@@ -6,25 +6,20 @@ import {
 } from '@ttab/textbit'
 import { Link2OffIcon, LinkIcon, UnlinkIcon } from 'lucide-react'
 import { isValidLink } from '../../shared/isValidLink'
+import { ReactEditor, useSlateStatic } from 'slate-react'
 
-// FIXME: excessively deep type instantiation
-
-export const EditLink = ({ editor, entry }: TBToolComponentProps) => {
+export const EditLink = ({ entry }: TBToolComponentProps) => {
+  const editor = useSlateStatic()
   const [node, path] = entry || []
 
   const [url, seturl] = useState<string>(TextbitElement.isElement(node) && typeof node?.properties?.url === 'string' ? node.properties.url : '')
   const inputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    if (!isValidLink(url, true)) {
-      inputRef.current?.focus()
-    }
-  }, [])
-
   if (!TextbitElement.isElement(node)) {
     return <></>
   }
 
+  console.log(node)
   return <div className="flex -ml-1 select-none content-center gap-x-1">
     <div
       className="p-2 w-8 h-8 select-none flex place-items-center rounded border border-white hover:bg-gray-100 hover:border-gray-200 pointer data-[state='active']:bg-gray-100 data-[state='active']:border-gray-200 dark:border-gray-900 dark:hover:bg-slate-800 dark:hover:border-slate-700 dark:data-[state='active']:bg-gray-800 dark:data-[state='active']:border-slate-800 dark:hover:data-[state='active']:border-slate-700"
@@ -47,7 +42,6 @@ export const EditLink = ({ editor, entry }: TBToolComponentProps) => {
         e.preventDefault()
         e.currentTarget.focus()
       }}
-      // onClick={(e) => { e.currentTarget.focus() }}
       onChange={(e) => {
         seturl(e.target.value)
       }}
@@ -55,9 +49,7 @@ export const EditLink = ({ editor, entry }: TBToolComponentProps) => {
         if (e.key === 'Escape' || e.key === 'Enter') {
           e.preventDefault()
 
-          if (url === '') {
-            deleteLink(editor)
-          }
+          ReactEditor.focus(editor)
         }
       }}
       onBlur={() => {
@@ -73,18 +65,27 @@ export const EditLink = ({ editor, entry }: TBToolComponentProps) => {
       }}
     />
 
-    <div
-      className="p-2 w-8 h-8 -ml-9 select-none flex place-items-center"
-      onMouseDown={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      }}
-    >
-      {isValidLink(url, true)
-        ? <LinkIcon className="text-green-600" />
-        : <UnlinkIcon className="text-red-600" />
-      }
-    </div>
+    {isValidLink(url, true)
+      ? (
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 w-8 h-8 -ml-9 select-none flex place-items-center"
+        >
+          <LinkIcon className="text-green-600" />
+        </a>)
+      : (
+        <div
+          className="p-2 w-8 h-8 -ml-9 select-none flex place-items-center"
+          onMouseDown={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+          }}
+        >
+          <UnlinkIcon className="text-red-600" />
+        </div>
+      )}
   </div >
 }
 
