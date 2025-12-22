@@ -14,12 +14,12 @@ export const EditLink = ({ entry }: TBToolComponentProps) => {
 
   const [url, seturl] = useState<string>(TextbitElement.isElement(node) && typeof node?.properties?.url === 'string' ? node.properties.url : '')
   const inputRef = useRef<HTMLInputElement>(null)
+  const [hasFocused, setHasFocused] = useState(false)
 
   if (!TextbitElement.isElement(node)) {
     return <></>
   }
 
-  console.log(node)
   return <div className="flex -ml-1 select-none content-center gap-x-1">
     <div
       className="p-2 w-8 h-8 select-none flex place-items-center rounded border border-white hover:bg-gray-100 hover:border-gray-200 pointer data-[state='active']:bg-gray-100 data-[state='active']:border-gray-200 dark:border-gray-900 dark:hover:bg-slate-800 dark:hover:border-slate-700 dark:data-[state='active']:bg-gray-800 dark:data-[state='active']:border-slate-800 dark:hover:data-[state='active']:border-slate-700"
@@ -37,6 +37,9 @@ export const EditLink = ({ entry }: TBToolComponentProps) => {
       ref={inputRef}
       type="text"
       value={url}
+      onFocus={() => {
+        setHasFocused(true)
+      }}
       onMouseDownCapture={(e) => {
         e.stopPropagation()
         e.preventDefault()
@@ -48,11 +51,16 @@ export const EditLink = ({ entry }: TBToolComponentProps) => {
       onKeyDown={(e) => {
         if (e.key === 'Escape' || e.key === 'Enter') {
           e.preventDefault()
+          e.stopPropagation()
 
           ReactEditor.focus(editor)
         }
       }}
       onBlur={() => {
+        if (!hasFocused) {
+          return
+        }
+
         if (url === '') {
           deleteLink(editor)
         } else {

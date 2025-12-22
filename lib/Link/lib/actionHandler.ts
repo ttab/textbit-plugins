@@ -1,51 +1,53 @@
-import { TextbitElement, } from '@ttab/textbit'
+import { TextbitElement, type TBActionHandlerArgs } from '@ttab/textbit'
 import { Range, Editor, Element, type Descendant, Transforms } from 'slate'
 
-export const actionHandler = (editor: Editor, typeName: string): void => {
-  if (!editor.selection) {
+export const actionHandler = (args: TBActionHandlerArgs): void | false => {
+  const { editor, type } = args
+  const { selection } = editor
+
+  if (!selection) {
     return
   }
 
-  const { selection } = editor
-  const isCollapsed = selection && Range.isCollapsed(selection)
-
-  // If we already have a link, focus on it's input
   const nodeEntries = Array.from(Editor.nodes(editor, {
     at: Editor.unhangRange(editor, selection),
-    match: n => !Editor.isEditor(n) && TextbitElement.isInline(n) && TextbitElement.isOfType(n, typeName)
+    match: n => !Editor.isEditor(n) && TextbitElement.isInline(n) && TextbitElement.isOfType(n, type)
   }))
 
   if (nodeEntries.length) {
     const node = nodeEntries[0][0]
+
     if (Element.isElement(node) && typeof node?.id === 'string') {
+      // If we already have a link, focus on it's input
+      args.event?.preventDefault()
+      args.event?.stopPropagation()
       document.getElementById(node.id)?.focus()
     }
-
     return
   }
 
-  const id = crypto.randomUUID()
+  if (Range.isCollapsed(selection)) {
+    return // Nothing to do
+  }
 
+  const id = crypto.randomUUID()
   const link: Descendant = {
     class: 'inline',
-    type: typeName,
+    type: type,
     id,
     properties: {
       url: '',
       title: '',
       target: ''
     },
-    children: isCollapsed ? [{ text: '' }] : []
+    children: [{ text: '' }]
   }
 
+  args.event?.preventDefault()
+  args.event?.stopPropagation()
 
   Editor.withoutNormalizing(editor, () => {
-    if (isCollapsed) {
-      Transforms.insertNodes(editor, link)
-    } else {
-      Transforms.wrapNodes(editor, link, { split: true })
-      Transforms.collapse(editor, { edge: 'end' })
-    }
+    Transforms.wrapNodes(editor, link, { split: true })
   })
 
   setTimeout(() => {
