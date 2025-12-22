@@ -3,7 +3,7 @@ import { Link2Icon } from 'lucide-react'
 import { Link as LinkComponent } from './components/Link'
 import { EditLink as EditLinkComponent } from './components/EditLink'
 
-import { actionHandler } from './lib/actionHandler'
+import { actionHandler as handler } from './lib/actionHandler'
 
 /**
  * FIXME
@@ -29,9 +29,7 @@ const Link: TBPluginInitFunction = () => {
         EditLinkComponent
       ],
       hotkey: 'mod+k',
-      handler: ({ editor }) => {
-        actionHandler(editor, 'core/link')
-      }
+      handler
     }]
   }
 }
