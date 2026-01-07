@@ -5,10 +5,10 @@ import { type Descendant, Transforms } from 'slate'
 export const TVLWrapper = ({ editor, children, element }: TBComponentProps) => {
   return (
     <div className='border rounded'>
-      <div className='flex flex-nowrap justify-between items-center basis-full p-1 bg-slate-300'>
+      <div className='flex flex-nowrap justify-between items-center basis-full p-1 bg-slate-300 dark:bg-slate-900'>
         <span className='text-sm' contentEditable={false}>Tablåinformation</span>
         <div
-          className='hover:cursor-pointer hover:bg-slate-200 p-1 rounded'
+          className='hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-gray-700 p-1 rounded'
           onMouseDown={(e) => {
             e.preventDefault()
             e.stopPropagation()
@@ -19,7 +19,7 @@ export const TVLWrapper = ({ editor, children, element }: TBComponentProps) => {
             }
           }}
         >
-          <XIcon size={15} />
+          <XIcon size={15} className='text-black dark:text-white' />
         </div>
 
       </div>

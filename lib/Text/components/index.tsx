@@ -1,4 +1,4 @@
-import type { TBComponentProps } from '@ttab/textbit'
+import type { TBComponentProps, TBElement } from '@ttab/textbit'
 import type { Element } from 'slate'
 import { getTextStyles } from '../textStyles'
 import { Node } from 'slate'
@@ -11,6 +11,7 @@ export const Text = ({ children, element, options }: TBComponentProps) => {
   const countCharacters = Array.isArray(options?.countCharacters) ? options.countCharacters as string[] : []
   const classNames = isClassNameOverridesOption(options?.classNames) ? options.classNames : {}
   const className = classNames[style?.role || 'body'] || undefined
+  const textContent = (element.children as TBElement & { text: string }[])[0]?.text as string | undefined
 
   if (style && !style.role) {
     return <div className={cn('py-2 font-serif dark:tracking-wide', className)}>
@@ -43,7 +44,7 @@ export const Text = ({ children, element, options }: TBComponentProps) => {
     case 'vignette':
       return <div>
         <span
-          className={cn('my-1 px-[0.4rem] py-[0.2rem] font-sans font-bold text-sm inline-block bg-slate-300 dark:text-slate-900', className)}
+          className={cn(textContent && textContent.length > 0 ? 'bg-slate-300 dark:text-slate-900 inline-block px-[0.4rem]' : 'block dark:text-slate-400 px-0', 'my-1 py-[0.2rem] font-sans font-bold text-sm', className)}
         >
           {children}
         </span>

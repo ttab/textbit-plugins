@@ -8,7 +8,7 @@ export const PrintText = ({ children, editor, element }: TBComponentProps & Prop
     <>
       <div className='border rounded p-1 py-2 font-serif'>
         <div
-          className='place-self-end hover:cursor-pointer hover:bg-slate-200 p-1 rounded'
+          className='place-self-end hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-gray-700 p-1 rounded'
           onMouseDown={(e) => {
             e.preventDefault()
             e.stopPropagation()
