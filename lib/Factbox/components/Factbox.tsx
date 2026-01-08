@@ -18,14 +18,14 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
         <div
           contentEditable={false}
           draggable={true}
-          className='flex justify-start items-center bg-slate-200 border-b-2 border-slate-200 ps-0.5 pb-[2px] pt-[1px] cursor-default'
+          className='flex justify-start items-center m-1 p-2 bg-slate-100 dark:bg-slate-700 border-b-2 border-slate-200 ps-0.5 pb-[2px] pt-[1px] cursor-default'
           onMouseDown={(e) => { e.stopPropagation() }}
         >
           <FactboxHeaderItem
             title={MESSAGE}
             icon={{
               icon: MessageCircleWarning,
-              className: 'text-red-800'
+              className: 'text-red-800 dark:text-red-500'
             }}
           />
 
@@ -75,7 +75,7 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
         </div>
 
 
-        <div contentEditable={false} className='flex items-center gap-2 text-xs text-red-800 m-1 p-2 bg-slate-100 rounded-sm px-2 py-1'>
+        <div contentEditable={false} className='flex items-center gap-2 text-xs text-red-800 m-1 p-2 dark:text-red-500 bg-slate-100 dark:bg-slate-700 rounded-sm px-2 py-1'>
           {MESSAGE}
         </div>
       </div>

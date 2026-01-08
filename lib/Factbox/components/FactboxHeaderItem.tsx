@@ -10,7 +10,7 @@ export const FactboxHeaderItem = ({ icon, title, className, onMouseDown, childre
   }
   onMouseDown?: React.MouseEventHandler<HTMLSpanElement>
 }) => {
-  const hoverClasses = (onMouseDown) ? 'hover:bg-slate-300' : ''
+  const hoverClasses = (onMouseDown) ? 'hover:bg-slate-300 dark:hover:bg-slate-500' : ''
 
   return (
     <div
