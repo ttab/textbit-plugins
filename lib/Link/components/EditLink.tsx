@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { Editor, Element, Transforms } from 'slate'
 import {
   type TBToolComponentProps,
@@ -6,20 +6,15 @@ import {
 } from '@ttab/textbit'
 import { Link2OffIcon, LinkIcon, UnlinkIcon } from 'lucide-react'
 import { isValidLink } from '../../shared/isValidLink'
+import { ReactEditor, useSlateStatic } from 'slate-react'
 
-// FIXME: excessively deep type instantiation
-
-export const EditLink = ({ editor, entry }: TBToolComponentProps) => {
+export const EditLink = ({ entry }: TBToolComponentProps) => {
+  const editor = useSlateStatic()
   const [node, path] = entry || []
 
   const [url, seturl] = useState<string>(TextbitElement.isElement(node) && typeof node?.properties?.url === 'string' ? node.properties.url : '')
   const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (!isValidLink(url, true)) {
-      inputRef.current?.focus()
-    }
-  }, [])
+  const [hasFocused, setHasFocused] = useState(false)
 
   if (!TextbitElement.isElement(node)) {
     return <></>
@@ -42,25 +37,30 @@ export const EditLink = ({ editor, entry }: TBToolComponentProps) => {
       ref={inputRef}
       type="text"
       value={url}
+      onFocus={() => {
+        setHasFocused(true)
+      }}
       onMouseDownCapture={(e) => {
         e.stopPropagation()
         e.preventDefault()
         e.currentTarget.focus()
       }}
-      // onClick={(e) => { e.currentTarget.focus() }}
       onChange={(e) => {
         seturl(e.target.value)
       }}
       onKeyDown={(e) => {
         if (e.key === 'Escape' || e.key === 'Enter') {
           e.preventDefault()
+          e.stopPropagation()
 
-          if (url === '') {
-            deleteLink(editor)
-          }
+          ReactEditor.focus(editor)
         }
       }}
       onBlur={() => {
+        if (!hasFocused) {
+          return
+        }
+
         if (url === '') {
           deleteLink(editor)
         } else {
@@ -73,18 +73,27 @@ export const EditLink = ({ editor, entry }: TBToolComponentProps) => {
       }}
     />
 
-    <div
-      className="p-2 w-8 h-8 -ml-9 select-none flex place-items-center"
-      onMouseDown={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      }}
-    >
-      {isValidLink(url, true)
-        ? <LinkIcon className="text-green-600" />
-        : <UnlinkIcon className="text-red-600" />
-      }
-    </div>
+    {isValidLink(url, true)
+      ? (
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 w-8 h-8 -ml-9 select-none flex place-items-center"
+        >
+          <LinkIcon className="text-green-600" />
+        </a>)
+      : (
+        <div
+          className="p-2 w-8 h-8 -ml-9 select-none flex place-items-center"
+          onMouseDown={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+          }}
+        >
+          <UnlinkIcon className="text-red-600" />
+        </div>
+      )}
   </div >
 }
 

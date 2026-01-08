@@ -1,7 +1,7 @@
+import { type TBActionHandlerArgs } from '@ttab/textbit'
 import { type ChangeEvent } from 'react'
-import { type Editor } from 'slate'
 
-export const actionHandler = ({ editor, api }: { editor: Editor, api?: unknown }): boolean => {
+export const actionHandler = ({ editor, api }: TBActionHandlerArgs): boolean => {
   let fileSelector: HTMLInputElement | undefined = document.createElement('input')
 
   fileSelector.accept = 'image/jpg, image/gif, image/png'
