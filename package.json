@@ -48,8 +48,8 @@
     "lucide-react": ">=0.475.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
-    "slate": "^0.118.1",
-    "slate-react": "^0.119.0",
+    "slate": "^0.123.0",
+    "slate-react": "^0.123.0",
     "yjs": "^13.6.26"
   },
   "devDependencies": {
@@ -76,9 +76,9 @@
     "postcss": "^8.4.47",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "slate": "^0.118.1",
+    "slate": "^0.123.0",
     "slate-history": "^0.113.1",
-    "slate-react": "^0.119.0",
+    "slate-react": "^0.123.0",
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
@@ -89,7 +89,7 @@
     "yjs": "^13.6.26"
   },
   "dependencies": {
-    "@ttab/textbit": "^1.0.8",
+    "@ttab/textbit": "^1.0.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.0.2"
