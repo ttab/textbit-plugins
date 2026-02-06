@@ -5,12 +5,13 @@ import { FactboxHeaderItem } from './FactboxHeaderItem'
 import { type Descendant, Transforms } from 'slate'
 import { FocusBlock } from '../../components/FocusBlock'
 
-const MESSAGE = 'Ändringar i faktarutans text sker endast för denna artikel'
-
 export const Factbox = ({ children, element, options, editor }: TBComponentProps) => {
   const original_updated = element?.properties?.original_updated ?? ''
   const original_id = element?.properties?.original_id
   const removable = options?.removable as boolean ?? false
+  const { headerTitle, modifiedLabel, footerTitle } =  options as { headerTitle?: string, modifiedLabel?: string, footerTitle?: string }
+
+  const MESSAGE = footerTitle ?? 'Changes in the factbox text only affects this article'
 
   return (
     <FocusBlock className='my-2'>
@@ -31,7 +32,7 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
 
           {options?.onEditOriginal && typeof options.onEditOriginal === 'function' && original_id
             ? <FactboxHeaderItem
-                title={'Redigera faktarutans original'}
+                title={headerTitle ?? 'Edit the original factbox'}
                 onMouseDown={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -43,7 +44,7 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
             : null
           }
 
-          <FactboxModified modified={original_updated} />
+          <FactboxModified modified={original_updated} modifiedLabel={modifiedLabel} />
 
           {removable && (
             <>
