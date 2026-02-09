@@ -1,7 +1,7 @@
 {
   "name": "@ttab/textbit-plugins",
   "description": "Base package of common plugins for textbit",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "license": "MIT",
   "author": {
     "name": "Danne Lundqvist"
