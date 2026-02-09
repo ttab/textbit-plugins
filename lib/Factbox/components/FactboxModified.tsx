@@ -10,7 +10,7 @@ export const FactboxModified = ({ modified = '', modifiedLabel }: Modified) => {
     const formatted = formatDate(modified as string)
     return (
       <div className='opacity-70 font-semibold text-xs flex justify-between items-center gap-1'>
-        <div>{modifiedLabel || 'Original is from'}</div>
+        <div>{modifiedLabel ?? 'Original is from'}</div>
         <div>{formatted}</div>
       </div>
     )
