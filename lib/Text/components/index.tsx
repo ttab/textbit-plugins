@@ -12,11 +12,12 @@ export const Text = ({ children, element, options }: TBComponentProps) => {
   const classNames = isClassNameOverridesOption(options?.classNames) ? options.classNames : {}
   const className = classNames[style?.role || 'body'] || undefined
   const textContent = (element.children as TBElement & { text: string }[])[0]?.text as string | undefined
+  const characterCountLabel = options?.characterCountLabel as string | undefined
 
   if (style && !style.role) {
     return <div className={cn('py-2 font-serif dark:tracking-wide', className)}>
       {children}
-      <CharacterCount element={element} type='body' countTypes={countCharacters} />
+      <CharacterCount element={element} type='body' countTypes={countCharacters} label={characterCountLabel} />
     </div>
   }
 
@@ -25,20 +26,20 @@ export const Text = ({ children, element, options }: TBComponentProps) => {
       return (
         <div className={cn('font-sans font-bold text-4xl pt-2 pb-4', className)}>
           {children}
-          <CharacterCount element={element} type='heading-1' countTypes={countCharacters} />
+          <CharacterCount element={element} type='heading-1' countTypes={countCharacters} label={characterCountLabel} />
         </div>
       )
 
     case 'heading-2':
       return <div className={cn('font-sans font-bold text-xl py-2', className)}>
         {children}
-        <CharacterCount element={element} type='heading-2' countTypes={countCharacters} />
+        <CharacterCount element={element} type='heading-2' countTypes={countCharacters} label={characterCountLabel} />
       </div>
 
     case 'preamble':
       return <div className={cn('font-serif font-semibold py-2 dark:tracking-wide', className)}>
         {children}
-        <CharacterCount element={element} type='preamble' countTypes={countCharacters} />
+        <CharacterCount element={element} type='preamble' countTypes={countCharacters} label={characterCountLabel} />
       </div>
 
     case 'vignette':
@@ -48,22 +49,23 @@ export const Text = ({ children, element, options }: TBComponentProps) => {
         >
           {children}
         </span>
-        <CharacterCount element={element} type='vignette' className='normal-case' countTypes={countCharacters} />
+        <CharacterCount element={element} type='vignette' className='normal-case' countTypes={countCharacters} label={characterCountLabel} />
       </div>
 
     default:
       return <div className={cn('font-serif opacity-80 italic line-through px-1 bg-red-200 dark:text-gray-700', classNames['error'] || undefined)}>
         {children}
-        <CharacterCount element={element} type='default' countTypes={countCharacters} />
+        <CharacterCount element={element} type='default' countTypes={countCharacters} label={characterCountLabel} />
       </div>
   }
 }
 
-export const CharacterCount = ({ element, className, type, countTypes }: {
+export const CharacterCount = ({ element, className, type, countTypes, label }: {
   element: Element
   type: string
   countTypes: string[]
   className?: string
+  label?: string
 }) => {
   const textLength = Node.string(element).length
   if (countTypes.every(itm => typeof itm === 'string')
@@ -73,7 +75,7 @@ export const CharacterCount = ({ element, className, type, countTypes }: {
       <div
         contentEditable={false}
         className={['select-none text-xs text-gray-500 w-fit font-normal font-sans', className].join(' ')}
-      >{`Antal tecken: ${textLength}`}
+      >{`${label ?? 'Number of chars'}: ${textLength}`}
       </div>
     )
   }
