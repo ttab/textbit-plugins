@@ -11,10 +11,11 @@ import { consumes } from './lib/consumes'
 import { normalizeImage } from './lib/normalizeImage'
 import { actionHandler } from './lib/actionHandler'
 
-export const Image: TBPluginInitFunction = () => {
+export const Image: TBPluginInitFunction = (options) => {
   return {
     class: 'block',
     name: 'core/image',
+    options,
     consumer: {
       consumes,
       consume
