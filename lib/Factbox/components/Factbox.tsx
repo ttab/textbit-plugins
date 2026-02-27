@@ -1,17 +1,18 @@
 import type { TBComponentProps } from '@ttab/textbit'
-import { FilePen, MessageCircleWarning, X } from 'lucide-react'
+import { FilePen, MessageCircleWarning, SaveIcon, X } from 'lucide-react'
 import { FactboxModified } from './FactboxModified'
 import { FactboxHeaderItem } from './FactboxHeaderItem'
 import { type Descendant, Transforms } from 'slate'
 import { FocusBlock } from '../../components/FocusBlock'
 
 export const Factbox = ({ children, element, options, editor }: TBComponentProps) => {
-  const original_updated = element?.properties?.original_updated ?? ''
+  const originalUpdated = element?.properties?.original_updated ?? ''
   const original_id = element?.properties?.original_id
+  const inlineCreated = element?.properties?.inline_created as boolean
   const removable = options?.removable as boolean ?? false
   const locale = options?.locale as string
 
-  const { headerTitle, modifiedLabel, footerTitle } =  options as { headerTitle?: string, modifiedLabel?: string, footerTitle?: string }
+  const { headerTitle, modifiedLabel, footerTitle, saveToArchiveLabel } =  options as { headerTitle?: string, modifiedLabel?: string, footerTitle?: string, saveToArchiveLabel?: string }
 
   const MESSAGE = footerTitle ?? 'Changes in the factbox text only affects this article'
 
@@ -21,7 +22,7 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
         <div
           contentEditable={false}
           draggable={true}
-          className='flex justify-start items-center m-1 p-2 bg-slate-100 dark:bg-slate-700 border-b-2 border-slate-200 ps-0.5 pb-[2px] pt-[1px] cursor-default'
+          className='flex justify-start items-center m-1 p-2 bg-slate-100 dark:bg-slate-700 border-b-2 border-slate-200 ps-0.5 pb-0.5 pt-px cursor-default'
           onMouseDown={(e) => { e.stopPropagation() }}
         >
           <FactboxHeaderItem
@@ -32,7 +33,24 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
             }}
           />
 
-          {options?.onEditOriginal && typeof options.onEditOriginal === 'function' && original_id
+          {inlineCreated && options?.onSave
+            ? (
+              <FactboxHeaderItem
+                title={saveToArchiveLabel ?? 'Save to archive'}
+                onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                (options?.onSave as (id: string) => void)(original_id as string)
+              }}
+                icon={{
+                  icon: SaveIcon
+                }}
+              />
+            )
+            : null
+          }
+
+          {!inlineCreated && options?.onEditOriginal && typeof options.onEditOriginal === 'function' && original_id
             ? <FactboxHeaderItem
                 title={headerTitle ?? 'Edit the original factbox'}
                 onMouseDown={(e) => {
@@ -45,8 +63,13 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
               }} />
             : null
           }
-
-          <FactboxModified modified={original_updated} modifiedLabel={modifiedLabel} locale={locale} />
+          {!inlineCreated && (
+            <FactboxModified
+              modified={originalUpdated}
+              modifiedLabel={modifiedLabel}
+              locale={locale}
+            />
+          )}
 
           {removable && (
             <>
