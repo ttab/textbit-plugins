@@ -68,7 +68,6 @@ export const Factbox: TBPluginInitFunction = (options) => {
           type: 'title',
           class: 'text',
           component: FactboxTitle,
-          placeholder: 'Faktarutans rubrik',
           constraints: {
             allowBreak: false
           }
