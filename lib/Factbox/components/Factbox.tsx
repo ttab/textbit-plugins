@@ -40,7 +40,15 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
                 onMouseDown={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                (options?.onSave as (id: string) => void)(original_id as string)
+
+                const onSuccess = () => {
+                  const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
+                  if (n > -1) {
+                    (Transforms.setNodes)(editor, { properties: { ...element.properties, inline_created: false } }, { at: [n] })
+                  }
+                }
+
+                (options?.onSave as (id: string, onSuccess: () => void) => void)(original_id as string, onSuccess)
               }}
                 icon={{
                   icon: SaveIcon
