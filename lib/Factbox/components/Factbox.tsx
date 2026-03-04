@@ -27,6 +27,7 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
   }
 
   const MESSAGE = footerTitle ?? 'Changes in the factbox text only affects this article'
+  const UNSAVED_MESSAGE = unsavedLabel ?? 'Factbox has not been saved to archive'
 
   return (
     <FocusBlock className='my-2'>
@@ -38,7 +39,7 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
           onMouseDown={(e) => { e.stopPropagation() }}
         >
           <FactboxHeaderItem
-            title={MESSAGE}
+            title={unSaved ? UNSAVED_MESSAGE : MESSAGE}
             icon={{
               icon: MessageCircleWarning,
               className: 'text-red-800 dark:text-red-500'
@@ -47,11 +48,12 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
 
           {unSaved && options?.onSave
             ? (
-              <FactboxHeaderItem
-                title={saveToArchiveLabel ?? 'Save to archive'}
-                onMouseDown={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
+              <>
+                <FactboxHeaderItem
+                  title={saveToArchiveLabel ?? 'Save to archive'}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
 
                     const onSuccess = () => {
                       const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
@@ -60,12 +62,14 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
                       }
                     }
 
-                (options?.onSave as (id: string, onSuccess: () => void) => void)(original_id as string, onSuccess)
-              }}
-                icon={{
-                  icon: SaveIcon
-                }}
-              />
+                    (options?.onSave as (id: string, onSuccess: () => void) => void)(original_id as string, onSuccess)
+                  }}
+                  icon={{
+                    icon: SaveIcon
+                  }}
+                />
+                <div className='text-xs'>{UNSAVED_MESSAGE}</div>
+              </>
             )
             : null
           }
