@@ -49,7 +49,7 @@ export const Factbox: TBPluginInitFunction = (options) => {
                 original_version: args?.original_version as string,
                 locally_changed: args?.locally_changed as string,
                 original_id: args?.original_id as string,
-                inline_created: args?.inline_created as boolean || false
+                unSaved: args?.unSaved as boolean || false
               }
             },
             { at: path }

@@ -8,7 +8,7 @@ import { FocusBlock } from '../../components/FocusBlock'
 export const Factbox = ({ children, element, options, editor }: TBComponentProps) => {
   const originalUpdated = element?.properties?.original_updated ?? ''
   const original_id = element?.properties?.original_id
-  const inlineCreated = element?.properties?.inline_created as boolean
+  const unSaved = element?.properties?.unSaved as boolean
   const removable = options?.removable as boolean ?? false
   const locale = options?.locale as string
 
@@ -33,7 +33,7 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
             }}
           />
 
-          {inlineCreated && options?.onSave
+          {unSaved && options?.onSave
             ? (
               <FactboxHeaderItem
                 title={saveToArchiveLabel ?? 'Save to archive'}
@@ -41,12 +41,12 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
                 e.preventDefault();
                 e.stopPropagation();
 
-                const onSuccess = () => {
-                  const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
-                  if (n > -1) {
-                    (Transforms.setNodes)(editor, { properties: { ...element.properties, inline_created: false } }, { at: [n] })
-                  }
-                }
+                    const onSuccess = () => {
+                      const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
+                      if (n > -1) {
+                        (Transforms.setNodes)(editor, { properties: { ...element.properties, unSaved: false } }, { at: [n] })
+                      }
+                    }
 
                 (options?.onSave as (id: string, onSuccess: () => void) => void)(original_id as string, onSuccess)
               }}
@@ -58,7 +58,7 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
             : null
           }
 
-          {!inlineCreated && options?.onEditOriginal && typeof options.onEditOriginal === 'function' && original_id
+          {!unSaved && options?.onEditOriginal && typeof options.onEditOriginal === 'function' && original_id
             ? <FactboxHeaderItem
                 title={headerTitle ?? 'Edit the original factbox'}
                 onMouseDown={(e) => {
@@ -71,7 +71,8 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
               }} />
             : null
           }
-          {!inlineCreated && (
+
+          {!unSaved && (
             <FactboxModified
               modified={originalUpdated}
               modifiedLabel={modifiedLabel}
