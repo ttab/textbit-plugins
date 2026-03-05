@@ -39,9 +39,9 @@ export const normalizeNode = (editor: Editor, nodeEntry: NodeEntry, listType: st
     // the remaining last node to normal text. This gives the appearance that
     // <enter> on a last empty list item converts it to a text node.
     if (n === children.length - 1 && children.length > 1 && TextbitElement.isOfType(child, `${listType}/list-item`)) {
-      if (!TextbitEditor.hasText([children[n - 1]])) {
-        const removePath = [childPath[0], n - 1]
-        const liftPath = [childPath[0], n]
+      if (!TextbitEditor.hasText([children[n - 1], children[n]])) {
+        const removePath = [...path, n - 1]
+        const liftPath = [...path, n]
 
         Transforms.setNodes(
           editor,
