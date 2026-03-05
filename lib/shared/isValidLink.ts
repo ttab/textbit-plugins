@@ -60,7 +60,7 @@ export function isValidLink(link: string, enforceProtocol: boolean = false): boo
     // Add current document origin to be able to check relative links
     const url = new URL(sanitizedLink, document.location.origin)
     return url.origin === document.location.origin && allowedProtocols.includes(url.protocol)
-  } catch (ex) { // eslint-disable-line
+  } catch {
     return false
   }
 }
