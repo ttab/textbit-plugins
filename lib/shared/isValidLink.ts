@@ -23,7 +23,7 @@ export function sanitizeLink(link: string): string {
   try {
     const url = new URL(trimmed)
     return allowedProtocols.includes(url.protocol) ? trimmed : ''
-  } catch (_) { // eslint-disable-line
+  } catch {
     // No absolute scheme, treat as a safe relative URL
     return trimmed
   }
