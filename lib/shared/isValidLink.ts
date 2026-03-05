@@ -50,7 +50,7 @@ export function isValidLink(link: string, enforceProtocol: boolean = false): boo
     // Check link as an absolute link and enforce (or not) protocol
     const url = new URL(sanitizedLink)
     return allowedProtocols.includes(url.protocol)
-  } catch (_) { // eslint-disable-line
+  } catch {
     if (enforceProtocol) {
       return false
     }
