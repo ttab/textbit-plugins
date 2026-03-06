@@ -4,7 +4,7 @@
  * to be present. This is not 100% foolproof but ensures that some
  * attacks as adding javascript:// scheme to a link is not possible.
  */
- const allowedProtocols = ['http:', 'https:']
+ const allowedProtocols = ['http:', 'https:', 'tel:', 'mailto:']
 
 /**
  * Sanitize a link. Will return an empty string if including
