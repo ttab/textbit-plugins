@@ -4,7 +4,8 @@ import { ImageIcon } from 'lucide-react'
 import {
   Figure,
   FigureImage,
-  FigureText
+  FigureText,
+  FigureByline
 } from './components'
 import { consume } from './lib/consume'
 import { consumes } from './lib/consumes'
@@ -51,6 +52,14 @@ export const Image: TBPluginInitFunction = (options) => {
           type: 'text',
           class: 'text',
           component: FigureText,
+          constraints: {
+            allowBreak: false
+          }
+        },
+        {
+          type: 'byline',
+          class: 'text',
+          component: FigureByline,
           constraints: {
             allowBreak: false
           }
