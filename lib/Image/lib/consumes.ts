@@ -23,6 +23,7 @@ export const consumes: TBConsumesFunction = ({ input }) => {
 
   // Hardcoded limit on 50 MB
   if (size / 1024 / 1024 > CONFIG.maxSizeInMb) {
+    console.warn(`Image is too large, ${size / 1024 / 1024}, max ${CONFIG.maxSizeInMb} Mb allowed`)
     return [false]
   }
 
