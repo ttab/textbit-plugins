@@ -1,4 +1,4 @@
-import type { TBPluginInitFunction } from '@ttab/textbit'
+import type { TBPluginInitFunction, TBConsumeFunction, TBConsumesFunction } from '@ttab/textbit'
 import { ImageIcon } from 'lucide-react'
 
 import {
@@ -18,8 +18,8 @@ export const Image: TBPluginInitFunction = (options) => {
     name: 'core/image',
     options,
     consumer: {
-      consumes,
-      consume
+      consumes: (options?.consumes as TBConsumesFunction) ?? consumes,
+      consume: (options?.consume as TBConsumeFunction) ?? consume
     },
     actions: [
       {

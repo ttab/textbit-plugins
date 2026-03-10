@@ -99,10 +99,16 @@ async function consumeFile(input: TBResource): Promise<TBResource> {
               children: [
                 {
                   type: 'core/image/image',
+                  class: 'void',
                   children: [{ text: '' }]
                 },
                 {
                   type: 'core/image/text',
+                  class: 'text',
+                  children: [{ text: '' }]
+                },
+                {
+                  type: 'core/image/byline',
                   class: 'text',
                   children: [{ text: '' }]
                 }
