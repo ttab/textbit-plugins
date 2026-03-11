@@ -21,21 +21,21 @@ export const Image: TBPluginInitFunction = (options) => {
       consumes: (options?.consumes as TBConsumesFunction) ?? consumes,
       consume: (options?.consume as TBConsumeFunction) ?? consume
     },
-    actions: [
-      {
-        name: 'insert-image',
-        title: 'Image',
-        tool: () => <ImageIcon style={{ width: '1em', height: '1em' }} />,
-        handler: actionHandler,
-        visibility: () => {
-          return [
-            true, // Always visible
-            true, // Always enabled
-            false // Never active
-          ]
-        }
-      }
-    ],
+    actions: options?.hideAction 
+      ? []
+      : [{
+            name: 'insert-image',
+            title: 'Image',
+            tool: () => <ImageIcon style={{ width: '1em', height: '1em' }} />,
+            handler: actionHandler,
+            visibility: () => {
+              return [
+                true, // Always visible
+                true, // Always enabled
+                false // Never active
+              ]
+            }
+        }],
     componentEntry: {
       class: 'block',
       component: Figure,
