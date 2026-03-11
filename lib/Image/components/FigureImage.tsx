@@ -13,22 +13,26 @@ export const FigureImage = ({ editor, children, rootNode, options }: TBComponent
   const getImageSrc = options?.getImageSrc as
     ((properties: Record<string, unknown>) => string | Promise<string>) | undefined
 
-  const srcKey = (properties?.uploadId as string) ?? (properties?.src as string) ?? ''
-  const [resolvedSrc, setResolvedSrc] = useState<string>('')
+  const src = (properties?.src as string) ?? undefined
+  const uploadId = (properties?.uploadId as string) ?? undefined
+  const propertiesRef = useRef(properties)
+  propertiesRef.current = properties
+  const [resolvedSrc, setResolvedSrc] = useState<string | undefined>()
 
   useEffect(() => {
     if (!getImageSrc) {
-      setResolvedSrc(properties?.src as string || '')
+      setResolvedSrc(src)
       return
     }
 
-    const result = getImageSrc(properties)
+    const result = getImageSrc(propertiesRef.current)
     if (typeof result === 'string') {
       setResolvedSrc(result)
     } else {
       result.then(setResolvedSrc).catch(() => setResolvedSrc(''))
     }
-  }, [srcKey, getImageSrc]) // eslint-disable-line react-hooks/exhaustive-deps
+    // UploadId added as a dep for indirect re-fire when properties change
+  }, [src, uploadId, getImageSrc])
 
   const focusStr = properties?.focus as string || undefined
   const cropStr = properties?.crop as string || undefined
