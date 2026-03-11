@@ -1,4 +1,4 @@
-import type { TBPluginInitFunction, TBConsumeFunction, TBConsumesFunction } from '@ttab/textbit'
+import type { TBPluginInitFunction, TBConsumeFunction, TBConsumesFunction, TBAction } from '@ttab/textbit'
 import { ImageIcon } from 'lucide-react'
 
 import {
@@ -21,21 +21,19 @@ export const Image: TBPluginInitFunction = (options) => {
       consumes: (options?.consumes as TBConsumesFunction) ?? consumes,
       consume: (options?.consume as TBConsumeFunction) ?? consume
     },
-    actions: options?.hideAction 
-      ? []
-      : [{
-            name: 'insert-image',
-            title: 'Image',
-            tool: () => <ImageIcon style={{ width: '1em', height: '1em' }} />,
-            handler: actionHandler,
-            visibility: () => {
-              return [
-                true, // Always visible
-                true, // Always enabled
-                false // Never active
-              ]
-            }
-        }],
+    actions: [{
+          name: 'insert-image',
+          title: 'Image',
+          tool: () => <ImageIcon style={{ width: '1em', height: '1em' }} />,
+          handler: actionHandler,
+          visibility: (options?.visibility as TBAction['visibility']) ?? (() => {
+            return [
+              true, // Always visible
+              true, // Always enabled
+              false // Never active
+            ]
+          })
+      }],
     componentEntry: {
       class: 'block',
       component: Figure,
