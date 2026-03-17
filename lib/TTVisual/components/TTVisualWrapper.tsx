@@ -3,7 +3,7 @@ import type { TBComponentProps } from '@ttab/textbit'
 import { X } from 'lucide-react'
 import { cn } from '../../cn'
 import { type Descendant, Transforms } from 'slate'
-import { FocusBlock } from '../../components/FocusBlock'
+import { Block } from '../../components/FocusBlock'
 
 type Child = React.ReactElement & {
   props: { children: { props: { element: { type: string } } } }
@@ -36,7 +36,7 @@ export const TTVisualWrapper = ({ children, element, editor, options }: TBCompon
   })
 
   return (
-    <FocusBlock className='my-2'>
+    <Block className='my-2'>
       <figure className='relative group flex gap-1 flex-col min-h-10'>
         {removable && (
           <div contentEditable={false} className='absolute hidden right-1 top-2 size-8 w-fit text-slate-900 dark:text-white justify-between items-center group-hover:block z-50'>
@@ -70,6 +70,6 @@ export const TTVisualWrapper = ({ children, element, editor, options }: TBCompon
           </div>
         ))}
       </figure>
-    </FocusBlock>
+    </Block>
   )
 }
