@@ -4,8 +4,11 @@ import { type Descendant, Transforms } from 'slate'
 
 export const TVLWrapper = ({ editor, children, element }: TBComponentProps) => {
   return (
-    <div className='border rounded' draggable={true}>
-      <div className='flex flex-nowrap justify-between items-center basis-full p-1 bg-slate-300 dark:bg-slate-900 cursor-grab'>
+    <div className='border rounded'>
+      <div className='flex flex-nowrap justify-between items-center basis-full p-1 bg-slate-300 dark:bg-slate-900 cursor-grab'
+        draggable={true}
+        contentEditable={false}
+      >
         <span className='text-xs' contentEditable={false}>Tablåinformation</span>
         <div
           className='hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-gray-700 p-1 rounded'
