@@ -1,6 +1,6 @@
 import React from 'react'
 import type { TBComponentProps } from '@ttab/textbit'
-import { FocusBlock } from '../../components/FocusBlock'
+import { Block } from '../../components/FocusBlock'
 
 type Child = React.ReactElement & {
   props: { children: { props: { element: { type: string } } } }
@@ -33,7 +33,7 @@ export const TTVisualWrapper = ({ children, element, editor, options }: TBCompon
   })
 
   return (
-    <FocusBlock className='my-2' editor={editor} element={element} removable={removable}>
+    <Block className='my-2' editor={editor} element={element} removable={removable}>
       <figure className='relative flex gap-1 flex-col min-h-10'>
         {imageNode}
 
@@ -48,6 +48,6 @@ export const TTVisualWrapper = ({ children, element, editor, options }: TBCompon
           </div>
         ))}
       </figure>
-    </FocusBlock>
+    </Block>
   )
 }
