@@ -1,6 +1,6 @@
 import type { TBPluginInitFunction} from '@ttab/textbit'
 import { Channel, Day, Time, EndTime, Title, TVLWrapper } from './components'
-import { Table } from 'lucide-react'
+import { TableIcon } from 'lucide-react'
 import { actionHandler } from './lib/actionHandler'
 
 export const TVListing: TBPluginInitFunction = (options) => {
@@ -12,7 +12,7 @@ export const TVListing: TBPluginInitFunction = (options) => {
       {
         name: 'tt/tv-listing',
         title: 'Tablåinfo',
-        tool: () => <Table style={{ width: '1em', height: '1em' }} />,
+        tool: () => <TableIcon style={{ width: '1em', height: '1em' }} />,
         handler: actionHandler,
         visibility: () => {
           return [

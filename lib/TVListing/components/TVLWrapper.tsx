@@ -1,15 +1,19 @@
 import type { TBComponentProps } from '@ttab/textbit'
-import { XIcon } from 'lucide-react'
+import { TableIcon, XIcon } from 'lucide-react'
 import { type Descendant, Transforms } from 'slate'
 
 export const TVLWrapper = ({ editor, children, element }: TBComponentProps) => {
   return (
     <div className='border rounded'>
-      <div className='flex flex-nowrap justify-between items-center basis-full p-1 bg-slate-300 dark:bg-slate-900 cursor-grab'
-        draggable={true}
+      <div
         contentEditable={false}
+        draggable={true}
+        className='flex flex-nowrap justify-between items-center basis-full p-1 bg-slate-300 dark:bg-slate-900 cursor-grab'
       >
-        <span className='text-xs' contentEditable={false}>Tablåinformation</span>
+        <div className='flex items-center gap-2'>
+          <TableIcon size={15} />
+          <span className='text-xs font-semibold'>Tablåinformation</span>
+        </div>
         <div
           className='hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-gray-700 p-1 rounded'
           onMouseDown={(e) => {

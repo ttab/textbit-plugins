@@ -1,5 +1,5 @@
 import type { TBComponentProps } from '@ttab/textbit'
-import { X } from 'lucide-react'
+import { XIcon, FileTypeCornerIcon } from 'lucide-react'
 import type { PropsWithChildren } from 'react'
 import { type Descendant, Transforms } from 'slate'
 
@@ -11,7 +11,10 @@ export const PrintText = ({ children, editor, element }: TBComponentProps & Prop
         draggable={true}
         className='flex items-center justify-between bg-slate-300 dark:bg-slate-900 p-1 cursor-grab'
       >
-        <span className='text-xs'>Print-text</span>
+        <div className='flex items-center gap-2'>
+          <FileTypeCornerIcon size={15} />
+          <span className='text-xs font-semibold'>Print-text</span>
+        </div>
         <div
           className='hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-gray-700 p-1 rounded'
           onMouseDown={(e) => {
@@ -24,7 +27,7 @@ export const PrintText = ({ children, editor, element }: TBComponentProps & Prop
             }
           }}
         >
-          <X size={15} />
+          <XIcon size={15} />
         </div>
       </div>
       {children}
