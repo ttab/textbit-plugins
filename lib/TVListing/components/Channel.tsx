@@ -6,7 +6,7 @@ export const Channel = ({ options }: TBComponentProps) => {
 
   return (
     <div className="border-b">
-      <div contentEditable={false} className="font-semibold">Kanal</div>
+      <div contentEditable={false} className="font-semibold opacity-60">Kanal</div>
       {ChannelComponent && <ChannelComponent />}
     </div>
   )
