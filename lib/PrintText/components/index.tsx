@@ -1,11 +1,15 @@
 import type { TBComponentProps } from '@ttab/textbit'
+import type { TBElement } from '@ttab/textbit'
 import { XIcon, FileTypeCornerIcon } from 'lucide-react'
 import type { PropsWithChildren } from 'react'
-import { type Descendant, Transforms } from 'slate'
+import { Transforms } from 'slate'
+import { cn } from '../../cn'
 
 export const PrintText = ({ children, editor, element }: TBComponentProps & PropsWithChildren) => {
+  const isFirst = !!editor && !!element && (editor.children as TBElement[])[0]?.id === element.id
+
   return (
-    <div className='border rounded'>
+    <div className={cn('border rounded', !isFirst && 'mt-3')}>
       <div
         contentEditable={false}
         draggable={true}
@@ -20,7 +24,7 @@ export const PrintText = ({ children, editor, element }: TBComponentProps & Prop
           onMouseDown={(e) => {
             e.preventDefault()
             e.stopPropagation()
-            const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
+            const n = editor.children.findIndex((child) => (child as TBElement).id === element.id)
 
             if (n > -1) {
               Transforms.removeNodes(editor, { at: [n] })
