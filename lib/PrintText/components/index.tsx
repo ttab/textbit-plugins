@@ -34,7 +34,9 @@ export const PrintText = ({ children, editor, element }: TBComponentProps & Prop
           <XIcon size={15} />
         </div>
       </div>
-      {children}
+      <div className='px-2'>
+        {children}
+      </div>
     </div>
   )
 }
