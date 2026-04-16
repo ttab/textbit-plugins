@@ -12,7 +12,7 @@ export const TVLWrapper = ({ editor, children, element }: TBComponentProps) => {
       <div
         contentEditable={false}
         draggable={true}
-        className='flex flex-nowrap justify-between items-center basis-full p-1 bg-slate-300 dark:bg-slate-900 cursor-grab'
+        className='flex flex-nowrap justify-between items-center basis-full p-2 bg-slate-300 dark:bg-slate-900 cursor-grab'
       >
         <div className='flex items-center gap-2'>
           <Rows4Icon className='h-full' />
