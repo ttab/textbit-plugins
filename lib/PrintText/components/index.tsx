@@ -16,7 +16,7 @@ export const PrintText = ({ children, editor, element }: TBComponentProps & Prop
         className='flex items-center justify-between bg-slate-300 dark:bg-slate-900 p-1 cursor-grab'
       >
         <div className='flex items-center gap-2'>
-          <FileTypeCornerIcon size={15} />
+          <FileTypeCornerIcon className='h-full' />
           <span className='text-xs font-semibold'>Print-text</span>
         </div>
         <div

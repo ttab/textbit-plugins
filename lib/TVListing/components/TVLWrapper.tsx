@@ -1,6 +1,6 @@
 import type { TBComponentProps } from '@ttab/textbit'
 import type { TBElement } from '@ttab/textbit'
-import { TableIcon, XIcon } from 'lucide-react'
+import { Rows4Icon, XIcon } from 'lucide-react'
 import { Transforms } from 'slate'
 import { cn } from '../../cn'
 
@@ -15,7 +15,7 @@ export const TVLWrapper = ({ editor, children, element }: TBComponentProps) => {
         className='flex flex-nowrap justify-between items-center basis-full p-1 bg-slate-300 dark:bg-slate-900 cursor-grab'
       >
         <div className='flex items-center gap-2'>
-          <TableIcon size={15} />
+          <Rows4Icon className='h-full' />
           <span className='text-xs font-semibold'>Tablåinformation</span>
         </div>
         <div
@@ -34,7 +34,7 @@ export const TVLWrapper = ({ editor, children, element }: TBComponentProps) => {
         </div>
 
       </div>
-      <div className='p-2'>
+      <div className='px-1'>
         {children}
       </div>
     </div>
