@@ -14,8 +14,8 @@ export const TVLWrapper = ({ editor, children, element }: TBComponentProps) => {
         draggable={true}
         className='flex flex-nowrap justify-between items-center basis-full p-2 bg-slate-300 dark:bg-slate-900 cursor-grab'
       >
-        <div className='flex items-center gap-2'>
-          <Rows4Icon className='h-full' />
+        <div className='flex items-end gap-2'>
+          <Rows4Icon size={15} />
           <span className='text-xs font-semibold'>Tablåinformation</span>
         </div>
         <div
