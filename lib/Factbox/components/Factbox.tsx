@@ -30,7 +30,7 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
   const UNSAVED_MESSAGE = unsavedLabel ?? 'Factbox has not been saved to archive'
 
   return (
-    <Block className='my-2'>
+    <Block editor={editor} element={element}>
       <div className='group border-2 rounded border-slate-200'>
         <div
           contentEditable={false}
