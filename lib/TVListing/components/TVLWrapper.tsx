@@ -19,7 +19,7 @@ export const TVLWrapper = ({ editor, children, element }: TBComponentProps) => {
           <span className='text-xs font-semibold'>Tablåinformation</span>
         </div>
         <div
-          className='hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-gray-700 p-1 rounded'
+          className='hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-gray-700 p-1 rounded -my-1'
           onMouseDown={(e) => {
             e.preventDefault()
             e.stopPropagation()

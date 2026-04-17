@@ -20,7 +20,7 @@ export const PrintText = ({ children, editor, element }: TBComponentProps & Prop
           <span className='text-xs font-semibold'>Print-text</span>
         </div>
         <div
-          className='hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-gray-700 p-1 rounded'
+          className='hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-gray-700 p-1 -my-1 rounded'
           onMouseDown={(e) => {
             e.preventDefault()
             e.stopPropagation()
