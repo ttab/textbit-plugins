@@ -1,5 +1,5 @@
 import { Editor, Element, Transforms } from 'slate'
-import type { TBPluginInitFunction } from '@ttab/textbit'
+import type { TBPluginInitFunction, TBConsumeFunction } from '@ttab/textbit'
 import {
   Factbox as FactboxComponent,
   FactboxTitle
@@ -18,7 +18,7 @@ export const Factbox: TBPluginInitFunction = (options) => {
     options,
     consumer: {
       consumes,
-      consume
+      consume: (options?.consume as TBConsumeFunction) ?? consume
     },
     actions: [
       {
