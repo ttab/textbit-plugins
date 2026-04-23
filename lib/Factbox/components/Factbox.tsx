@@ -8,7 +8,6 @@ import { Block } from '../../components/FocusBlock'
 export const Factbox = ({ children, element, options, editor }: TBComponentProps) => {
   const originalUpdated = element?.properties?.original_updated ?? ''
   const original_id = element?.properties?.original_id
-  const unSaved = element?.properties?.unSaved as boolean
   const removable = options?.removable as boolean ?? false
   const locale = options?.locale as string
 
@@ -22,12 +21,9 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
     headerTitle?: string
     modifiedLabel?: string
     footerTitle?: string
-    saveToArchiveLabel?: string
-    unsavedLabel?: string
   }
 
   const MESSAGE = footerTitle ?? 'Changes in the factbox text only affects this article'
-  const UNSAVED_MESSAGE = unsavedLabel ?? 'Factbox has not been saved to archive'
 
   return (
     <Block editor={editor} element={element}>
@@ -39,35 +35,7 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
           onMouseDown={(e) => { e.stopPropagation() }}
         >
 
-          {unSaved && options?.onSave
-            ? (
-              <>
-                <FactboxHeaderItem
-                  title={saveToArchiveLabel ?? 'Save to archive'}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    const onSuccess = () => {
-                      const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
-                      if (n > -1) {
-                        (Transforms.setNodes)(editor, { properties: { ...element.properties, unSaved: false } }, { at: [n] })
-                      }
-                    }
-
-                    (options?.onSave as (id: string, onSuccess: () => void) => void)(original_id as string, onSuccess)
-                  }}
-                  icon={{
-                    icon: SaveIcon
-                  }}
-                />
-                <div className='text-xs'>{UNSAVED_MESSAGE}</div>
-              </>
-            )
-            : null
-          }
-
-          {!unSaved && options?.onEditOriginal && typeof options.onEditOriginal === 'function' && original_id
+          {options?.onEditOriginal && typeof options.onEditOriginal === 'function' && original_id
             ? <FactboxHeaderItem
                 title={headerTitle ?? 'Edit the original factbox'}
                 onMouseDown={(e) => {

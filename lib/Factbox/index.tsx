@@ -52,8 +52,7 @@ export const Factbox: TBPluginInitFunction = (options) => {
                 original_updated: args?.original_updated as string,
                 original_version: args?.original_version as string,
                 locally_changed: args?.locally_changed as string,
-                original_id: args?.original_id as string,
-                unSaved: args?.unSaved as boolean || false
+                original_id: args?.original_id as string
               }
             },
             { at: path }
