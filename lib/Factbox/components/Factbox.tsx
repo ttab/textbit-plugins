@@ -6,20 +6,21 @@ import { type Descendant, Transforms } from 'slate'
 import { Block } from '../../components/FocusBlock'
 
 export const Factbox = ({ children, element, options, editor }: TBComponentProps) => {
-  const originalUpdated = element?.properties?.original_updated ?? ''
+  const created = element?.properties?.created ?? element?.properties?.original_updated ?? ''
+  const modified = element?.properties?.modified ?? ''
   const original_id = element?.properties?.original_id
   const removable = options?.removable as boolean ?? false
   const locale = options?.locale as string
 
   const {
     headerTitle,
-    modifiedLabel,
-    footerTitle,
-    saveToArchiveLabel,
-    unsavedLabel
+    createdLabel,
+    lastModifiedLabel,
+    footerTitle
   } =  options as {
     headerTitle?: string
-    modifiedLabel?: string
+    createdLabel?: string
+    lastModifiedLabel?: string
     footerTitle?: string
   }
 
@@ -49,17 +50,26 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
             : null
           }
 
-          {!unSaved && (
-            <FactboxModified
-              modified={originalUpdated}
-              modifiedLabel={modifiedLabel}
-              locale={locale}
-            />
-          )}
+          <div className='flex flex-col grow'>
+            {created && (
+              <FactboxModified
+                modified={created}
+                modifiedLabel={createdLabel ?? 'Created'}
+                locale={locale}
+                absolute
+              />
+            )}
+            {modified && (
+              <FactboxModified
+                modified={modified}
+                modifiedLabel={lastModifiedLabel ?? 'Last modified'}
+                locale={locale}
+              />
+            )}
+          </div>
 
           {removable && (
             <>
-              <div className='grow'></div>
               <div className='hidden grow-0 items-center justify-end group-hover:block'>
                 <FactboxHeaderItem
                   className='opacity-60 hover:opacity-100'
