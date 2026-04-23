@@ -1,5 +1,5 @@
 import type { TBComponentProps } from '@ttab/textbit'
-import { FilePen, MessageCircleWarning, SaveIcon, X } from 'lucide-react'
+import { FilePen, X } from 'lucide-react'
 import { FactboxModified } from './FactboxModified'
 import { FactboxHeaderItem } from './FactboxHeaderItem'
 import { type Descendant, Transforms } from 'slate'
@@ -38,13 +38,6 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
           className='flex justify-start items-center m-1 p-2 bg-slate-100 dark:bg-slate-700 border-b-2 border-slate-200 ps-0.5 pb-0.5 pt-px cursor-default'
           onMouseDown={(e) => { e.stopPropagation() }}
         >
-          <FactboxHeaderItem
-            title={unSaved ? UNSAVED_MESSAGE : MESSAGE}
-            icon={{
-              icon: MessageCircleWarning,
-              className: 'text-red-800 dark:text-red-500'
-            }}
-          />
 
           {unSaved && options?.onSave
             ? (
