@@ -27,7 +27,7 @@ export const Factbox: TBPluginInitFunction = (options) => {
         tool: () => <BoxIcon style={{ width: '1em', height: '1em' }} />,
         handler: actionHandler,
         visibility: () => [
-          false, //  visible
+          true, //  visible
           true, //   enabled
           false //   active
         ]
