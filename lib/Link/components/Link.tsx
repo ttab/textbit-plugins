@@ -1,32 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import type { TBComponentProps } from '@ttab/textbit'
 import { isValidLink } from '../../shared/isValidLink'
 
 export const Link = ({ children, element }: TBComponentProps) => {
   const url: string = element.properties?.url as string || ''
-  const [isPressed, setIsPressed] = useState<boolean>(false)
   const [isHovering, setIsHovering] = useState<boolean>(false)
-
-  useEffect(() => {
-    const keyDownListener = (event: KeyboardEvent): void => {
-      if (isPressed !== (event.metaKey || event.ctrlKey)) {
-        setIsPressed(true)
-      }
-    }
-    window.document.addEventListener('keydown', keyDownListener)
-
-    const keyUpListener = (event: KeyboardEvent): void => {
-      if (isPressed !== (event.metaKey || event.ctrlKey)) {
-        setIsPressed(false)
-      }
-    }
-    window.document.addEventListener('keyup', keyUpListener)
-
-    return () => {
-      window.document.removeEventListener('keydown', keyDownListener)
-      window.document.removeEventListener('keyup', keyUpListener)
-    }
-  })
 
   return (
     <a
