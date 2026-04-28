@@ -2,9 +2,11 @@ import { useState } from 'react'
 import type { TBComponentProps } from '@ttab/textbit'
 import { isValidLink } from '../../shared/isValidLink'
 
-export const Link = ({ children, element }: TBComponentProps) => {
+export const Link = ({ children, element, options }: TBComponentProps) => {
   const url: string = element.properties?.url as string || ''
   const [isHovering, setIsHovering] = useState<boolean>(false)
+
+  const linkWarningLabel = options?.linkWarningLabel || 'Open link in a new tab? Continue only if you trust the source!'
 
   return (
     <a
@@ -12,7 +14,7 @@ export const Link = ({ children, element }: TBComponentProps) => {
       href={url}
       onClick={(event) => {
         event.preventDefault()
-        const message = `Open link in a new tab?\n${url}\nContinue only if you trust the source.`
+        const message = `${url}\n\n${linkWarningLabel}`
 
         if (window.confirm(message)) {
           window.open(url, '_blank', 'noopener,noreferrer')
