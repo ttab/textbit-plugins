@@ -27,7 +27,7 @@ export const Link = ({ children, element }: TBComponentProps) => {
       title={`${element.properties?.title || ''}`}
       style={{
         textDecorationStyle: isValidLink(url) ? 'solid' : 'wavy',
-        cursor: isHovering && isPressed ? 'pointer' : 'auto'
+        cursor: isHovering ? 'pointer' : 'auto'
       }}
     >
       {children}
