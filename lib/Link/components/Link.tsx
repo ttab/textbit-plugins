@@ -11,8 +11,11 @@ export const Link = ({ children, element }: TBComponentProps) => {
       className={`underline decoration-2 underline-offset-4 ${isValidLink(url) ? 'decoration-blue-300' : 'decoration-wavy decoration-red-400'}`}
       href={url}
       onClick={(event) => {
-        if (event.ctrlKey || event.metaKey) {
-          window.open(url, '_blank')
+        event.preventDefault()
+        const message = `Open link in a new tab?\n${url}\nContinue only if you trust the source.`
+
+        if (window.confirm(message)) {
+          window.open(url, '_blank', 'noopener,noreferrer')
         }
       }}
       onMouseEnter={() => {
