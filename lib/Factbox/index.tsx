@@ -4,7 +4,6 @@ import {
   Factbox as FactboxComponent,
   FactboxTitle
 } from './components'
-import { normalizeFactbox } from './lib/normalizeFactbox'
 import { consumes } from './lib/consumes'
 import { consume } from './lib/consume'
 import { FactboxBody } from './components/FactboxBody'
@@ -63,22 +62,25 @@ export const Factbox: TBPluginInitFunction = (options) => {
     componentEntry: {
       class: 'block',
       component: FactboxComponent,
-      constraints: {
-        normalizeNode: normalizeFactbox
-      },
       children: [
         {
           type: 'title',
           class: 'text',
           component: FactboxTitle,
           constraints: {
-            allowBreak: false
+            allowBreak: false,
+            min: 1,
+            max: 1
           }
         },
         {
           type: 'body',
           class: 'block',
-          component: FactboxBody
+          component: FactboxBody,
+          constraints: {
+            min: 1,
+            max: 1
+          }
         }
       ]
     }
