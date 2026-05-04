@@ -8,6 +8,7 @@ import { consumes } from './lib/consumes'
 import { consume } from './lib/consume'
 import { FactboxBody } from './components/FactboxBody'
 import { actionHandler } from './lib/actionHandler'
+import { normalizeFactbox } from './lib/normalizeFactbox'
 import { BoxIcon } from 'lucide-react'
 
 export const Factbox: TBPluginInitFunction = (options) => {
@@ -62,25 +63,22 @@ export const Factbox: TBPluginInitFunction = (options) => {
     componentEntry: {
       class: 'block',
       component: FactboxComponent,
+      constraints: {
+        normalizeNode: normalizeFactbox
+      },
       children: [
         {
           type: 'title',
           class: 'text',
           component: FactboxTitle,
           constraints: {
-            allowBreak: false,
-            min: 1,
-            max: 1
+            allowBreak: false
           }
         },
         {
           type: 'body',
           class: 'block',
-          component: FactboxBody,
-          constraints: {
-            min: 1,
-            max: 1
-          }
+          component: FactboxBody
         }
       ]
     }
