@@ -4,11 +4,11 @@ import {
   Factbox as FactboxComponent,
   FactboxTitle
 } from './components'
-import { normalizeFactbox } from './lib/normalizeFactbox'
 import { consumes } from './lib/consumes'
 import { consume } from './lib/consume'
 import { FactboxBody } from './components/FactboxBody'
 import { actionHandler } from './lib/actionHandler'
+import { normalizeFactbox } from './lib/normalizeFactbox'
 import { BoxIcon } from 'lucide-react'
 
 export const Factbox: TBPluginInitFunction = (options) => {

@@ -31,12 +31,20 @@ export const PrintText: TBPluginInitFunction = (options) => {
         {
           type: 'text',
           class: 'text',
-          component: TextComponent
+          component: TextComponent,
+          constraints: {
+            min: 1,
+            max: 1
+          }
         },
         {
           type: 'role',
           class: 'text',
-          component: TextRole
+          component: TextRole,
+          constraints: {
+            min: 1,
+            max: 1
+          }
         }
       ]
     }
