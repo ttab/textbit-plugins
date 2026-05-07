@@ -1,13 +1,13 @@
 import type { TBComponentProps } from '@ttab/textbit'
-import type { PropsWithChildren } from "react"
+import type { PropsWithChildren } from 'react'
+import { FieldRow } from './FieldRow'
 
-export const Channel = ({ options }: TBComponentProps) => {
+export const Channel = ({ editor, element, options }: TBComponentProps) => {
   const ChannelComponent = options?.channelComponent as React.ComponentType<PropsWithChildren> | undefined
 
   return (
-    <div className="border-b flex items-center gap-3 text-sm py-2">
-      <label contentEditable={false} className="w-14 text-sm opacity-70">Kanal</label>
+    <FieldRow editor={editor} element={element} label='Kanal' mandatory>
       {ChannelComponent && <ChannelComponent />}
-    </div>
+    </FieldRow>
   )
 }
