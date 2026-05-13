@@ -67,10 +67,10 @@ export const getTextStyles = (options: TBPluginOptions): TextStyleAction[] => {
   ]
 
   return textStyles.filter(ts => {
-    if (Array.isArray(options.hiddenStyles) && (options.hiddenStyles as string[]).includes(ts.name)) {
+    if (ts.role && Array.isArray(options.hiddenStyles) && (options.hiddenStyles as string[]).includes(ts.role)) {
       return false
     }
-    if (Array.isArray(options.styles) && !(options.styles as string[]).includes(ts.name)) {
+    if (ts.role && Array.isArray(options.styles) && !(options.styles as string[]).includes(ts.role)) {
       return false
     }
     return true
