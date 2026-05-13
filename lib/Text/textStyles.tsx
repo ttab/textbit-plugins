@@ -62,21 +62,22 @@ export const getTextStyles = (options: TBPluginOptions): TextStyleAction[] => {
       hotkey: undefined,
       tool: () => <MapIcon style={{ width: '1em', height: '1em' }} />,
       handler: ({ editor }) => convertTextType(editor, 'vignette'),
-      visibility: (element: Element) => toolVisibility(element, 'vignette', options?.hasVignette === true)
+      visibility: (element: Element) => toolVisibility(element, 'vignette')
     }
   ]
 
-  if (Array.isArray(options.styles)) {
-    return textStyles.filter(ts => (options.styles as string[]).includes(ts.name))
-  }
-
-  return textStyles
+  return textStyles.filter(ts => {
+    if (Array.isArray(options.hiddenStyles) && (options.hiddenStyles as string[]).includes(ts.name)) {
+      return false
+    }
+    if (Array.isArray(options.styles) && !(options.styles as string[]).includes(ts.name)) {
+      return false
+    }
+    return true
+  })
 }
 
-function toolVisibility(element: Element, role?: string, enabled: boolean = true): [boolean, boolean, boolean] {
-  if (!enabled) {
-    return [false, false, false]
-  }
+function toolVisibility(element: Element, role?: string): [boolean, boolean, boolean] {
   return [
     ['core/ordered-list', 'core/unordered-list', 'core/text'].includes(element.type),
     true,
