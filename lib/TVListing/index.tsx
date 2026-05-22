@@ -1,7 +1,7 @@
-import type { TBPluginInitFunction} from '@ttab/textbit'
-import { Channel, Day, Time, EndTime, Title, TVLWrapper } from './components'
+import type { TBPluginInitFunction } from '@ttab/textbit'
 import { TableIcon } from 'lucide-react'
 import { actionHandler } from './lib/actionHandler'
+import { buildComponentEntry } from './componentEntry'
 
 export const TVListing: TBPluginInitFunction = (options) => {
   return {
@@ -23,57 +23,6 @@ export const TVListing: TBPluginInitFunction = (options) => {
         }
       }
     ],
-    componentEntry: {
-      class: 'block',
-      component: TVLWrapper,
-      children: [
-        {
-          type: 'title',
-          class: 'text',
-          component: Title,
-          constraints: {
-            allowBreak: false,
-            allowSoftBreak: false
-          }
-        },
-        {
-          type: 'channel',
-          class: 'text',
-          component: Channel,
-          options,
-          constraints: {
-            allowBreak: false,
-            allowSoftBreak: false
-          }
-        },
-        {
-          type: 'day',
-          class: 'text',
-          component: Day,
-          constraints: {
-            allowBreak: false,
-            allowSoftBreak: false
-          }
-        },
-        {
-          type: 'time',
-          class: 'text',
-          component: Time,
-          constraints: {
-            allowBreak: false,
-            allowSoftBreak: false
-          }
-        },
-        {
-          type: 'end_time',
-          class: 'text',
-          component: EndTime,
-          constraints: {
-            allowBreak: false,
-            allowSoftBreak: false
-          }
-        }
-      ]
-    }
+    componentEntry: buildComponentEntry()
   }
 }

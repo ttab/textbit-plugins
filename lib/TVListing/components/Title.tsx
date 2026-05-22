@@ -1,10 +1,8 @@
-import type { PropsWithChildren } from "react"
+import type { TBComponentProps } from '@ttab/textbit'
+import { FieldRow } from './FieldRow'
 
-export const Title = ({ children }: PropsWithChildren) => {
-  return (
-    <div className="border-b flex gap-3 text-sm py-2 items-start">
-      <label contentEditable={false} className="w-14 text-sm opacity-70">Titel</label>
-      {children}
-    </div>
-  )
-}
+export const Title = ({ editor, element, children }: TBComponentProps) => (
+  <FieldRow editor={editor} element={element} label='Titel' align='start'>
+    {children}
+  </FieldRow>
+)
