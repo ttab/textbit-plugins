@@ -5,7 +5,7 @@ export type TVLField = 'title' | 'channel' | 'day' | 'time' | 'end_time'
 
 export const ALL_FIELDS: readonly TVLField[] = ['title', 'channel', 'day', 'time', 'end_time']
 
-export const MANDATORY_FIELDS: readonly TVLField[] = ['channel', 'time']
+export const MANDATORY_FIELDS: readonly TVLField[] = ['channel']
 
 const FIELD_COMPONENT = {
   title: Title,
