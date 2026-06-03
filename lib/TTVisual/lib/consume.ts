@@ -15,11 +15,6 @@ export const consume: TBConsumeFunction = async ({ input }) => {
   return createTTVisualNode(input)
 }
 
-/**
-* Create a TTVisual node
-* @param {VisualPropertiesInterface} props
-* @returns {TTVisualInterface}
-*/
 const createTTVisualNode = async (input: TBResource): Promise<TBResource> => {
   const props = await createVisualProperties(input)
 
