@@ -17,6 +17,12 @@ const LOCALIZED_QUOTES: Record<string, string[]>  = {
   no: [
     '‹', '›',
     '«', '»'],
+  nb: [
+    '‹', '›',
+    '«', '»'],
+  nn: [
+    '‹', '›',
+    '«', '»'],
   en: [
     '‘', '’',
     '“', '”'],
