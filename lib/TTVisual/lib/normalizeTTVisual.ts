@@ -7,11 +7,8 @@ import {
 } from 'slate'
 import { TextbitElement } from '@ttab/textbit'
 
-// Types this normalizer is allowed to leave alone (the schema-defined
-// children of tt/visual). Anything else that ends up nested at this level
-// — e.g. an unrelated block dropped/pasted inside — is unwrapped to keep
-// the structure flat. The earlier, looser rule unwrapped *every* block
-// child, which destroyed valid schema children when their class was wrong.
+// Schema-defined children of tt/visual. Anything else nested here (e.g. an
+// unrelated block dropped/pasted in) gets unwrapped to keep the structure flat.
 const SCHEMA_CHILD_TYPES = new Set([
   'tt/visual/image',
   'tt/visual/text',
