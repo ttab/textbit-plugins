@@ -1,6 +1,6 @@
 import { type VisualPropertiesInterface } from '../types'
 
-function parseImageId(data: string): string | undefined {
+export function parseImageId(data: string): string | undefined {
   // Is it a URL?
   if (URL.canParse(data)) {
     const url = new URL(data)
@@ -39,6 +39,3 @@ export function parseJSON(value: string): VisualPropertiesInterface | false {
     return false
   }
 }
-
-
-export default parseImageId

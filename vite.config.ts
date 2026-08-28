@@ -1,6 +1,6 @@
 import { join, resolve, relative, extname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import { glob } from 'glob'
@@ -9,9 +9,10 @@ import path from 'path'
 import { peerDependencies } from './package.json'
 
 export default defineConfig({
+  logLevel: 'warn',
   plugins: [
     react(),
-    dts({ rollupTypes: true })
+    dts({ bundleTypes: true })
   ],
   resolve: {
     alias: {
