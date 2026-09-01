@@ -1,7 +1,7 @@
 {
   "name": "@ttab/textbit-plugins",
   "description": "Base package of common plugins for textbit",
-  "version": "1.7.0-beta.0",
+  "version": "1.7.0-beta.2",
   "license": "MIT",
   "author": {
     "name": "Danne Lundqvist"
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ttab/textbit-plugins.git"
+    "url": "https://github.com/ttab/textbit-plugins"
   },
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.es.js",
@@ -36,7 +36,7 @@
     "dev": "vite",
     "test": "vitest run",
     "build": "tsc --project ./tsconfig.build.json && vite build",
-    "lint": "echo \"lint disabled during monorepo migration - re-enable: eslint . --report-unused-disable-directives --max-warnings 0\"",
+    "lint": "eslint . --cache --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc -p ./tsconfig.build.json --noEmit",
     "preview": "vite preview"
   },
@@ -86,7 +86,7 @@
     "yjs": "^13.6.32"
   },
   "dependencies": {
-    "@ttab/textbit": "^1.7.0-beta.0",
+    "@ttab/textbit": "^1.7.0-beta.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.0.2"

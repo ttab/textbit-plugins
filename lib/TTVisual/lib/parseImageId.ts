@@ -35,7 +35,7 @@ function idMatcher(value: string): string | undefined {
 export function parseJSON(value: string): VisualPropertiesInterface | false {
   try {
     return JSON.parse(value)
-  } catch (e) {
+  } catch {
     return false
   }
 }
