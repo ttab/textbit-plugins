@@ -6,7 +6,7 @@ import dts from 'vite-plugin-dts'
 import { glob } from 'glob'
 import path from 'path'
 
-import { peerDependencies } from './package.json'
+import pkg from './package.json' with { type: 'json' }
 
 export default defineConfig({
   logLevel: 'warn',
@@ -16,7 +16,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      'yjs': path.resolve(__dirname, './node_modules/yjs')
+      'yjs': path.resolve(import.meta.dirname, './node_modules/yjs')
     },
     dedupe: [
       'react',
@@ -34,14 +34,14 @@ export default defineConfig({
     target: 'esnext',
     minify: true,
     lib: {
-      entry: resolve(__dirname, join('lib', 'index.ts')),
+      entry: resolve(import.meta.dirname, join('lib', 'index.ts')),
       formats: ['es', 'cjs']
     },
     rollupOptions: {
       // Exclude peer dependencies from the bundle to reduce bundle size
       external: [
         'react/jsx-runtime',
-        ...Object.keys(peerDependencies)
+        ...Object.keys(pkg.peerDependencies)
       ],
       input: Object.fromEntries(
         glob.sync('lib/**/*.{ts,tsx}').map(file => [
