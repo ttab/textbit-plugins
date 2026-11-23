@@ -1,5 +1,25 @@
 # @ttab/textbit-plugins
 
+## 1.8.1
+
+### Patch Changes
+
+- dependencies updates:
+    - Updated dependency [`slate@^0.147.4` ↗︎](https://www.npmjs.com/package/slate/v/0.147.4) (from `^0.126.2`, in `peerDependencies`)
+    - Updated dependency [`slate-react@^0.147.3` ↗︎](https://www.npmjs.com/package/slate-react/v/0.147.3) (from `^0.126.4`, in `peerDependencies`)
+
+- dependencies updates:
+    - Updated dependency [`yjs@^13.6.33` ↗︎](https://www.npmjs.com/package/yjs/v/13.6.33) (from `^13.6.32`, in `peerDependencies`)
+
+- dependencies updates:
+    - Updated dependency [`tailwind-merge@^3.7.0` ↗︎](https://www.npmjs.com/package/tailwind-merge/v/3.7.0) (from `^3.0.2`, in `dependencies`)
+
+- A new factbox's headline is the `factboxNewTitle` option exactly as given. The plugin no longer
+  appends a colon or defaults to "Facts", so pass the full title (e.g. "Fakta:"); without one the
+  headline starts empty.
+
+- Factbox: always show the remove button instead of only on hover, and hide "Edit the original factbox" when the factbox has no saved original document.
+
 ## 1.8.0
 
 ### Minor Changes

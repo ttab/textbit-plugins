@@ -7,7 +7,9 @@ import type { TBActionHandlerArgs } from '@ttab/textbit'
 
 export const actionHandler = ({ editor, options }: TBActionHandlerArgs) => {
   const text = TextbitEditor.getSelectedText(editor)
-  const titleText = `${options?.factboxNewTitle as string ?? 'Facts'}:`
+  // The host app owns the full title (language, punctuation); none means an empty headline
+  const newTitle = options?.factboxNewTitle
+  const titleText = typeof newTitle === 'string' ? newTitle : ''
   const id = crypto.randomUUID()
 
   const node: Descendant[] = [{

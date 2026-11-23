@@ -9,6 +9,12 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
   const created = element?.properties?.created ?? element?.properties?.original_updated ?? ''
   const modified = element?.properties?.modified ?? ''
   const original_id = element?.properties?.original_id
+
+  // A factbox created from the content menu seeds original_id with the node's own id
+  // (see lib/actionHandler.ts), so a self-reference means there is no saved original
+  // document to open yet.
+  const hasOriginal = !!original_id && original_id !== element?.id
+
   const removable = options?.removable as boolean ?? false
   const locale = options?.locale as string
 
@@ -36,7 +42,7 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
           onMouseDown={(e) => { e.stopPropagation() }}
         >
 
-          {options?.onEditOriginal && typeof options.onEditOriginal === 'function' && original_id
+          {options?.onEditOriginal && typeof options.onEditOriginal === 'function' && hasOriginal
             ? <FactboxHeaderItem
                 title={headerTitle ?? 'Edit the original factbox'}
                 onMouseDown={(e) => {
@@ -69,25 +75,23 @@ export const Factbox = ({ children, element, options, editor }: TBComponentProps
           </div>
 
           {removable && (
-            <>
-              <div className='hidden grow-0 items-center justify-end group-hover:block'>
-                <FactboxHeaderItem
-                  className='opacity-60 hover:opacity-100'
-                  icon={{
-                    icon: X
-                  }}
-                  onMouseDown={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
+            <div className='flex grow-0 items-center justify-end'>
+              <FactboxHeaderItem
+                className='opacity-60 hover:opacity-100'
+                icon={{
+                  icon: X
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  const n = editor.children.findIndex((child: Descendant) => child.id === element.id)
 
-                    if (n > -1) {
-                      Transforms.removeNodes(editor, { at: [n] })
-                    }
-                  }}
-                />
-              </div>
-            </>
+                  if (n > -1) {
+                    Transforms.removeNodes(editor, { at: [n] })
+                  }
+                }}
+              />
+            </div>
           )}
 
         </div>
